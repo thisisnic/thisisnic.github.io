@@ -1,0 +1,580 @@
+<!DOCTYPE html>
+<html lang="en-us">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Scraping rstudio::conf 2018 Abstracts | A minimal Hugo website</title>
+    <link rel="stylesheet" href="/css/style.css" />
+    <link rel="stylesheet" href="/css/fonts.css" />
+    
+  </head>
+
+  <body>
+    <nav>
+    <ul class="menu">
+      
+      <li><a href="/">Home</a></li>
+      
+      <li><a href="/about/">About</a></li>
+      
+      <li><a href="/categories/">Categories</a></li>
+      
+      <li><a href="/tags/">Tags</a></li>
+      
+      <li><a href="/speaking/">Speaking</a></li>
+      
+      <li><a href="/index.xml">Subscribe</a></li>
+      
+      <li><a href="https://twitter.com/nic_crane">Twitter</a></li>
+      
+    </ul>
+    <hr/>
+    </nav>
+
+<div class="article-meta">
+<h1><span class="title">Scraping rstudio::conf 2018 Abstracts</span></h1>
+<h2 class="author">Nic</h2>
+<h2 class="date">2018/08/22</h2>
+</div>
+
+<main>
+
+
+
+<p>RStudio Conference 2019 takes place in January 2019, and this week RStudio put out a <a href="https://blog.rstudio.com/2018/08/20/rstudio-conf-2019-contributed-talks-eposters/">call for contributed talks and e-posters</a>. Though I was eager to browse previous years’ abstracts for inspiration, I couldn’t find them all in one place, and so I decided to use one of my favourite R packages, <code>rvest</code>, to do some web scraping to grab the content.</p>
+<p>My main aim was to find all of the abstracts for the contributed talks only from 2018.</p>
+<p>As this ended up being an unusually long blog post, here’s a table containing links to the videos and abstract for contributed talks. A detailed walk through of the code used to create it can be found below.</p>
+<p>As ever, give me a shout <a href="https://twitter.com/nic_crane">on Twitter</a> if you have any comments or questions!</p>
+<table>
+<thead>
+<tr class="header">
+<th align="left">talks</th>
+<th align="left">authors</th>
+<th align="left">titles</th>
+<th align="left">links</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td align="left">The future of time series and financial analysis in the tidyverse</td>
+<td align="left">Davis Vaughan</td>
+<td align="left">The future of time series and financial analysis in the tidyverse</td>
+<td align="left"><a href=' https://www.rstudio.com/resources/videos/the-future-of-time-series-and-financial-analysis-in-the-tidyverse/ '> https://www.rstudio.com/resources/videos/the-future-of-time-series-and-financial-analysis-in-the-tidyverse/ </a></td>
+</tr>
+<tr class="even">
+<td align="left">infer: a package for tidy statistical inference</td>
+<td align="left">Andrew Bray</td>
+<td align="left">infer: a package for tidy statistical inference</td>
+<td align="left"><a href=' http://www.rstudio.com/resources/videos/infer-a-package-for-tidy-statistical-inference/ '> http://www.rstudio.com/resources/videos/infer-a-package-for-tidy-statistical-inference/ </a></td>
+</tr>
+<tr class="odd">
+<td align="left">Tidying up your network analysis with tidygraph and ggraph</td>
+<td align="left">Thomas Lin Pedersen</td>
+<td align="left">Tidying up your network analysis with tidygraph and ggraph</td>
+<td align="left"><a href=' https://www.rstudio.com/resources/videos/tidying-up-your-network-analysis-with-tidygraph-and-ggraph/ '> https://www.rstudio.com/resources/videos/tidying-up-your-network-analysis-with-tidygraph-and-ggraph/ </a></td>
+</tr>
+<tr class="even">
+<td align="left">The lesser known stars of the tidyverse</td>
+<td align="left">Emily Robinson</td>
+<td align="left">The lesser known stars of the tidyverse</td>
+<td align="left"><a href=' https://www.rstudio.com/resources/videos/the-lesser-known-stars-of-the-tidyverse/ '> https://www.rstudio.com/resources/videos/the-lesser-known-stars-of-the-tidyverse/ </a></td>
+</tr>
+<tr class="odd">
+<td align="left">Creating interactive web graphics suitable for exploratory data analysis</td>
+<td align="left">Carson Sievert</td>
+<td align="left">Creating interactive web graphics suitable for exploratory data analysis</td>
+<td align="left"><a href=' https://www.rstudio.com/resources/videos/creating-interactive-web-graphics-suitable-for-exploratory-data-analysis/ '> https://www.rstudio.com/resources/videos/creating-interactive-web-graphics-suitable-for-exploratory-data-analysis/ </a></td>
+</tr>
+<tr class="even">
+<td align="left">Open-source solutions for medical marijuana</td>
+<td align="left">Carl Ganz</td>
+<td align="left">Open-source solutions for medical marijuana</td>
+<td align="left"><a href=' https://www.rstudio.com/resources/videos/open-source-solutions-for-medical-marijuana/ '> https://www.rstudio.com/resources/videos/open-source-solutions-for-medical-marijuana/ </a></td>
+</tr>
+<tr class="odd">
+<td align="left">Adaptive feedback for learnr tutorials</td>
+<td align="left">Daniel Kaplan</td>
+<td align="left">Adaptive feedback for learnr tutorials</td>
+<td align="left"><a href=' https://www.rstudio.com/resources/videos/adaptive-feedback-for-learnr-tutorials/ '> https://www.rstudio.com/resources/videos/adaptive-feedback-for-learnr-tutorials/ </a></td>
+</tr>
+<tr class="even">
+<td align="left">tidycf: Turning analysis on its head by turning cashflows on their sides</td>
+<td align="left">Emily Riederer</td>
+<td align="left">tidycf: Turning analysis on its head by turning cashflows on their sides</td>
+<td align="left"><a href=' http://www.rstudio.com/resources/videos/tidycf-turning-analysis-on-its-head-by-turning-cashflows-on-their-sides/ '> http://www.rstudio.com/resources/videos/tidycf-turning-analysis-on-its-head-by-turning-cashflows-on-their-sides/ </a></td>
+</tr>
+<tr class="odd">
+<td align="left">Branding and automating your work with R Markdown</td>
+<td align="left">Daniel Hadley</td>
+<td align="left">Branding and automating your work with R Markdown</td>
+<td align="left"><a href=' https://www.rstudio.com/resources/videos/branding-and-automating-your-work-with-r-markdown/ '> https://www.rstudio.com/resources/videos/branding-and-automating-your-work-with-r-markdown/ </a></td>
+</tr>
+<tr class="even">
+<td align="left">Understanding PCA using Shiny and Stack Overflow data</td>
+<td align="left">Julia Silge</td>
+<td align="left">Understanding PCA using Shiny and Stack Overflow data</td>
+<td align="left"><a href=' https://www.rstudio.com/resources/videos/understanding-pca-using-shiny-and-stack-overflow-data/ '> https://www.rstudio.com/resources/videos/understanding-pca-using-shiny-and-stack-overflow-data/ </a></td>
+</tr>
+<tr class="odd">
+<td align="left">Connecting to open source databases</td>
+<td align="left">Kirill Muller</td>
+<td align="left">Connecting to open source databases</td>
+<td align="left"><a href=' https://www.rstudio.com/resources/videos/connecting-to-open-source-databases/ '> https://www.rstudio.com/resources/videos/connecting-to-open-source-databases/ </a></td>
+</tr>
+<tr class="even">
+<td align="left">An assignment operator to unpack vectors and lists</td>
+<td align="left">Nathan Teetor</td>
+<td align="left">An assignment operator to unpack vectors and lists</td>
+<td align="left"><a href=' https://www.rstudio.com/resources/videos/an-assignment-operator-to-unpack-vectors-and-lists/ '> https://www.rstudio.com/resources/videos/an-assignment-operator-to-unpack-vectors-and-lists/ </a></td>
+</tr>
+<tr class="odd">
+<td align="left">Developing and deploying large scale shiny applications</td>
+<td align="left">Herman Sontrop</td>
+<td align="left">Developing and deploying large scale shiny applications</td>
+<td align="left"><a href=' http://www.rstudio.com/resources/videos/developing-and-deploying-large-scale-shiny-applications/ '> http://www.rstudio.com/resources/videos/developing-and-deploying-large-scale-shiny-applications/ </a></td>
+</tr>
+<tr class="even">
+<td align="left">Five packages in five weeks - from boredom to contribution via blogging</td>
+<td align="left">Giora Simchoni</td>
+<td align="left">Five packages in five weeks  from boredom to contribution via blogging</td>
+<td align="left"><a href=' https://www.rstudio.com/resources/videos/five-packages-in-five-weeks-from-boredom-to-contribution-via-blogging/ '> https://www.rstudio.com/resources/videos/five-packages-in-five-weeks-from-boredom-to-contribution-via-blogging/ </a></td>
+</tr>
+<tr class="odd">
+<td align="left">A SAS-to-R success story</td>
+<td align="left">Elizabeth J. Atkinson</td>
+<td align="left">A SAS-to-R success story</td>
+<td align="left"><a href=' https://www.rstudio.com/resources/videos/a-sas-to-r-success-story/ '> https://www.rstudio.com/resources/videos/a-sas-to-r-success-story/ </a></td>
+</tr>
+<tr class="even">
+<td align="left">Reinforcement learning in Minecraft with CNTK-R</td>
+<td align="left">Ali-Kazim Zaidi</td>
+<td align="left">Reinforcement learning in Minecraft with CNTK-R</td>
+<td align="left"><a href=' https://www.rstudio.com/resources/videos/reinforcement-learning-in-minecraft-with-cntk-r/ '> https://www.rstudio.com/resources/videos/reinforcement-learning-in-minecraft-with-cntk-r/ </a></td>
+</tr>
+<tr class="odd">
+<td align="left">Kaggle in the classroom: using R and GitHub to run predictive modeling competitions</td>
+<td align="left">Colin Rundel</td>
+<td align="left">Kaggle in the classroom: using R and GitHub to run predictive modeling competitions</td>
+<td align="left"><a href=' https://www.rstudio.com/resources/videos/kaggle-in-the-classroom-using-r-and-github-to-run-predictive-modeling-competitions/ '> https://www.rstudio.com/resources/videos/kaggle-in-the-classroom-using-r-and-github-to-run-predictive-modeling-competitions/ </a></td>
+</tr>
+<tr class="even">
+<td align="left">Imagine Boston 2030: Using R-Shiny to keep ourselves accountable and empower the public</td>
+<td align="left">Kayla Patel</td>
+<td align="left">Imagine Boston 2030: Using R-Shiny to keep ourselves accountable and empower the public</td>
+<td align="left"><a href=' https://www.rstudio.com/resources/videos/imagine-boston-2030-using-r-shiny-to-keep-ourselves-accountable-and-empower-the-public/ '> https://www.rstudio.com/resources/videos/imagine-boston-2030-using-r-shiny-to-keep-ourselves-accountable-and-empower-the-public/ </a></td>
+</tr>
+<tr class="odd">
+<td align="left">Something old, something new, something borrowed, something blue: Ways to teach data science (and learn it too!)</td>
+<td align="left">Chester Ismay</td>
+<td align="left">Something old, something new, something borrowed, something blue: Ways to teach data science (and learn it too!)</td>
+<td align="left"><a href=' https://www.rstudio.com/resources/videos/something-old-something-new-something-borrowed-something-blue-ways-to-teach-data-science-and-learn-it-too/ '> https://www.rstudio.com/resources/videos/something-old-something-new-something-borrowed-something-blue-ways-to-teach-data-science-and-learn-it-too/ </a></td>
+</tr>
+<tr class="even">
+<td align="left">Training an army of new data scientists</td>
+<td align="left">Marco Blume</td>
+<td align="left">Training an army of new data scientists</td>
+<td align="left"><a href=' https://www.rstudio.com/resources/videos/training-an-army-of-new-data-scientists/ '> https://www.rstudio.com/resources/videos/training-an-army-of-new-data-scientists/ </a></td>
+</tr>
+</tbody>
+</table>
+<p>Here’s a walkthrough of the code, and the full list of abstracts.</p>
+<div id="getting-started" class="section level1">
+<h1>Getting Started</h1>
+<p>I found last year’s conference schedule [here] (<a href="https://beta.rstudioconnect.com/content/3105/" class="uri">https://beta.rstudioconnect.com/content/3105/</a>), which seemed as good a place as any to start. First, I loaded the <code>rvest</code> package and used <code>read_html()</code> (from <code>xml2</code> which is automatically loaded when you load <code>rvest</code>) to pull the html from the page.</p>
+<pre class="r"><code>library(rvest)
+my_html &lt;- read_html(&quot;https://beta.rstudioconnect.com/content/3105/&quot;)
+my_html</code></pre>
+<pre><code>## {xml_document}
+## &lt;html xmlns=&quot;http://www.w3.org/1999/xhtml&quot;&gt;
+## [1] &lt;head&gt;\n&lt;meta charset=&quot;utf-8&quot;&gt;\n&lt;meta http-equiv=&quot;Content-Type&quot; cont ...
+## [2] &lt;body&gt;\n\n&lt;style type=&quot;text/css&quot;&gt;\n.main-container {\n  max-width: 9 ...</code></pre>
+<p>The <code>my_html</code> object is an xml document, and to do anything useful with it, I need to work out which components I need. I could do this manually, but it’s much simpler to use <a href="https://selectorgadget.com/">Selector Gadget</a> to help me.</p>
+<div id="selector-gadget" class="section level2">
+<h2>Selector Gadget</h2>
+<p>Selector Gadget is a tool which takes a lot of effort out of webscraping. For an in-depth description, check out <a href="https://cran.r-project.org/web/packages/rvest/vignettes/selectorgadget.html">this rvest vignette</a>. In short, once Selector Gadget is loaded, I click on any unselected components to pick which ones I need (in green), look at what else is highlighted (in yellow) and then click on these to deselect them (now in red) and carry on selecting and/or deselecting components until only the ones I want are in green or yellow.</p>
+<p><img src="/images/selector_gadget.png" width="50%" /></p>
+<p>Then, I copy the text out of the box, in the case, “.talk-title”. This is the CSS selector needed to grab those components, and I supply this as the <code>css</code> argument to <code>html_nodes()</code>. As I just want the inner text, I pipe the result of this into <code>html_text()</code>.</p>
+<pre class="r"><code>talks &lt;- my_html %&gt;%
+  html_nodes(&quot;.talk-title&quot;) %&gt;%
+  html_text()
+
+head(talks)</code></pre>
+<pre><code>## [1] &quot;\nTo the Tidyverse and Beyond: Challenges for the Future in Data Science\n\n&quot;
+## [2] &quot;\nTo the Tidyverse and Beyond: Challenges for the Future in Data Science\n\n&quot;
+## [3] &quot;\nTidy spatial data analysis\n\n&quot;                                            
+## [4] &quot;Scaling Shiny apps with async programming&quot;                                   
+## [5] &quot;\nRStudio 1.1 new features\n\n&quot;                                              
+## [6] &quot;\nThe future of time series and financial analysis in the tidyverse\n\n&quot;</code></pre>
+<p>I now repear this process to get the presenter names. Handily, the CSS selector for these is “.presenter”!</p>
+<pre class="r"><code>authors &lt;- my_html %&gt;%
+  html_nodes(&quot;.presenter&quot;) %&gt;%
+  html_text()
+
+head(authors)</code></pre>
+<pre><code>## [1] &quot;Dianne Cook&quot;   &quot;Dianne Cook&quot;   &quot;Edzer Pebesma&quot; &quot;Joe Cheng&quot;    
+## [5] &quot;Kevin Ushey&quot;   &quot;Davis Vaughan&quot;</code></pre>
+<p>Now I’ve got my talks and authors, I’m next going to combine them in a <code>data_frame</code>. Once this is done, I’m also going to tidy them up by removing all the newline characters (“\n”) from the titles.</p>
+<pre class="r"><code>library(dplyr)
+library(stringr) 
+schedule &lt;- data_frame(talks, authors) %&gt;%
+  mutate(talks = str_remove_all(talks, &quot;\n&quot;)) %&gt;%
+  distinct()
+
+head(schedule)</code></pre>
+<pre><code>## # A tibble: 6 x 2
+##   talks                                                        authors    
+##   &lt;chr&gt;                                                        &lt;chr&gt;      
+## 1 To the Tidyverse and Beyond: Challenges for the Future in D~ Dianne Cook
+## 2 Tidy spatial data analysis                                   Edzer Pebe~
+## 3 Scaling Shiny apps with async programming                    Joe Cheng  
+## 4 RStudio 1.1 new features                                     Kevin Ushey
+## 5 The future of time series and financial analysis in the tid~ Davis Vaug~
+## 6 Developing robust shiny apps with regression testing         Winston Ch~</code></pre>
+<p>Great! So now what? Well, the point of this analysis is to look at the contributed talks, rather than those from invited speakers or RStudio staff, so in the next part of this post, I’m going to be using lots of <code>dplyr</code> joins to remove these!</p>
+</div>
+</div>
+<div id="finding-only-contributed-talks" class="section level1">
+<h1>Finding Only Contributed Talks</h1>
+<p>Let’s start of with identifying talks from invited speakers and RStudio staff.</p>
+<p>I found <a href="https://blog.rstudio.com/2017/07/12/join-us-at-rstudioconf-2018/">this post on the RStudio blog</a> which lists the invited speakers. I repeat the process from earlier using <code>rvest</code> and <code>xml2</code> functions to scrape the list of invited speakers.</p>
+<pre class="r"><code>invited_speakers &lt;- read_html(&quot;https://blog.rstudio.com/2017/07/12/join-us-at-rstudioconf-2018/&quot;) %&gt;%
+  html_nodes(&quot;table:nth-child(6) td:nth-child(1)&quot;) %&gt;%
+  html_text()
+
+invited &lt;- data_frame(authors = invited_speakers, Status = &quot;Invited&quot;)
+head(invited)</code></pre>
+<pre><code>## # A tibble: 6 x 2
+##   authors         Status 
+##   &lt;chr&gt;           &lt;chr&gt;  
+## 1 Mara Averick    Invited
+## 2 Nick Carchedi   Invited
+## 3 Tanya Cashorali Invited
+## 4 Eric Colson     Invited
+## 5 Sandra Griffith Invited
+## 6 Aaron Horowitz  Invited</code></pre>
+<p>Now I need to combine this back with my original table, <code>schedule</code>, so I use <code>left_join()</code> from <code>dplyr</code> to help me.</p>
+<pre class="r"><code>author_tbl &lt;- left_join(schedule, invited, by = &quot;authors&quot;) 
+head(author_tbl)</code></pre>
+<pre><code>## # A tibble: 6 x 3
+##   talks                                                authors      Status
+##   &lt;chr&gt;                                                &lt;chr&gt;        &lt;chr&gt; 
+## 1 To the Tidyverse and Beyond: Challenges for the Fut~ Dianne Cook  &lt;NA&gt;  
+## 2 Tidy spatial data analysis                           Edzer Pebes~ Invit~
+## 3 Scaling Shiny apps with async programming            Joe Cheng    &lt;NA&gt;  
+## 4 RStudio 1.1 new features                             Kevin Ushey  &lt;NA&gt;  
+## 5 The future of time series and financial analysis in~ Davis Vaugh~ &lt;NA&gt;  
+## 6 Developing robust shiny apps with regression testing Winston Cha~ &lt;NA&gt;</code></pre>
+<p>Something you may have noticed is that we have some duplicated rows in the table, and so I use <code>distinct()</code> to remove these.</p>
+<pre class="r"><code>author_tbl &lt;- distinct(author_tbl)
+head(author_tbl)</code></pre>
+<pre><code>## # A tibble: 6 x 3
+##   talks                                                authors      Status
+##   &lt;chr&gt;                                                &lt;chr&gt;        &lt;chr&gt; 
+## 1 To the Tidyverse and Beyond: Challenges for the Fut~ Dianne Cook  &lt;NA&gt;  
+## 2 Tidy spatial data analysis                           Edzer Pebes~ Invit~
+## 3 Scaling Shiny apps with async programming            Joe Cheng    &lt;NA&gt;  
+## 4 RStudio 1.1 new features                             Kevin Ushey  &lt;NA&gt;  
+## 5 The future of time series and financial analysis in~ Davis Vaugh~ &lt;NA&gt;  
+## 6 Developing robust shiny apps with regression testing Winston Cha~ &lt;NA&gt;</code></pre>
+<p>Great! Now I’ve remove the duplications, let’s take a look at how many rows have no value in the <code>Status</code> column. I can use <code>sum()</code> and <code>is.na()</code> to do this</p>
+<pre class="r"><code>sum(is.na(author_tbl$Status))</code></pre>
+<pre><code>## [1] 51</code></pre>
+<p>I still have 51 rows with no value in the <code>Status</code> column, but I’m only expecting around 20. I need to remove talks from RStudio staff to get to my
+contributed talks.</p>
+<p>I did the next bit manually, by searching for any of the individuals I hadn’t already heard of. It’s likely that there’s a quicker way to do this, using
+the web scraping techniques we’ve already looked at.</p>
+<p>In no particular order…</p>
+<pre class="r"><code>rstudio_staff &lt;- c(&quot;Joe Cheng&quot;, &quot;Winston Chang&quot;, &quot;Alan Dipert&quot;, &quot;Sean Lopp&quot;,
+                   &quot;Kevin Ushey&quot;, &quot;Jonathan McPherson&quot;, &quot;Mel Gregory&quot;,
+                   &quot;Yihui Xie&quot;, &quot;Max Kuhn&quot;, &quot;Jenny Bryan&quot;, &quot;Jim Hester&quot;,
+                   &quot;Joseph Rickert&quot;, &quot;Jeff Allen&quot;, &quot;Aron Atkins&quot;, 
+                   &quot;Barbara Borges Ribeiro&quot;, &quot;Nathan Stephens&quot;, 
+                   &quot;Mine Cetinkaya-Rundel&quot;, &quot;Aaron Berg&quot;, &quot;Hadley Wickham&quot;,
+                   &quot;Edgar Ruiz&quot;, &quot;Amanda Gadrow&quot;, &quot;JJ Allaire&quot;, &quot;Kevin Kuo&quot;,
+                   &quot;Javier Luraschi&quot;, &quot;Michael Quinn&quot;, &quot;Tareef Kawaf&quot;)
+
+rstudio &lt;- data_frame(authors = rstudio_staff, Status = &quot;RStudio&quot;)
+head(rstudio)</code></pre>
+<pre><code>## # A tibble: 6 x 2
+##   authors            Status 
+##   &lt;chr&gt;              &lt;chr&gt;  
+## 1 Joe Cheng          RStudio
+## 2 Winston Chang      RStudio
+## 3 Alan Dipert        RStudio
+## 4 Sean Lopp          RStudio
+## 5 Kevin Ushey        RStudio
+## 6 Jonathan McPherson RStudio</code></pre>
+<p>OK, so this is where it gets a little complicated, so please bear with me.</p>
+<p>What I need to do next is combine my list of RStudio people with the <code>schedule</code> data_frame. However, I can’t just do a <code>left_join</code>:</p>
+<pre class="r"><code>left_join(author_tbl, rstudio, by = &quot;authors&quot;) %&gt;%
+  head()</code></pre>
+<pre><code>## # A tibble: 6 x 4
+##   talks                                       authors    Status.x Status.y
+##   &lt;chr&gt;                                       &lt;chr&gt;      &lt;chr&gt;    &lt;chr&gt;   
+## 1 To the Tidyverse and Beyond: Challenges fo~ Dianne Co~ &lt;NA&gt;     &lt;NA&gt;    
+## 2 Tidy spatial data analysis                  Edzer Peb~ Invited  &lt;NA&gt;    
+## 3 Scaling Shiny apps with async programming   Joe Cheng  &lt;NA&gt;     RStudio 
+## 4 RStudio 1.1 new features                    Kevin Ush~ &lt;NA&gt;     RStudio 
+## 5 The future of time series and financial an~ Davis Vau~ &lt;NA&gt;     &lt;NA&gt;    
+## 6 Developing robust shiny apps with regressi~ Winston C~ &lt;NA&gt;     RStudio</code></pre>
+<p>Oh no! The left join has created 2 new columns, <code>Status.x</code> and <code>Status.y</code>, representing the value of <code>Status</code> in the <code>x</code> and <code>y</code>.</p>
+<p>This is because all of the RStudio staff already exist in <code>author_tbl</code>, with a <code>Status</code> value of <code>NA</code>.</p>
+<p>Sad times! However, a quick trip to Stack Overflow tells me what I need to do:
+* Note that more efficient solutions may exist! *</p>
+<ol style="list-style-type: decimal">
+<li><p>Extract all of the speakers who are not RStudio staff from <code>author_tbl</code> using <code>anti_join()</code>.</p></li>
+<li><p>Join my <code>rstudio</code> table with my original <code>schedule</code> table which does not have a <code>Status</code> column, using <code>left_join()</code>. As I removed duplicates after this, I’ll have to do it again, using <code>distinct()</code>.</p></li>
+<li><p>Combine the outputs from 1 and 2, using <code>bind_rows()</code>. It looks kinda ugly below as I wanted to do it all in a single pipe.</p></li>
+</ol>
+<p>I’ve used <code>tail()</code> to have a peek at the last 6 rows of the data_frame as I expect the rows for all the RStudio staff to be at the bottom of the table.</p>
+<pre class="r"><code>author_tbl &lt;- anti_join(author_tbl, rstudio, by = &quot;authors&quot;) %&gt;%
+  bind_rows(
+    left_join(rstudio, schedule, by = &quot;authors&quot;) %&gt;%
+      distinct()
+  ) 
+
+tail(author_tbl)</code></pre>
+<pre><code>## # A tibble: 6 x 3
+##   talks                                               authors       Status
+##   &lt;chr&gt;                                               &lt;chr&gt;         &lt;chr&gt; 
+## 1 Debugging techniques in RStudio                     Amanda Gadrow RStud~
+## 2 Machine Learning with R and TensorFlow              JJ Allaire    RStud~
+## 3 Building Spark ML pipelines with sparklyr           Kevin Kuo     RStud~
+## 4 Deploying TensorFlow models with tfdeploy           Javier Luras~ RStud~
+## 5 Large scale machine learning using TensorFlow, Big~ Michael Quinn RStud~
+## 6 R for Presidents                                    Tareef Kawaf  RStud~</code></pre>
+<p>Hooray!</p>
+<p>I skim through the data and realise I probably need to add a <code>Status</code> value for the keynote speakers. JJ Allaire has already been included in <code>RStudio</code>, so it’s just Dianne Cook that I need to add. I use the same technique as before:</p>
+<pre class="r"><code>keynotes &lt;- data_frame(authors = &quot;Dianne Cook&quot;,
+                       Status = &quot;keynote&quot;)
+
+author_tbl &lt;- anti_join(author_tbl, keynotes, by = &quot;authors&quot;) %&gt;%
+  bind_rows(
+    inner_join(keynotes, schedule, by = &quot;authors&quot;) %&gt;%
+      distinct()
+  )</code></pre>
+<p>I have a quick look over the data, and remove the discussions and closing remarks from the data using <code>filter()</code>.</p>
+<pre class="r"><code>author_tbl &lt;- author_tbl %&gt;%
+filter(!talks %in% c(&quot;R in industry discussion&quot;, &quot;Tidyverse discussion&quot;, &quot;Closing remarks&quot;) )</code></pre>
+<p>Finally, I <code>filter()</code> again to only show the rows for which the <code>Status</code> column contains an <code>NA</code>, and drop the now-redundant <code>Status</code> column.</p>
+<pre class="r"><code>contributed_talks &lt;- filter(author_tbl, is.na(Status)) %&gt;%
+  select(-Status)
+
+contributed_talks</code></pre>
+<pre><code>## # A tibble: 20 x 2
+##    talks                                                 authors          
+##    &lt;chr&gt;                                                 &lt;chr&gt;            
+##  1 The future of time series and financial analysis in ~ Davis Vaughan    
+##  2 infer: a package for tidy statistical inference       Andrew Bray      
+##  3 Tidying up your network analysis with tidygraph and ~ Thomas Lin Peder~
+##  4 The lesser known stars of the tidyverse               Emily Robinson   
+##  5 Creating interactive web graphics suitable for explo~ Carson Sievert   
+##  6 Open-source solutions for medical marijuana           Carl Ganz        
+##  7 Adaptive feedback for learnr tutorials                Daniel Kaplan    
+##  8 tidycf: Turning analysis on its head by turning cash~ Emily Riederer   
+##  9 Branding and automating your work with R Markdown     Daniel Hadley    
+## 10 Understanding PCA using Shiny and Stack Overflow data Julia Silge      
+## 11 Connecting to open source databases                   Kirill Müller    
+## 12 An assignment operator to unpack vectors and lists    Nathan Teetor    
+## 13 Developing and deploying large scale shiny applicati~ Herman Sontrop   
+## 14 Five packages in five weeks - from boredom to contri~ Giora Simchoni   
+## 15 A SAS-to-R success story                              Elizabeth J. Atk~
+## 16 Reinforcement learning in Minecraft with CNTK-R       Ali Zaidi        
+## 17 Kaggle in the classroom: using R and GitHub to run p~ Colin Rundel     
+## 18 Imagine Boston 2030: Using R-Shiny to keep ourselves~ Kayla Patel      
+## 19 Something old, something new, something borrowed, so~ Chester Ismay    
+## 20 Training an army of new data scientists               Marco Blume</code></pre>
+<p>I’m now left with around 20 talks, which is the number I expected. Hooray!</p>
+<p>The final step is to get hold of the abstracts.</p>
+</div>
+<div id="getting-the-urls-of-the-abstracts" class="section level1">
+<h1>Getting the URLs of the Abstracts</h1>
+<p>The only place I could find the abstracts for the talks was on the individual videos, so there’s a final bit of webscraping to do.</p>
+<p>Like before, I used <code>read_html()</code> to pull the entire page, and then <code>html_nodes()</code> and <code>html_text()</code> to pull out the text.</p>
+<pre class="r"><code>video_links &lt;- read_html(&quot;https://www.rstudio.com/resources/videos/rstudioconf-2018-talks/&quot;)
+
+titles &lt;- video_links %&gt;%
+  html_nodes(&quot;#post-15671 a&quot;) %&gt;%
+  html_text()
+
+# Get rid of any blank values
+titles &lt;- titles[titles!=&quot;&quot;]
+
+head(titles)</code></pre>
+<pre><code>## [1] &quot;Greg Swinehart&quot;                                                                         
+## [2] &quot;The unreasonable effectiveness of empathy&quot;                                              
+## [3] &quot;Teach the Tidyverse to beginners&quot;                                                       
+## [4] &quot;How I Learned to Stop Worrying and Love the Firewall&quot;                                   
+## [5] &quot;Imagine Boston 2030: Using R-Shiny to keep ourselves accountable and empower the public&quot;
+## [6] &quot;Phrasing: communicating data science through tweets, gifs, and classic misdirection&quot;</code></pre>
+<p>I also need the links to the pages where the talks are. To pull these out, instead of <code>html_text()</code>, I used <code>html_attr()</code> which extracts everything with a specified attribute, in this case, “href” for the link locations.</p>
+<p>As there is duplication I only keep every alternating value.</p>
+<pre class="r"><code>links &lt;- video_links %&gt;%
+  html_nodes(&quot;#post-15671 a&quot;) %&gt;%
+  html_attr(&quot;href&quot;)
+
+links &lt;- links[seq(from = 1, to = length(links), by = 2)]  
+
+head(links)</code></pre>
+<pre><code>## [1] &quot;https://www.rstudio.com/rviews/author/greg/&quot;                                                                                     
+## [2] &quot;https://www.rstudio.com/resources/videos/the-unreasonable-effectiveness-of-empathy/&quot;                                             
+## [3] &quot;https://www.rstudio.com/resources/videos/teach-the-tidyverse-to-beginners/&quot;                                                      
+## [4] &quot;https://www.rstudio.com/resources/videos/how-i-learned-to-stop-worrying-and-love-the-firewall/&quot;                                  
+## [5] &quot;https://www.rstudio.com/resources/videos/imagine-boston-2030-using-r-shiny-to-keep-ourselves-accountable-and-empower-the-public/&quot;
+## [6] &quot;https://www.rstudio.com/resources/videos/phrasing-communicating-data-science-through-tweets-gifs-and-classic-misdirection/&quot;</code></pre>
+<p>I then grab the presenter names…</p>
+<pre class="r"><code>names &lt;- video_links %&gt;%
+  html_nodes(&quot;em&quot;) %&gt;%
+  html_text()
+
+head(names)</code></pre>
+<pre><code>## [1] &quot;JD Long&quot;         &quot;David Robinson&quot;  &quot;Ian Lyttle&quot;      &quot;Kayla Patel&quot;    
+## [5] &quot;Mara Averick&quot;    &quot;Tanya Cashorali&quot;</code></pre>
+<p>Great! Now I’m ready to combine my titles, links, and names. If we look at the first few elements of <code>names</code>, <code>titles</code> and <code>links</code>, we can see that there is an erroneous extra value in <code>titles</code> and <code>links</code> but not <code>names</code> - I must have accidentally picked this up with my selectors from earlier.</p>
+<pre class="r"><code>head(names, 3)</code></pre>
+<pre><code>## [1] &quot;JD Long&quot;        &quot;David Robinson&quot; &quot;Ian Lyttle&quot;</code></pre>
+<pre class="r"><code>head(titles, 3)</code></pre>
+<pre><code>## [1] &quot;Greg Swinehart&quot;                           
+## [2] &quot;The unreasonable effectiveness of empathy&quot;
+## [3] &quot;Teach the Tidyverse to beginners&quot;</code></pre>
+<pre class="r"><code>head(links, 3)</code></pre>
+<pre><code>## [1] &quot;https://www.rstudio.com/rviews/author/greg/&quot;                                        
+## [2] &quot;https://www.rstudio.com/resources/videos/the-unreasonable-effectiveness-of-empathy/&quot;
+## [3] &quot;https://www.rstudio.com/resources/videos/teach-the-tidyverse-to-beginners/&quot;</code></pre>
+<p>To get rid of this, I combine <code>names</code> and <code>titles</code> in a data_frame and then <code>slice()</code> this extra row off before adding the <code>name</code> column.</p>
+<pre class="r"><code>abstract_links &lt;- data_frame(titles, links) %&gt;%
+  slice(-1) %&gt;%
+  mutate(name = names)
+
+head(abstract_links)</code></pre>
+<pre><code>## # A tibble: 6 x 3
+##   titles                          links                           name    
+##   &lt;chr&gt;                           &lt;chr&gt;                           &lt;chr&gt;   
+## 1 The unreasonable effectiveness~ https://www.rstudio.com/resour~ JD Long 
+## 2 Teach the Tidyverse to beginne~ https://www.rstudio.com/resour~ David R~
+## 3 How I Learned to Stop Worrying~ https://www.rstudio.com/resour~ Ian Lyt~
+## 4 Imagine Boston 2030: Using R-S~ https://www.rstudio.com/resour~ Kayla P~
+## 5 Phrasing: communicating data s~ https://www.rstudio.com/resour~ Mara Av~
+## 6 Rapid prototyping data product~ https://www.rstudio.com/resour~ Tanya C~</code></pre>
+<p>Awesome, I have my table of URLs, talks, and authors. Let’s join that with my table of contributed talks.</p>
+<pre class="r"><code>left_join(contributed_talks, abstract_links, by = c(&quot;authors&quot; = &quot;name&quot;))</code></pre>
+<pre><code>## # A tibble: 20 x 4
+##    talks                authors    titles              links              
+##    &lt;chr&gt;                &lt;chr&gt;      &lt;chr&gt;               &lt;chr&gt;              
+##  1 The future of time ~ Davis Vau~ The future of time~ https://www.rstudi~
+##  2 infer: a package fo~ Andrew Br~ infer: a package f~ http://www.rstudio~
+##  3 Tidying up your net~ Thomas Li~ Tidying up your ne~ https://www.rstudi~
+##  4 The lesser known st~ Emily Rob~ The lesser known s~ https://www.rstudi~
+##  5 Creating interactiv~ Carson Si~ Creating interacti~ https://www.rstudi~
+##  6 Open-source solutio~ Carl Ganz  Open-source soluti~ https://www.rstudi~
+##  7 Adaptive feedback f~ Daniel Ka~ Adaptive feedback ~ https://www.rstudi~
+##  8 tidycf: Turning ana~ Emily Rie~ tidycf: Turning an~ http://www.rstudio~
+##  9 Branding and automa~ Daniel Ha~ Branding and autom~ https://www.rstudi~
+## 10 Understanding PCA u~ Julia Sil~ Understanding PCA ~ https://www.rstudi~
+## 11 Connecting to open ~ Kirill Mü~ &lt;NA&gt;                &lt;NA&gt;               
+## 12 An assignment opera~ Nathan Te~ An assignment oper~ https://www.rstudi~
+## 13 Developing and depl~ Herman So~ Developing and dep~ http://www.rstudio~
+## 14 Five packages in fi~ Giora Sim~ Five packages in f~ https://www.rstudi~
+## 15 A SAS-to-R success ~ Elizabeth~ A SAS-to-R success~ https://www.rstudi~
+## 16 Reinforcement learn~ Ali Zaidi  &lt;NA&gt;                &lt;NA&gt;               
+## 17 Kaggle in the class~ Colin Run~ Kaggle in the clas~ https://www.rstudi~
+## 18 Imagine Boston 2030~ Kayla Pat~ Imagine Boston 203~ https://www.rstudi~
+## 19 Something old, some~ Chester I~ Something old, som~ https://www.rstudi~
+## 20 Training an army of~ Marco Blu~ Training an army o~ https://www.rstudi~</code></pre>
+<p>There are a couple of talks missing URLS and further inspection reveals that this is due to a missing middle name and a missing umlaut, so I make a couple of manual adjustments using <code>case_when()</code> and redo my join.</p>
+<pre class="r"><code>talks_and_urls &lt;- contributed_talks %&gt;%
+mutate(
+  authors = case_when(
+    authors == &quot;Ali Zaidi&quot; ~ &quot;Ali-Kazim Zaidi&quot;,
+    authors == &quot;Kirill Müller&quot; ~ &quot;Kirill Muller&quot;,
+    TRUE ~ authors
+  )
+) %&gt;%
+  left_join(abstract_links, by = c(&quot;authors&quot; = &quot;name&quot;))
+
+talks_and_urls</code></pre>
+<pre><code>## # A tibble: 20 x 4
+##    talks                authors    titles              links              
+##    &lt;chr&gt;                &lt;chr&gt;      &lt;chr&gt;               &lt;chr&gt;              
+##  1 The future of time ~ Davis Vau~ The future of time~ https://www.rstudi~
+##  2 infer: a package fo~ Andrew Br~ infer: a package f~ http://www.rstudio~
+##  3 Tidying up your net~ Thomas Li~ Tidying up your ne~ https://www.rstudi~
+##  4 The lesser known st~ Emily Rob~ The lesser known s~ https://www.rstudi~
+##  5 Creating interactiv~ Carson Si~ Creating interacti~ https://www.rstudi~
+##  6 Open-source solutio~ Carl Ganz  Open-source soluti~ https://www.rstudi~
+##  7 Adaptive feedback f~ Daniel Ka~ Adaptive feedback ~ https://www.rstudi~
+##  8 tidycf: Turning ana~ Emily Rie~ tidycf: Turning an~ http://www.rstudio~
+##  9 Branding and automa~ Daniel Ha~ Branding and autom~ https://www.rstudi~
+## 10 Understanding PCA u~ Julia Sil~ Understanding PCA ~ https://www.rstudi~
+## 11 Connecting to open ~ Kirill Mu~ Connecting to open~ https://www.rstudi~
+## 12 An assignment opera~ Nathan Te~ An assignment oper~ https://www.rstudi~
+## 13 Developing and depl~ Herman So~ Developing and dep~ http://www.rstudio~
+## 14 Five packages in fi~ Giora Sim~ Five packages in f~ https://www.rstudi~
+## 15 A SAS-to-R success ~ Elizabeth~ A SAS-to-R success~ https://www.rstudi~
+## 16 Reinforcement learn~ Ali-Kazim~ Reinforcement lear~ https://www.rstudi~
+## 17 Kaggle in the class~ Colin Run~ Kaggle in the clas~ https://www.rstudi~
+## 18 Imagine Boston 2030~ Kayla Pat~ Imagine Boston 203~ https://www.rstudi~
+## 19 Something old, some~ Chester I~ Something old, som~ https://www.rstudi~
+## 20 Training an army of~ Marco Blu~ Training an army o~ https://www.rstudi~</code></pre>
+<p>And it’s worked! But what I want is the actual abstract text, which is what I’ll be doing in the next section.</p>
+</div>
+<div id="scraping-the-abstracts" class="section level1">
+<h1>Scraping the Abstracts</h1>
+<p>In order to scrape the abstracts from the table of talks and URLs, I need to:</p>
+<ol style="list-style-type: decimal">
+<li>Read each URL</li>
+<li>Use the relevant selector to pull out just the abstract text nodes</li>
+<li>Use <code>html_text()</code> to pull just the text out of each node.</li>
+</ol>
+<p>I’ve done this a few times already, so it should be simple case of chucking this all into an <code>lapply()</code>, right? Well, not quite…</p>
+<pre class="r"><code>abstracts &lt;- lapply(talks_and_urls$links, function(i){
+  read_html(i) %&gt;%
+  html_nodes(&quot;.2_3 p&quot;) %&gt;%
+  html_text()
+})</code></pre>
+<pre><code>## Error in parse_simple_selector(stream): Expected selector, got &lt;NUMBER &#39;.2&#39; at 1&gt;</code></pre>
+<p>I quickly get an error. I’m not sure of the source of this, but a remedy here is to use XPath instead of CSS (easily acquired from Selector Gadget) to specify
+the components I want:</p>
+<pre class="r"><code>abstracts &lt;- lapply(talks_and_urls$links, function(i){
+  read_html(i) %&gt;%
+  html_nodes(xpath=&#39;//*[contains(concat( &quot; &quot;, @class, &quot; &quot; ), concat( &quot; &quot;, &quot;2_3&quot;, &quot; &quot; ))]//p&#39;) %&gt;%
+  html_text()
+})
+
+tail(abstracts, 3)</code></pre>
+<pre><code>## [[1]]
+## [1] &quot;The Imagine Boston 2030 plan was released in July 2017 as the City of Boston’s first long-term plan in 50 years. After hearing from more than 15,000 residents, five major goals were outlined in the plan – (1) encourage affordability, reduce displacement, and improve quality of life, (2) increase access to opportunity, (3) drive inclusive economic growth, (4) promote a healthy environment and prepare for climate change, and (5) invest in open space, arts &amp; culture, transportation, and infrastructure – each of which are tracked through a series of different metrics. Using R-Shiny, we developed a public-facing dashboard (https://analytics.boston.gov/app/imagine-boston) that interactively displays data associated with each of the goals and metrics allowing users to quickly gain an understanding of how close we are to achieving the goals laid out in the plan. By publicly displaying the data, the dashboard helps the City keep itself accountable and empowers the public to make sure we’re actively working towards creating the Boston they want to see.&quot;
+## [2] &quot;The code behind the dashboard has gone through a series of revisions and in the process has gone from being a few large files to modularized and reusable. In addition to showcasing the dashboard, this talk will tell the story of why the dashboard was built using R-Shiny and how we took our code from something that “just works” to developing reusable components that are being implemented in other dashboards the City is creating.&quot;                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                   
+## 
+## [[2]]
+## [1] &quot;How can we effectively but gently launch new students into the world of data science? In this talk, I will discuss the ways that Albert Y. Kim and I have gone about approaching this by creating an open source, fully reproducible textbook using the bookdown package at ModernDive.com. The textbook uses the paradigm of books as versions instead of editions featuring an introductory “getting started” chapter with links to many videos and interactive content available on DataCamp.com to support new R users. I’ll also discuss how we used #chalktalk (instead of slides) to slow down our instruction to help beginners grasp tidyverse and coding concepts. I will take a glimpse into the new infer package for statistical inference, which performs statistical inference using an expressive syntax that follows tidy design principles. Lastly, I’ll demonstrate vignettes and R Markdown reports that our students created to further support the emerging tidyverse community ecosystem and I’ll provide future goals for our ModernDive.com project.&quot;
+## 
+## [[3]]
+## [1] &quot;Sports Betting markets are one of the purest prediction markets that exist and are yet vastly misunderstood by the public. Unlike most others markets, such as finance, sports can be measured in the physical world and thus a vast array of statistical data exists. Since the late 90s, Pinnacle has been one of the largest sportsbooks in the world and also one of the only sportsbooks who will take wagers from professional bettors (who we expect to lose to). At Pinnacle our focus is on modeling, automation, data science and R is a central piece of our business. We are constantly trying to innovate and make the best use out of our large volumes of data.&quot;                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                            
+## [2] &quot;In the last few years, we have undertaken the monumental task of training our 400+ employee workforce to better understand data and how to use data to drive all business decisions, whether it be prediction markets, customer service, marketing, payment solutions, etc. Many of these employees previously had no background in Data Science or had ever written a line of code. On this journey, We have recorded data on where students commonly fail or get frustrated and tried to weigh that with the skills we know are needed to solve real business problems. We have since come up with a well-defined set of curriculum using pieces from Data Camp, along with the custom curriculum. With this has come a focus on tidyverse, specifically mastering dplyr, and cutting out some of the core materials, such as working with matrices. Along the way, we have learned many lessons and have many success stories to share, such as former secretaries or customer service reps being retrained and promoted Data Scientists, who now work every day on using our data to make smarter business decisions. We would like to tell our story so that the community can learn from our mistakes and successes.&quot;</code></pre>
+<p>This takes a while as there are a lof of asbtracts to pull, but once it’s done, it’s looking good. This object is a list, each element containing a character vector of length 1 or more for each abstract. I want to make sure they’re all only 1 item long, so use <code>vapply()</code> to <code>paste()</code> the contents of each abstract into a single character object.</p>
+<pre class="r"><code>abstracts &lt;- vapply(abstracts, function(abstract){
+  paste(abstract, collapse = &quot;  &quot;)
+}, character(1))</code></pre>
+<p>Finally, I append the abstracts column onto my <code>talks_and_urls</code> table. I’ve not displayed it here, as the result is huge on the page.</p>
+<pre class="r"><code>talks_and_urls$abstracts = abstracts</code></pre>
+<p>So here we have it, the full list of abstracts. I’m not 100% sure it’s accurate, as
+<a href="https://blog.rstudio.com/2017/11/06/rstudio-conf-2018-program/">this post</a> on the RStudio blog suggests different numbers of people for each status. My best guess is that couple of people I have down as delivering “contributed” talks were actually invited speakers who were invited after the publication of this blog post.</p>
+</div>
+
+</main>
+
+  <footer>
+  <script src="//yihui.org/js/math-code.js"></script>
+<script async src="//mathjax.rstudio.com/latest/MathJax.js?config=TeX-MML-AM_CHTML"></script>
+
+<script async src="//yihui.org/js/center-img.js"></script>
+
+  
+  <hr/>
+  © Nic Crane 2016 &ndash; 2021 | <a href="https://github.com/thisisnic">Github</a> | <a href="https://twitter.com/nic_crane">Twitter</a>
+  
+  </footer>
+  </body>
+</html>
+

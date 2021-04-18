@@ -1,0 +1,162 @@
+<!DOCTYPE html>
+<html lang="en-us">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>What is tidy eval and why should I care? | A minimal Hugo website</title>
+    <link rel="stylesheet" href="/css/style.css" />
+    <link rel="stylesheet" href="/css/fonts.css" />
+    
+  </head>
+
+  <body>
+    <nav>
+    <ul class="menu">
+      
+      <li><a href="/">Home</a></li>
+      
+      <li><a href="/about/">About</a></li>
+      
+      <li><a href="/categories/">Categories</a></li>
+      
+      <li><a href="/tags/">Tags</a></li>
+      
+      <li><a href="/speaking/">Speaking</a></li>
+      
+      <li><a href="/index.xml">Subscribe</a></li>
+      
+      <li><a href="https://twitter.com/nic_crane">Twitter</a></li>
+      
+    </ul>
+    <hr/>
+    </nav>
+
+<div class="article-meta">
+<h1><span class="title">What is tidy eval and why should I care?</span></h1>
+<h2 class="author">Nic Crane</h2>
+<h2 class="date">2018/03/29</h2>
+</div>
+
+<main>
+
+
+
+<p>I’m going to begin this post somewhat backwards, and start with the conclusion: tidy eval is important to anyone who writes R functions and uses dplyr and/or tidyr.</p>
+<p>I’m going to load a couple of packages, and then show you exactly why.</p>
+<pre class="r"><code>library(dplyr)
+library(rlang)</code></pre>
+<div id="data-wrangling-with-base-r" class="section level2">
+<h2>Data wrangling with base R</h2>
+<p>Here’s an example function I have written in base R. Its purpose is to take a data set, and extract values from a single column that match a specific value, with both input and output both being in data frame format.</p>
+<pre class="r"><code>wrangle_data &lt;- function(data, column, val){
+  
+  data[data[[column]]==val, column, drop = FALSE]
+  
+}
+
+wrangle_data(iris, &quot;Species&quot;, &quot;versicolor&quot;) %&gt;%
+  head()</code></pre>
+<pre><code>##       Species
+## 51 versicolor
+## 52 versicolor
+## 53 versicolor
+## 54 versicolor
+## 55 versicolor
+## 56 versicolor</code></pre>
+<p>It works, but it’s not great; the code is clunky and hard to decipher at a quick glance. This is where using dplyr can help.</p>
+</div>
+<div id="data-wrangling-with-dplyr" class="section level2">
+<h2>Data wrangling with dplyr</h2>
+<p>If I was to run the same code outside of the context of a function, I might do something like this:</p>
+<pre class="r"><code>one_col &lt;- select(iris, Species)
+filter(one_col, Species == &quot;versicolor&quot;)  %&gt;%
+  head()</code></pre>
+<pre><code>##      Species
+## 1 versicolor
+## 2 versicolor
+## 3 versicolor
+## 4 versicolor
+## 5 versicolor
+## 6 versicolor</code></pre>
+<p>This has worked, but how can we turn this into a function?</p>
+<p>I may naively attempt the solution below</p>
+<pre class="r"><code>wrangle_data &lt;- function(data, column, val){
+  one_col &lt;- select(data, column)
+  filter(one_col, column == val)
+}
+
+wrangle_data(iris, &quot;Species&quot;, &quot;versicolor&quot;)  %&gt;%
+  head()</code></pre>
+<pre><code>## [1] Species
+## &lt;0 rows&gt; (or 0-length row.names)</code></pre>
+<p>However, this doesn’t work and returns 0 rows. This is due to a special quirk of dplyr that makes typical usage easier, but we need to be aware of when writing functions. This snippet from the <code>programming</code> vignette in dplyr explains it best:</p>
+<blockquote>
+<blockquote>
+<p>“Most dplyr functions use non-standard evaluation (NSE). This is a catch-all term that means they don’t follow the usual R rules of evaluation. Instead, they capture the expression that you typed and evaluate it in a custom way. This has two main benefits for dplyr code:</p>
+</blockquote>
+</blockquote>
+<blockquote>
+<blockquote>
+<ul>
+<li>Operations on data frames can be expressed succinctly because you don’t need to repeat the name of the data frame. For example, you can write filter(df, x == 1, y == 2, z == 3) instead of df[df<span class="math inline">\(x == 1 &amp; df\)</span>y ==2 &amp; df$z == 3, ].</li>
+</ul>
+</blockquote>
+</blockquote>
+<blockquote>
+<blockquote>
+<ul>
+<li>dplyr can choose to compute results in a different way to base R. This is important for database backends because dplyr itself doesn’t do any work, but instead generates the SQL that tells the database what to do.&quot;</li>
+</ul>
+</blockquote>
+</blockquote>
+<p>In other words, because dplyr functions evaluate things differently to base R, by using a concept called <em>quoting</em>, we have to work with them a bit differently. I’d recommend checking out <a href="https://www.rstudio.com/resources/webinars/tidy-eval/">this RStudio webinar</a> and the <a href="https://cran.r-project.org/web/packages/dplyr/vignettes/programming.html">dplyr programming vignette</a> for more detail.</p>
+<p>Let’s go back to the previous example.</p>
+<pre class="r"><code>wrangle_data &lt;- function(data, column, val){
+  one_col &lt;- select(data, column)
+  filter(one_col, column == val)
+}
+
+wrangle_data(iris, &quot;Species&quot;, &quot;versicolor&quot;)  %&gt;%
+  head()</code></pre>
+<pre><code>## [1] Species
+## &lt;0 rows&gt; (or 0-length row.names)</code></pre>
+<p>This doesn’t work as <code>select()</code> and <code>filter()</code> are looking for a column called “column” in their inputs, and failing to find them. Therefore we must use tidy evaluation to override this behaviour.</p>
+</div>
+<div id="tidy-evaluation-with-dplyr" class="section level2">
+<h2>Tidy evaluation with dplyr</h2>
+<p>Using the <code>!!</code> (bang bang) operator and <code>sym()</code> from the rlang package, we can change this behaviour to make a version of our function which will run.</p>
+<pre class="r"><code>wrangle_data &lt;- function(x, column, val){
+  
+  one_col &lt;- select(x, !!sym(column))
+  filter(one_col, !!sym(column) == val)
+}
+
+wrangle_data(iris, &quot;Species&quot;, &quot;versicolor&quot;) %&gt;%
+  head()</code></pre>
+<pre><code>##      Species
+## 1 versicolor
+## 2 versicolor
+## 3 versicolor
+## 4 versicolor
+## 5 versicolor
+## 6 versicolor</code></pre>
+<p>I’m not going to go into detail about these functions here, but if you want more information, check out my blog posts on using tidy eval in dplyr <a href="https://thisisnic.github.io/2018/02/20/exploring-tidy-eval-snails-pace/">here</a> and <a href="https://thisisnic.github.io/2018/03/27/using-tidy-eval-with-dplyr-filter/">here</a>.</p>
+<p>In conclusion, whilst tidy eval is not necessary for all uses of dplyr or tidyr, it quickly becomes an extremely handy tool when working with these packages within the context of function. There are some great resources about tidy eval out there, and as ever, I welcome feedback on this blog post <a href="https://twitter.com/nic_crane/status/979360864070459392">via Twitter</a>.</p>
+</div>
+
+</main>
+
+  <footer>
+  <script src="//yihui.org/js/math-code.js"></script>
+<script async src="//mathjax.rstudio.com/latest/MathJax.js?config=TeX-MML-AM_CHTML"></script>
+
+<script async src="//yihui.org/js/center-img.js"></script>
+
+  
+  <hr/>
+  © Nic Crane 2016 &ndash; 2021 | <a href="https://github.com/thisisnic">Github</a> | <a href="https://twitter.com/nic_crane">Twitter</a>
+  
+  </footer>
+  </body>
+</html>
+

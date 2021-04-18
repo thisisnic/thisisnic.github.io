@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>big data on A minimal Hugo website</title>
+    <link>/tags/big-data/</link>
+    <description>Recent content in big data on A minimal Hugo website</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <language>en-us</language>
+    <lastBuildDate>Fri, 02 Feb 2018 00:00:00 +0000</lastBuildDate><atom:link href="/tags/big-data/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>Basic Spark Part 1 - Umm, remind me about big data please?</title>
+      <link>/2018/02/02/basic-spark-part-1/</link>
+      <pubDate>Fri, 02 Feb 2018 00:00:00 +0000</pubDate>
+      
+      <guid>/2018/02/02/basic-spark-part-1/</guid>
+      <description>When I started my career in data science, I was in the common position of having familiarity with technologies like R, Python, and SQL, but much less with big data technologies. I remember feeling intimidated by big data; there were lots of different technologies named after animals or making some sort of pun I wasn’t clued up enough to understand.
+Flash forward 18 months and with experience, some parts of the big data landscape felt a bit more familiar.</description>
+    </item>
+    
+  </channel>
+</rss>

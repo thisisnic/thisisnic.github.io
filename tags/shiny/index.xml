@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>shiny on A minimal Hugo website</title>
+    <link>/tags/shiny/</link>
+    <description>Recent content in shiny on A minimal Hugo website</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <language>en-us</language>
+    <lastBuildDate>Tue, 16 Aug 2016 00:00:00 +0000</lastBuildDate><atom:link href="/tags/shiny/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>Pop-up to confirm action in Shiny</title>
+      <link>/2016/08/16/pop-up-to-confirm-action-in-shiny/</link>
+      <pubDate>Tue, 16 Aug 2016 00:00:00 +0000</pubDate>
+      
+      <guid>/2016/08/16/pop-up-to-confirm-action-in-shiny/</guid>
+      <description>It’s a gorgeous evening in Bath tonight, and my evening has been improved by finding a free table outside at the pub, a large glass of Sauvignon Blanc, and working out how to include a JavaScript confirmation box in Shiny. Here, I’m using Shiny dashboard, although this methodology will work fine with other UI layouts.
+In the UI file, near the top of the dashboardBody , call tags$head and tags$script to give the source of the JavaScript file:</description>
+    </item>
+    
+    <item>
+      <title>Getting started with Leaflet in Shiny - interactive map apps</title>
+      <link>/2016/04/28/getting-started-with-leaflet-in-shiny-interactive-map-apps/</link>
+      <pubDate>Thu, 28 Apr 2016 00:00:00 +0000</pubDate>
+      
+      <guid>/2016/04/28/getting-started-with-leaflet-in-shiny-interactive-map-apps/</guid>
+      <description>Lately I’ve been enjoying learning how to use Shiny, and experimenting with making a fairly basic app, and wanted to develop my skills further. I’d been looking at an example app from the Shiny website which shows live bus locations in the US, refreshing at short intervals. It looked fairly complex at first, so I was pretty happy when, within 48 hours I’d managed to recreate something of similar complexity, so here’s your guide on how you can quickly get up to speed using interactive reactive maps in Shiny.</description>
+    </item>
+    
+  </channel>
+</rss>

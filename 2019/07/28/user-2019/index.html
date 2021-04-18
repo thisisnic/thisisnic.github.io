@@ -1,0 +1,115 @@
+<!DOCTYPE html>
+<html lang="en-us">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>UseR!2019: A Shiny Perspective | A minimal Hugo website</title>
+    <link rel="stylesheet" href="/css/style.css" />
+    <link rel="stylesheet" href="/css/fonts.css" />
+    
+  </head>
+
+  <body>
+    <nav>
+    <ul class="menu">
+      
+      <li><a href="/">Home</a></li>
+      
+      <li><a href="/about/">About</a></li>
+      
+      <li><a href="/categories/">Categories</a></li>
+      
+      <li><a href="/tags/">Tags</a></li>
+      
+      <li><a href="/speaking/">Speaking</a></li>
+      
+      <li><a href="/index.xml">Subscribe</a></li>
+      
+      <li><a href="https://twitter.com/nic_crane">Twitter</a></li>
+      
+    </ul>
+    <hr/>
+    </nav>
+
+<div class="article-meta">
+<h1><span class="title">UseR!2019: A Shiny Perspective</span></h1>
+
+<h2 class="date">2019/07/28</h2>
+</div>
+
+<main>
+
+
+
+<div id="user2019" class="section level1">
+<h1>UseR!2019</h1>
+<p>UseR!2019 was a fantastic conference. I’ve previously attended RStudio Conference and EARL, both of which are very different conferences. I’ve enjoyed all three, and especially like how they each bring something different to the R conference playing field.</p>
+<p>I mainly work in Shiny, and so most of this post will be including some of my Shiny-focussed highlights, with a few other special mentions.</p>
+<p>The conference kicked off with a Tidyverse Developer Day, organised by RStudio. Whilst I was not able to attend this one, I have previously attended one in January immediately follwoing RStudio Conference 2019.</p>
+<p><img src="/images/tidyverse_dev_day.png" width="40%" style="display: block; margin: auto;" /></p>
+<p>I absolutely love the idea; it allows new and not-so-new contributors to get together, and work and code and documentation issues in the tidyverse.</p>
+<p>Whilst I didn’t attend, I heard lots of great feedback from attendees, and it was clear that RStudio had listened to feedback from us from last time (e.g. running the dev day before the conference, so that everybody wouldn’t be socially exhausted by that point!)</p>
+<p><img src="/images/first_pr.png" width="40%" style="display: block; margin: auto;" /></p>
+<div id="workshops" class="section level2">
+<h2>Workshops</h2>
+<p>I’d attended the conference on a scholarship, and so got to attend the workshops as well.</p>
+<p>Package Development was taught by Jenny Bryan, Jim Hester, and Hadley Wickham, and it was the workshop I attended in the morning. I’d originally gone along to observe their teaching styles and pick up tips, but learned a surprising number of new things.</p>
+<p>The main things I liked were:</p>
+<ul>
+<li><p>instructors completing the exercises on-screen as the attendees were; this meant that whether you were completely new and may want to follow along, or more experienced and wanted to ignore this and complete the exercises yourself, this section would work well for you.</p></li>
+<li><p>explanations of their own setups and why they’ve done it like that</p></li>
+<li><p>inclusion of more complex materials that more proficient learner can dig into deeper afterwards</p></li>
+<li><p>highlighting the key principles that tie the materials together</p></li>
+<li><p>highlighting problems you may face and explaining how to solve them</p></li>
+<li><p>concluding a section with “if you only remember one thing…” and then launching into a summary</p></li>
+</ul>
+</div>
+<div id="talks" class="section level2">
+<h2>Talks</h2>
+<p>There were a huge range of talks, and the one big different between the other R conferences I’d been to was that here there were a mix of academic and industry talks. I mainly do work in Shiny, so I mainly went to Shiny-themed talks; here are my highlights, in no particular order.</p>
+<div id="shiny-or-go-home" class="section level3">
+<h3>Shiny or Go Home</h3>
+<p>There were lots of fantastic details on Shiny app deployment by Riccardo Porreca from Mirai Solutions in their talk, <a href="https://user2019.r-project.org/static/pres/t258350.pdf">“Shiny app deployment and integration into a custom website gallery”</a>.</p>
+<p><img src="/images/mira_solutions.png" width="40%" style="display: block; margin: auto;" /></p>
+<p>It was also great to hear Vincent Guyader from ThinkR talking about the golem package in their talk <a href="https://github.com/VincentGuyader/user2019/raw/master/golem_Vincent_Guyader_USER!2019.pdf">“Golem - A Framework for Building Robust &amp; Production Ready Shiny Apps”</a>. There’s not a huge amount of guidance out there around structuring Shiny apps,and so this package and everything discussed in the talk will provide a lot of value for Shiny devs.</p>
+<p><img src="/images/golem.png" width="40%" style="display: block; margin: auto;" /></p>
+<p>Ruan Pearce-Authers did an excellent job in <a href="https://www.slideshare.net/RuanPearceAuthers/data-for-all-empowering-teams-with-scalable-shiny-applications-user-2019">“Data for all: Empowering teams with scalable Shiny applications”</a> of showing us how they deploy Shiny apps at scale.</p>
+<p><img src="/images/ruan_shiny.png" width="40%" style="display: block; margin: auto;" /></p>
+<p>Filip Stachura from Appsilon gave some real insight into the things they find the most important when deploying Shiny in production environments in <a href="https://www.slideshare.net/appsilon/user-2019-best-practices-for-building-shiny-enterprise-applications">“Best Practices for Building Shiny Enterprise Applications”</a>, though my favourite part was the direct comparisons with other similar technologies.</p>
+<p><img src="/images/why_shiny.png" width="40%" style="display: block; margin: auto;" /></p>
+<p>Joe Cheng’s keynote on the new <a href="https://github.com/rstudio/shinymeta"><code>shinymeta</code></a> package, <a href="https://github.com/jcheng5/shinymeta-user2019-talk">“Shiny’s Holy Grail: Interactivity with reproducibility”</a> was fascinating, and it whilst the package is in its early stages (it’s not yet on CRAN), it looks to be adding a really useful feature to Shiny. Watch the full keynote <a href="https://www.youtube.com/watch?v=5KByRC6eqC8">here</a>.</p>
+<p><img src="/images/joe_cheng_keynote.png" width="40%" style="display: block; margin: auto;" /></p>
+</div>
+<div id="not-shiny-but-still-shone" class="section level3">
+<h3>Not Shiny but Still Shone</h3>
+<p>I loved Colin Gillespie’s talk on security in Shiny: <a href="https://www.jumpingrivers.com/t/2019-user-security/#1">“Security and R
+It’s secure - we’re the problem”</a> - it was a lot of fun but also highlighted some important points around a less well-discussed topic; security in R.</p>
+<p><img src="/images/gillespie.png" width="40%" style="display: block; margin: auto;" /></p>
+<p>I also found the talk by Jakub Nowosad, <a href="https://geocompr.github.io/user_19/presentation/#1">“How to win friends and write an open-source book”</a> to be packed full of useful information on publishing R books, that I’ve already put to use whilst looking for a publisher for a book I’m making a start on soon.</p>
+<p><img src="/images/writing_books.png" width="40%" style="display: block; margin: auto;" /></p>
+<p>Finally, it was awesome to meet Shel Kariuki and hear about all the great work that the AfricaR team are doing to try to set up a community for R users in Africa.</p>
+<p><img src="/images/africar.png" width="40%" style="display: block; margin: auto;" /></p>
+</div>
+</div>
+<div id="conclusion" class="section level2">
+<h2>Conclusion</h2>
+<p>There were lots of other fantastic talks, and these are just a small selection of some of the ones I enjoyed. UseR!2019 was a really enjoyable conference and I hope to attend again next time. Till then, I can’t wait for <a href="http://2020.erum.io/">eRum 2020 in Milan</a>!</p>
+</div>
+</div>
+
+</main>
+
+  <footer>
+  <script src="//yihui.org/js/math-code.js"></script>
+<script async src="//mathjax.rstudio.com/latest/MathJax.js?config=TeX-MML-AM_CHTML"></script>
+
+<script async src="//yihui.org/js/center-img.js"></script>
+
+  
+  <hr/>
+  © Nic Crane 2016 &ndash; 2021 | <a href="https://github.com/thisisnic">Github</a> | <a href="https://twitter.com/nic_crane">Twitter</a>
+  
+  </footer>
+  </body>
+</html>
+
