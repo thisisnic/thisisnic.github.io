@@ -6,18 +6,7 @@
     <description>Recent content in Posts on A minimal Hugo website</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>en-us</language>
-    <lastBuildDate>Sat, 17 Apr 2021 00:00:00 +0000</lastBuildDate><atom:link href="/post/index.xml" rel="self" type="application/rss+xml" />
-    <item>
-      <title>Three Valued Logic</title>
-      <link>/2021/04/17/three-valued-logic/</link>
-      <pubDate>Sat, 17 Apr 2021 00:00:00 +0000</pubDate>
-      
-      <guid>/2021/04/17/three-valued-logic/</guid>
-      <description>This week I was writing Arrow bindings for some R functions and came across a concept that was new to me: three-valued logic.
-I encountered this when working out the expected behaviour of the functions any and all which are used for aggregation of boolean/logical values.
-If I have a vector without any NA values, the behaviour of these functions is pretty straightforward. In the example below, vec &amp;gt; 3 evaluates to FALSE FALSE FALSE TRUE TRUE and so a call to any() results in TRUE and a call to all() results in FALSE.</description>
-    </item>
-    
+    <lastBuildDate>Sun, 28 Jul 2019 00:00:00 +0000</lastBuildDate><atom:link href="/post/index.xml" rel="self" type="application/rss+xml" />
     <item>
       <title>UseR!2019: A Shiny Perspective</title>
       <link>/2019/07/28/user-2019/</link>
