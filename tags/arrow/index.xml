@@ -13,7 +13,8 @@
       <pubDate>Tue, 20 Apr 2021 00:00:00 +0000</pubDate>
       
       <guid>/2021/04/20/why-is-eval-parse-bad/</guid>
-      <description>title: “Why is eval parse bad?”  author: ’’  date: ‘2021-04-20’  slug: why-is-eval-parse-bad  categories: [  ‘R’  ]  tags: [‘tidyeval’, ‘arrow’]    I was writing Arrow bindings for na.omit and needed a way of applying is.na to every column of a table at once. I’d originally implemented using dplyr::filter, but had failed to realise that Arrow only suggests dplyr but doesn’t import it, and so needed to refactor it.</description>
+      <description>I was writing Arrow bindings for na.omit and needed a way of applying is.na to every column of a table at once. I’d originally implemented using dplyr::filter, but had failed to realise that Arrow only suggests dplyr but doesn’t import it, and so needed to refactor it.
+Table objects in Arrow have a Filter method, and I knew that a naive implementation would be a for loop which iteratively called Table$Filter(!</description>
     </item>
     
   </channel>
