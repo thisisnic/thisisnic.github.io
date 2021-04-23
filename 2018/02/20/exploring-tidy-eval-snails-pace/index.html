@@ -13,7 +13,7 @@
     <nav>
     <ul class="menu">
       
-      <li><a href="/">Home</a></li>
+      <li><a href="/post/">Home</a></li>
       
       <li><a href="/about/">About</a></li>
       
@@ -39,12 +39,13 @@
 
 <main>
 
+<script src="/rmarkdown-libs/header-attrs/header-attrs.js"></script>
 
 
 <p>I recently attended rstudio::conf, with my favourite talks being those which taught me new things that I am going to use in my day-to-day work. I attended and enjoyed Hadley Wickham’s talk, ‘Tidy eval: programming with dplyr, tidyr, and ggplot2’, although got sidetracked trying to keep up typing whilst listening.</p>
 <p>When I’m delivering training courses, this is the one thing I advise all attendees <em>not</em> to do - it’s so easy to miss important points whilst running code.</p>
 <p>Anyway, Hadley’s talk covered lots of important background information about tidy eval, but I’m still finding a lot of it pretty unintuitive, so I thought I’d explore the aspects of tidy eval that I come across in my day-to-day work, at a snail’s pace, in the hope that it’ll start making sense.</p>
-<p><img src="/images/pallida.jpg" width="50%" /></p>
+<p><img src="images/pallida.jpg" width="50%" /></p>
 <p>The example I’m going to use in this post is the iris dataset. I’ve yet to meet someone who has been learning R for a while who isn’t sick of this dataset by now, but for the sake of completeness, let’s take a quick look at the first few lines now.</p>
 <pre class="r"><code>head(iris)</code></pre>
 <pre><code>##   Sepal.Length Sepal.Width Petal.Length Petal.Width Species

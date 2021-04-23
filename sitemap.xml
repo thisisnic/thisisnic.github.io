@@ -2,34 +2,61 @@
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9"
   xmlns:xhtml="http://www.w3.org/1999/xhtml">
   <url>
+    <loc>/tags/c&#43;&#43;/</loc>
+    <lastmod>2021-04-22T00:00:00+00:00</lastmod>
+  </url><url>
+    <loc>/categories/c&#43;&#43;/</loc>
+    <lastmod>2021-04-22T00:00:00+00:00</lastmod>
+  </url><url>
+    <loc>/categories/</loc>
+    <lastmod>2021-04-22T00:00:00+00:00</lastmod>
+  </url><url>
+    <loc>/cpp/</loc>
+    <lastmod>2021-04-22T00:00:00+00:00</lastmod>
+  </url><url>
     <loc>/</loc>
-    <lastmod>2019-07-28T00:00:00+00:00</lastmod>
+    <lastmod>2021-04-22T00:00:00+00:00</lastmod>
+  </url><url>
+    <loc>/tags/</loc>
+    <lastmod>2021-04-22T00:00:00+00:00</lastmod>
+  </url><url>
+    <loc>/cpp/2021/04/22/what-is-a-struct/</loc>
+    <lastmod>2021-04-22T00:00:00+00:00</lastmod>
+  </url><url>
+    <loc>/2021/04/21/examining-c-plus-plus-syntax-recordbatch-selectcolumns/</loc>
+    <lastmod>2021-04-21T00:00:00+00:00</lastmod>
   </url><url>
     <loc>/post/</loc>
-    <lastmod>2019-07-28T00:00:00+00:00</lastmod>
+    <lastmod>2021-04-21T00:00:00+00:00</lastmod>
+  </url><url>
+    <loc>/tags/arrow/</loc>
+    <lastmod>2021-04-20T00:00:00+00:00</lastmod>
+  </url><url>
+    <loc>/categories/r/</loc>
+    <lastmod>2021-04-20T00:00:00+00:00</lastmod>
+  </url><url>
+    <loc>/tags/tidyeval/</loc>
+    <lastmod>2021-04-20T00:00:00+00:00</lastmod>
+  </url><url>
+    <loc>/2021/04/20/why-is-eval-parse-bad/</loc>
+    <lastmod>2021-04-20T00:00:00+00:00</lastmod>
+  </url><url>
+    <loc>/cpp/2021/04/19/modern-c/</loc>
+    <lastmod>2021-04-19T00:00:00+00:00</lastmod>
+  </url><url>
+    <loc>/cpp/2021/04/19/what-is-const/</loc>
+    <lastmod>2021-04-19T00:00:00+00:00</lastmod>
+  </url><url>
+    <loc>/cpp/2021/04/19/what-is-sexp/</loc>
+    <lastmod>2021-04-19T00:00:00+00:00</lastmod>
   </url><url>
     <loc>/2019/07/28/user-2019/</loc>
     <lastmod>2019-07-28T00:00:00+00:00</lastmod>
-  </url><url>
-    <loc>/categories/</loc>
-    <lastmod>2018-12-19T00:00:00+00:00</lastmod>
-  </url><url>
-    <loc>/categories/code/</loc>
-    <lastmod>2018-12-19T00:00:00+00:00</lastmod>
   </url><url>
     <loc>/2018/12/19/iterating-with-names/</loc>
     <lastmod>2018-12-19T00:00:00+00:00</lastmod>
   </url><url>
     <loc>/tags/purrr/</loc>
-    <lastmod>2018-12-19T00:00:00+00:00</lastmod>
-  </url><url>
-    <loc>/tags/r/</loc>
-    <lastmod>2018-12-19T00:00:00+00:00</lastmod>
-  </url><url>
-    <loc>/categories/r/</loc>
-    <lastmod>2018-12-19T00:00:00+00:00</lastmod>
-  </url><url>
-    <loc>/tags/</loc>
     <lastmod>2018-12-19T00:00:00+00:00</lastmod>
   </url><url>
     <loc>/tags/tidyverse/</loc>
@@ -44,9 +71,6 @@
     <loc>/2018/08/22/scraping-rstudio-conf-2018-abstracts/</loc>
     <lastmod>2018-08-22T00:00:00+00:00</lastmod>
   </url><url>
-    <loc>/categories/web-scraping/</loc>
-    <lastmod>2018-08-22T00:00:00+00:00</lastmod>
-  </url><url>
     <loc>/2018/07/31/comparing-r-packages-using-packagemetrics/</loc>
     <lastmod>2018-07-31T00:00:00+00:00</lastmod>
   </url><url>
@@ -54,9 +78,6 @@
     <lastmod>2018-04-16T00:00:00+00:00</lastmod>
   </url><url>
     <loc>/2018/04/16/how-do-i-make-my-own-dplyr-style-functions/</loc>
-    <lastmod>2018-04-16T00:00:00+00:00</lastmod>
-  </url><url>
-    <loc>/tags/tidyeval/</loc>
     <lastmod>2018-04-16T00:00:00+00:00</lastmod>
   </url><url>
     <loc>/2018/03/31/what-the-heck-is-quasiquotation/</loc>
@@ -81,6 +102,9 @@
     <lastmod>2018-02-02T00:00:00+00:00</lastmod>
   </url><url>
     <loc>/tags/javascript/</loc>
+    <lastmod>2016-08-16T00:00:00+00:00</lastmod>
+  </url><url>
+    <loc>/categories/javascript/</loc>
     <lastmod>2016-08-16T00:00:00+00:00</lastmod>
   </url><url>
     <loc>/2016/08/16/pop-up-to-confirm-action-in-shiny/</loc>

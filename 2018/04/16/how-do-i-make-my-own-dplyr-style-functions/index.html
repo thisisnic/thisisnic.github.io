@@ -13,7 +13,7 @@
     <nav>
     <ul class="menu">
       
-      <li><a href="/">Home</a></li>
+      <li><a href="/post/">Home</a></li>
       
       <li><a href="/about/">About</a></li>
       
@@ -39,6 +39,7 @@
 
 <main>
 
+<script src="/rmarkdown-libs/header-attrs/header-attrs.js"></script>
 
 
 <p>In this series of blog posts introducing tidy eval, we’ve been looking at <a href="https://thisisnic.github.io/2018/03/29/what-is-tidy-eval-and-why-should-i-care/">why tidy eval is important</a>, and terms like <a href="https://thisisnic.github.io/2018/03/31/what-the-heck-is-quasiquotation/">“quotation” and “quasiquotation”</a>.</p>
@@ -97,7 +98,7 @@ wrangle_data(iris, &quot;Species&quot;, &quot;versicolor&quot;)</code></pre>
 <h2>Capturing User Input</h2>
 <p>Let’s take a quick look at what happens if we try to call our function without putting quote marks around the column name.</p>
 <pre class="r"><code>wrangle_data(iris, Species, &quot;versicolor&quot;)</code></pre>
-<pre><code>## Error in is_symbol(x): object &#39;Species&#39; not found</code></pre>
+<pre><code>## Error: object &#39;Species&#39; not found</code></pre>
 <p>We get an error message. This is because R is trying to find an object named <code>Species</code>, but no object with this name exists. We need some way of capturing the expression that the user has input and evaluating it in the correct context.</p>
 <div id="quosures-quo-and-enquo" class="section level3">
 <h3>Quosures: quo() and enquo()</h3>
@@ -118,7 +119,13 @@ wrangle_data(iris, &quot;Species&quot;, &quot;versicolor&quot;)</code></pre>
 }
 
 wrangle_data(iris, Species, &quot;versicolor&quot;)</code></pre>
-<pre><code>## Error: `col_name` must evaluate to column positions or names, not a formula</code></pre>
+<pre><code>## Note: Using an external vector in selections is ambiguous.
+## ℹ Use `all_of(col_name)` instead of `col_name` to silence this message.
+## ℹ See &lt;https://tidyselect.r-lib.org/reference/faq-external-vector.html&gt;.
+## This message is displayed once per session.</code></pre>
+<pre><code>## Error: Must subset columns with a valid subscript vector.
+## x Subscript has the wrong type `quosure/formula`.
+## ℹ It must be numeric or character.</code></pre>
 <p>This is almost correct, but not quote there! To make this function run, we need to use <code>enquo()</code>.</p>
 <pre class="r"><code>wrangle_data &lt;- function(x, col_name, val){
   

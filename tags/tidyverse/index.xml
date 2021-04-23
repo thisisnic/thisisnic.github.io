@@ -13,8 +13,8 @@
       <pubDate>Wed, 19 Dec 2018 00:00:00 +0000</pubDate>
       
       <guid>/2018/12/19/iterating-with-names/</guid>
-      <description>The ProblemI’ve come across this problem a few times lately, when I’ve wanted to iterate through some sort of named list or vector, and use both the name and value in each iteration.
-To illustrate, here’s a vector, which I have creatively named myvec. It is a numeric vector containing the numbers 1 to 26, and each element has a name, which in this case is represented by a letter of the alphabet.</description>
+      <description>title: ‘Iterating with names’  author: ’’  date: ‘2018-12-19’  slug: iterating-with-names  categories: [  ‘R’  ]  tags: [‘tidyverse’, ‘purrr’]  type: post    The Problem I’ve come across this problem a few times lately, when I’ve wanted to iterate through some sort of named list or vector, and use both the name and value in each iteration.
+To illustrate, here’s a vector, which I have creatively named myvec.</description>
     </item>
     
     <item>
@@ -36,7 +36,7 @@ My main aim was to find all of the abstracts for the contributed talks only from
       <description>In this series of blog posts introducing tidy eval, we’ve been looking at why tidy eval is important, and terms like “quotation” and “quasiquotation”.
 The next step is to look at how we can write our own dplyr-style functions in R.
 This post will look at the following terms and functions:
-quosuresquo()enquo()What is a quosure?Quosures are a topic which come up frequently when talking about tidy eval.</description>
+ quosures quo() enquo()  What is a quosure? Quosures are a topic which come up frequently when talking about tidy eval.</description>
     </item>
     
     <item>
@@ -57,7 +57,7 @@ To recap, tidy eval refers to the ‘special’ type of evaluation used by dplyr
       <guid>/2018/03/29/what-is-tidy-eval-and-why-should-i-care/</guid>
       <description>I’m going to begin this post somewhat backwards, and start with the conclusion: tidy eval is important to anyone who writes R functions and uses dplyr and/or tidyr.
 I’m going to load a couple of packages, and then show you exactly why.
-library(dplyr)library(rlang)Data wrangling with base RHere’s an example function I have written in base R. Its purpose is to take a data set, and extract values from a single column that match a specific value, with both input and output both being in data frame format.</description>
+library(dplyr) library(rlang) Data wrangling with base R Here’s an example function I have written in base R. Its purpose is to take a data set, and extract values from a single column that match a specific value, with both input and output both being in data frame format.</description>
     </item>
     
   </channel>

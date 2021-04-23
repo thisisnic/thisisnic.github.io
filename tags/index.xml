@@ -6,22 +6,40 @@
     <description>Recent content in Tags on A minimal Hugo website</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>en-us</language>
-    <lastBuildDate>Wed, 19 Dec 2018 00:00:00 +0000</lastBuildDate><atom:link href="/tags/index.xml" rel="self" type="application/rss+xml" />
+    <lastBuildDate>Thu, 22 Apr 2021 00:00:00 +0000</lastBuildDate><atom:link href="/tags/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>C&#43;&#43;</title>
+      <link>/tags/c&#43;&#43;/</link>
+      <pubDate>Thu, 22 Apr 2021 00:00:00 +0000</pubDate>
+      
+      <guid>/tags/c&#43;&#43;/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>arrow</title>
+      <link>/tags/arrow/</link>
+      <pubDate>Tue, 20 Apr 2021 00:00:00 +0000</pubDate>
+      
+      <guid>/tags/arrow/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>tidyeval</title>
+      <link>/tags/tidyeval/</link>
+      <pubDate>Tue, 20 Apr 2021 00:00:00 +0000</pubDate>
+      
+      <guid>/tags/tidyeval/</guid>
+      <description></description>
+    </item>
+    
     <item>
       <title>purrr</title>
       <link>/tags/purrr/</link>
       <pubDate>Wed, 19 Dec 2018 00:00:00 +0000</pubDate>
       
       <guid>/tags/purrr/</guid>
-      <description></description>
-    </item>
-    
-    <item>
-      <title>R</title>
-      <link>/tags/r/</link>
-      <pubDate>Wed, 19 Dec 2018 00:00:00 +0000</pubDate>
-      
-      <guid>/tags/r/</guid>
       <description></description>
     </item>
     
@@ -53,15 +71,6 @@
     </item>
     
     <item>
-      <title>tidyeval</title>
-      <link>/tags/tidyeval/</link>
-      <pubDate>Mon, 16 Apr 2018 00:00:00 +0000</pubDate>
-      
-      <guid>/tags/tidyeval/</guid>
-      <description></description>
-    </item>
-    
-    <item>
       <title>big data</title>
       <link>/tags/big-data/</link>
       <pubDate>Fri, 02 Feb 2018 00:00:00 +0000</pubDate>
@@ -80,7 +89,7 @@
     </item>
     
     <item>
-      <title>javascript</title>
+      <title>JavaScript</title>
       <link>/tags/javascript/</link>
       <pubDate>Tue, 16 Aug 2016 00:00:00 +0000</pubDate>
       

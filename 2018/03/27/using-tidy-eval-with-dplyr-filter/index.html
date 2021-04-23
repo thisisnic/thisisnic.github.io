@@ -13,7 +13,7 @@
     <nav>
     <ul class="menu">
       
-      <li><a href="/">Home</a></li>
+      <li><a href="/post/">Home</a></li>
       
       <li><a href="/about/">About</a></li>
       
@@ -39,6 +39,7 @@
 
 <main>
 
+<script src="/rmarkdown-libs/header-attrs/header-attrs.js"></script>
 
 
 <p>I previously blogged about using tidy eval with <code>dplyr::mutate</code>, and found that post handy to refer back to. I still haven’t got round to having an in-depth look at the principles of tidy eval, so instead I’m continuing to explore problems as and when they come up. In this post, I’ll be taking a look at using tidy eval with <code>dplyr::filter</code>. Once again, I’ll be using the iris dataset to create examples that should be simple to follow.</p>
@@ -55,7 +56,7 @@
 ## 4          5.5         2.3          4.0         1.3 versicolor
 ## 5          6.5         2.8          4.6         1.5 versicolor
 ## 6          5.7         2.8          4.5         1.3 versicolor</code></pre>
-<p>The input to the filter function, <code>Species == &quot;versicolor&quot;</code> is an expression which is evaluated in the context of the relevant data frame.</p>
+<p>The input to the filter function, <code>Species == "versicolor"</code> is an expression which is evaluated in the context of the relevant data frame.</p>
 <p>As a recap of how <code>dplyr</code> works (thanks to <span class="citation">@_lionelhenry</span> for this):
 “dplyr operates on name-expression pairs. The names are purely quoted while the expressions are quoted and then evaluated in the data frame. Unquoting provides an escape hatch (programmability) for both names and expressions.”</p>
 <p>Note that there is a terminology difference here between base R and dplyr (thanks again <span class="citation">@lionelhenry</span> for the clarification):</p>
@@ -94,11 +95,11 @@ filter(iris, !!a == &quot;versicolor&quot;) %&gt;%
 ## &lt;0 rows&gt; (or 0-length row.names)</code></pre>
 <p>This is close, but still not perfect. Let’s take a look at part of the help file for <code>!!</code>:</p>
 <p>“The !! operator unquotes its argument. It gets evaluated immediately in the surrounding context.”</p>
-<p>The example above doesn’t work because we want <code>a</code> to be evaluated to <code>Species</code> to mirror the syntax in the first, typical usage example I gave at the start of this post. However, <code>a</code> is being evaluated as <code>&quot;Species&quot;</code> which is why it isn’t working.</p>
+<p>The example above doesn’t work because we want <code>a</code> to be evaluated to <code>Species</code> to mirror the syntax in the first, typical usage example I gave at the start of this post. However, <code>a</code> is being evaluated as <code>"Species"</code> which is why it isn’t working.</p>
 </div>
 <div id="create-a-symbol" class="section level2">
 <h2>Create a Symbol</h2>
-<p>And so, the final thing we need to do is turn the character string <code>&quot;Species&quot;</code> into <code>Species</code>, a symbol. We can do this by first calling the <code>sym</code> function from <code>rlang</code> on the variable <code>a</code>, and then using the <code>!!</code> operator to evaluate its results.</p>
+<p>And so, the final thing we need to do is turn the character string <code>"Species"</code> into <code>Species</code>, a symbol. We can do this by first calling the <code>sym</code> function from <code>rlang</code> on the variable <code>a</code>, and then using the <code>!!</code> operator to evaluate its results.</p>
 <pre class="r"><code>a &lt;- &quot;Species&quot;
 filter(iris, !!rlang::sym(a) == &quot;versicolor&quot;) %&gt;%
   head()</code></pre>

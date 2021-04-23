@@ -13,7 +13,7 @@
     <nav>
     <ul class="menu">
       
-      <li><a href="/">Home</a></li>
+      <li><a href="/post/">Home</a></li>
       
       <li><a href="/about/">About</a></li>
       
@@ -39,6 +39,7 @@
 
 <main>
 
+<script src="/rmarkdown-libs/header-attrs/header-attrs.js"></script>
 
 
 <p>I’m going to begin this post somewhat backwards, and start with the conclusion: tidy eval is important to anyone who writes R functions and uses dplyr and/or tidyr.</p>
@@ -87,12 +88,16 @@ filter(one_col, Species == &quot;versicolor&quot;)  %&gt;%
 
 wrangle_data(iris, &quot;Species&quot;, &quot;versicolor&quot;)  %&gt;%
   head()</code></pre>
+<pre><code>## Note: Using an external vector in selections is ambiguous.
+## ℹ Use `all_of(column)` instead of `column` to silence this message.
+## ℹ See &lt;https://tidyselect.r-lib.org/reference/faq-external-vector.html&gt;.
+## This message is displayed once per session.</code></pre>
 <pre><code>## [1] Species
 ## &lt;0 rows&gt; (or 0-length row.names)</code></pre>
 <p>However, this doesn’t work and returns 0 rows. This is due to a special quirk of dplyr that makes typical usage easier, but we need to be aware of when writing functions. This snippet from the <code>programming</code> vignette in dplyr explains it best:</p>
 <blockquote>
 <blockquote>
-<p>“Most dplyr functions use non-standard evaluation (NSE). This is a catch-all term that means they don’t follow the usual R rules of evaluation. Instead, they capture the expression that you typed and evaluate it in a custom way. This has two main benefits for dplyr code:</p>
+<p>"Most dplyr functions use non-standard evaluation (NSE). This is a catch-all term that means they don’t follow the usual R rules of evaluation. Instead, they capture the expression that you typed and evaluate it in a custom way. This has two main benefits for dplyr code:</p>
 </blockquote>
 </blockquote>
 <blockquote>
@@ -105,7 +110,7 @@ wrangle_data(iris, &quot;Species&quot;, &quot;versicolor&quot;)  %&gt;%
 <blockquote>
 <blockquote>
 <ul>
-<li>dplyr can choose to compute results in a different way to base R. This is important for database backends because dplyr itself doesn’t do any work, but instead generates the SQL that tells the database what to do.&quot;</li>
+<li>dplyr can choose to compute results in a different way to base R. This is important for database backends because dplyr itself doesn’t do any work, but instead generates the SQL that tells the database what to do."</li>
 </ul>
 </blockquote>
 </blockquote>

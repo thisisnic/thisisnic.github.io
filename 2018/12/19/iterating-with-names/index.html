@@ -13,7 +13,7 @@
     <nav>
     <ul class="menu">
       
-      <li><a href="/">Home</a></li>
+      <li><a href="/post/">Home</a></li>
       
       <li><a href="/about/">About</a></li>
       
@@ -39,8 +39,40 @@
 
 <main>
 
+<script src="/rmarkdown-libs/header-attrs/header-attrs.js"></script>
 
 
+<table>
+<tbody>
+<tr class="odd">
+<td>title: ‘Iterating with names’</td>
+</tr>
+<tr class="even">
+<td>author: ’’</td>
+</tr>
+<tr class="odd">
+<td>date: ‘2018-12-19’</td>
+</tr>
+<tr class="even">
+<td>slug: iterating-with-names</td>
+</tr>
+<tr class="odd">
+<td>categories: [</td>
+</tr>
+<tr class="even">
+<td>‘R’</td>
+</tr>
+<tr class="odd">
+<td>]</td>
+</tr>
+<tr class="even">
+<td>tags: [‘tidyverse’, ‘purrr’]</td>
+</tr>
+<tr class="odd">
+<td>type: post</td>
+</tr>
+</tbody>
+</table>
 <div id="the-problem" class="section level1">
 <h1>The Problem</h1>
 <p>I’ve come across this problem a few times lately, when I’ve wanted to iterate through some sort of named list or vector, and use both the name and value in each iteration.</p>
@@ -49,10 +81,8 @@
 myvec &lt;- 1:26
 names(myvec) &lt;- LETTERS
 myvec</code></pre>
-<pre><code>##  A  B  C  D  E  F  G  H  I  J  K  L  M  N  O  P  Q  R  S  T  U  V  W  X  Y 
-##  1  2  3  4  5  6  7  8  9 10 11 12 13 14 15 16 17 18 19 20 21 22 23 24 25 
-##  Z 
-## 26</code></pre>
+<pre><code>##  A  B  C  D  E  F  G  H  I  J  K  L  M  N  O  P  Q  R  S  T  U  V  W  X  Y  Z 
+##  1  2  3  4  5  6  7  8  9 10 11 12 13 14 15 16 17 18 19 20 21 22 23 24 25 26</code></pre>
 <p>What if I want to iterate through this vector and produce a string, containing both the value and its name?</p>
 <p>There are lots of ways to do this, but I want something that feels clean and simple, preferably using base R or tidyverse functions.</p>
 <p>If I attempt to solve this problem using <code>lapply()</code>, I quickly realise this won’t work as <code>lapply()</code> doesn’t keep the names of the object being iterated over.</p>

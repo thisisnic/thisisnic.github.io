@@ -16,7 +16,7 @@
       <description>In this series of blog posts introducing tidy eval, we’ve been looking at why tidy eval is important, and terms like “quotation” and “quasiquotation”.
 The next step is to look at how we can write our own dplyr-style functions in R.
 This post will look at the following terms and functions:
-quosuresquo()enquo()What is a quosure?Quosures are a topic which come up frequently when talking about tidy eval.</description>
+ quosures quo() enquo()  What is a quosure? Quosures are a topic which come up frequently when talking about tidy eval.</description>
     </item>
     
     <item>
@@ -37,7 +37,7 @@ To recap, tidy eval refers to the ‘special’ type of evaluation used by dplyr
       <guid>/2018/03/29/what-is-tidy-eval-and-why-should-i-care/</guid>
       <description>I’m going to begin this post somewhat backwards, and start with the conclusion: tidy eval is important to anyone who writes R functions and uses dplyr and/or tidyr.
 I’m going to load a couple of packages, and then show you exactly why.
-library(dplyr)library(rlang)Data wrangling with base RHere’s an example function I have written in base R. Its purpose is to take a data set, and extract values from a single column that match a specific value, with both input and output both being in data frame format.</description>
+library(dplyr) library(rlang) Data wrangling with base R Here’s an example function I have written in base R. Its purpose is to take a data set, and extract values from a single column that match a specific value, with both input and output both being in data frame format.</description>
     </item>
     
     <item>
