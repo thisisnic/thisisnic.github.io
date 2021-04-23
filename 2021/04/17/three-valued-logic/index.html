@@ -13,7 +13,7 @@
     <nav>
     <ul class="menu">
       
-      <li><a href="/">Home</a></li>
+      <li><a href="/post/">Home</a></li>
       
       <li><a href="/about/">About</a></li>
       
@@ -59,13 +59,22 @@ any(na_vec &gt; 5) # are any values greater than 5?</code></pre>
 <p>If needed in principle, we can set the argument <code>na.rm = TRUE</code> for both of these functions, stripping out the <code>NA</code> values and continuing with the evaluation as if they were not there.</p>
 <p>I don’t think this is overly complex when using these functions, though it makes things more interesting when trying to implement them. There a <a href="https://en.wikipedia.org/wiki/Three-valued_logic">Wikipedia article</a> on the topic, and it also has other names like “Kleene logic”.</p>
 <p>I drew this out as a simple flowchart to make sure I had it right, and this is the logic inside it:</p>
-<p>In the case of <code>any</code>:
-1. Can you say that the condition has been met? If yes, return TRUE. If no, go to next step.
-2. Are there are missing values? If no, return FALSE. If yes, return NA.</p>
-<p>And in the case of <code>all</code>:
-1. Can you say that the condition has been met? If no, return FALSE. If yes from the non-missing values (so more like “maybe”!), go to next step.
-2. Are there are missing values? If no, return TRUE If yes, return NA.</p>
+<div id="in-the-case-of-any" class="section level4">
+<h4>In the case of <code>any</code>:</h4>
+<ol style="list-style-type: decimal">
+<li>Can you say that the condition has been met? If yes, return TRUE. If no, go to next step.</li>
+<li>Are there are missing values? If no, return FALSE. If yes, return NA.</li>
+</ol>
+</div>
+<div id="and-in-the-case-of-all" class="section level4">
+<h4>And in the case of <code>all</code>:</h4>
+<ol style="list-style-type: decimal">
+<li>Can you say that the condition has been met? If no, return FALSE. If yes from the non-missing values (so more like “maybe”!), go to next step.</li>
+<li>Are there are missing values? If no, return TRUE If yes, return NA.</li>
+</ol>
+<p><img src="images/three_valued_logic.jpeg" style="width:25.0%" /></p>
 <p>Now I write it out, it doesn’t seem overly complex, but it was pretty interesting encountering it for the first time. This concept also exists in SQL and I’m surprised I’ve not come across it before.</p>
+</div>
 
 </main>
 
