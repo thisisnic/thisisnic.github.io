@@ -28,6 +28,18 @@ The C++ standard library Standard Template Library (contains things like algorit
     </item>
     
     <item>
+      <title>Pointers and References</title>
+      <link>/cpp/2021/04/19/pointers-and-references/</link>
+      <pubDate>Mon, 19 Apr 2021 00:00:00 +0000</pubDate>
+      
+      <guid>/cpp/2021/04/19/pointers-and-references/</guid>
+      <description>Pointers What is a pointer? A pointer is a variable that contains a memory address for a value.
+If you pass a pointer into a function, you get a copy of that pointer (so it points to the same address).
+If you then change the value of the copy inside of the function, it affects whatever is at the address that the pointer is pointing at.
+You could point the pointer to different things, and when you dereference it, it will return the value of whatever is at the address is is pointed at.</description>
+    </item>
+    
+    <item>
       <title>What is const?</title>
       <link>/cpp/2021/04/19/what-is-const/</link>
       <pubDate>Mon, 19 Apr 2021 00:00:00 +0000</pubDate>

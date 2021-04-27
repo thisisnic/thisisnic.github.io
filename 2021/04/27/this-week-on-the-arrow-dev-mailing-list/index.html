@@ -1,0 +1,93 @@
+<!DOCTYPE html>
+<html lang="en-us">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>This Week on the Arrow Dev Mailing List | A minimal Hugo website</title>
+    <link rel="stylesheet" href="/css/style.css" />
+    <link rel="stylesheet" href="/css/fonts.css" />
+    
+  </head>
+
+  <body>
+    <nav>
+    <ul class="menu">
+      
+      <li><a href="/post/">Home</a></li>
+      
+      <li><a href="/about/">About</a></li>
+      
+      <li><a href="/categories/">Categories</a></li>
+      
+      <li><a href="/tags/">Tags</a></li>
+      
+      <li><a href="/speaking/">Speaking</a></li>
+      
+      <li><a href="/index.xml">Subscribe</a></li>
+      
+      <li><a href="https://twitter.com/nic_crane">Twitter</a></li>
+      
+    </ul>
+    <hr/>
+    </nav>
+
+<div class="article-meta">
+<h1><span class="title">This Week on the Arrow Dev Mailing List</span></h1>
+
+<h2 class="date">2021/04/27</h2>
+</div>
+
+<main>
+<p>Inspired by <a href="https://ballistacompute.org/this-week-in-ballista/">&ldquo;This Week in Ballista&rdquo;</a>, and my desire to keep up-to-date with everything happening in Arrow, here&rsquo;s my first &ldquo;This Week in Arrow&rdquo;, summarising the main occurrences on the dev mailing list from 20th - 27th April 2021.</p>
+<h2 id="release-candidate-1">Release candidate 1</h2>
+<p>There were votes on a few release candidates.  RC1 was blocked due to a number of issues.  There was an update which changed the default memory pool to prefer mimalloc instead of jemalloc on MacOs, as this had been <a href="https://issues.apache.org/jira/browse/ARROW-12316">shown to lead to better peformance on macOS</a>.  This code change <a href="https://issues.apache.org/jira/browse/ARROW-12485">hadn&rsquo;t fully achieved this</a> and so a <a href="https://github.com/apache/arrow/pull/10117/files">further change</a> was made to add this update.</p>
+<p>There was a bug in a new API whereby if there were errors during scanning, <a href="https://issues.apache.org/jira/browse/ARROW-12487"><code>ScanBatches()</code> hung instead of erroring</a>.  Code changes were <a href="https://github.com/apache/arrow/pull/10115/files">added</a> to ensure that errors were raised.</p>
+<h2 id="gandiva-lru-cache-replacement">Gandiva LRU cache replacement</h2>
+<p>There was a discussion around replacing the LRU cache in Gandiva.  Whereas LRU (least recently used) discards things based on last usage, the proposed new cache algorithm also takes into account the building time for different expressions.</p>
+<h2 id="copying-rust-to-new-repos">Copying Rust to new repos</h2>
+<p>The Rust components are being copied across to the new repositories and there was discussion around filtering git history via git-filter-repo, updating the CI, adding integration tests, and getting ready to accept PRs in the new repos.</p>
+<h2 id="file-extension">File extension</h2>
+<p>There was a discussion around registering the Arrow format with IANA as a media type.  There were 2 different types being discuss; streaming and the file itself, and the general opinion appreared to be that they should be different types.</p>
+<h2 id="random-number-generation">Random number generation</h2>
+<p>Random number generation was slow on ARM64, with significant differences between different compilers (with clang being much slower than gcc).  It was caused by soft-float math, and resolved by supplying the &ldquo;-ffast-math&rdquo; argument to clang.</p>
+<h2 id="rest-parquet2">Rest parquet2</h2>
+<p>Experimenting with re-writing the Rust parquet implementation which doesn&rsquo;t use &ldquo;unsafe&rdquo; (keyword used to allow functionality that doesn&rsquo;t guarantee memory safety), improving performance, and other things.  There is discussion of moving their implementation to an official Apache repo and people suggest how to go about it.</p>
+<h2 id="python-datafusion">Python-datafusion</h2>
+<p>Discussion around adding python-datafusion into the project.  Python-datafusion allows the use of Datafusion from Python.  Questions are asked around whether the plan is to move it into the monorepo or kept as a separate apache repo, and the author suggests at least doing releases separately so it can have independent versioning from pyarrow and not automatically bundle it with pyarrow.</p>
+<h2 id="computeisin-rejects-duplicates">compute::isin rejects duplicates</h2>
+<p>One of the C++ compute functions, <code>isin</code> has parameter <code>value_set</code>, which raises an error if it contains duplicate values, in arrow 4.0.0.  A user notes that this behaviour is different in Arrow 2.0.0 and a ticket is opened to change this behaviour.</p>
+<h2 id="pyarrow-custom-metadata">pyarrow custom metadata</h2>
+<p>A user asks a question about the user of custom metadata in PyArrow - this is a feature in pandas that is not fully implemented in PyArrow.  There is also clarification that there are not plans to migrate all features from pandas to pyarrow, and further clarification that pyarrow is intended to be a back-end whereas pandas is both back-end and front-end.  A ticket was opened around adding examples of using custom metadata.</p>
+<h2 id="release-candidate-3">Release candidate 3</h2>
+<p>The release candidate was verified by various people in multiple formats on multiple platforms, the vote was carried, and a draft blog post about the release was started.</p>
+<h2 id="miscellaneous">Miscellaneous</h2>
+<ul>
+<li>A userguide was added for DataFusion and Ballista</li>
+<li>There was a Rust sync call</li>
+<li>Discussion in the Go package around functionality to write to JSON and clarification that the internal package was related to integration tests and not aimed at end users, though there was alternative functionality elsewhere that met the OP&rsquo;s needs.</li>
+<li>There was a request for functionality that enabled app metadata from a Flight stream in Go; this is currently implemented in Java, and a ticket was opened to add a Go implementation too.</li>
+<li>A user struggled to find the JS documentation and was directed to its various sources</li>
+<li>Discussion of the Arrow JS meetup</li>
+<li>User asking about whether interoperability is expected between Go and Rust API and clarification that it is</li>
+<li>User asking about whether a particular data type (dense union) is supported in parquet, and clarification that it is not.</li>
+<li>A discussion that turned into a bug report around NumPy buffers setting different attributes around things being mutable</li>
+<li>Mention of a potential bug to do with Pyarrow RecordBatchStreamWriter and dictionaries</li>
+<li>Discussion around the Julia migration - the plan is to follow the same process as the Rust one, and now the Rust migration is complete, the discussion is reopened.</li>
+</ul>
+
+</main>
+
+  <footer>
+  <script src="//yihui.org/js/math-code.js"></script>
+<script async src="//mathjax.rstudio.com/latest/MathJax.js?config=TeX-MML-AM_CHTML"></script>
+
+<script async src="//yihui.org/js/center-img.js"></script>
+
+  
+  <hr/>
+  © Nic Crane 2016 &ndash; 2021 | <a href="https://github.com/thisisnic">Github</a> | <a href="https://twitter.com/nic_crane">Twitter</a>
+  
+  </footer>
+  </body>
+</html>
+

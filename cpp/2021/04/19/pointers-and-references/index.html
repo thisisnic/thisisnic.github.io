@@ -1,0 +1,175 @@
+<!DOCTYPE html>
+<html lang="en-us">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Pointers and References | A minimal Hugo website</title>
+    <link rel="stylesheet" href="/css/style.css" />
+    <link rel="stylesheet" href="/css/fonts.css" />
+    
+  </head>
+
+  <body>
+    <nav>
+    <ul class="menu">
+      
+      <li><a href="/post/">Home</a></li>
+      
+      <li><a href="/about/">About</a></li>
+      
+      <li><a href="/categories/">Categories</a></li>
+      
+      <li><a href="/tags/">Tags</a></li>
+      
+      <li><a href="/speaking/">Speaking</a></li>
+      
+      <li><a href="/index.xml">Subscribe</a></li>
+      
+      <li><a href="https://twitter.com/nic_crane">Twitter</a></li>
+      
+    </ul>
+    <hr/>
+    </nav>
+
+<div class="article-meta">
+<h1><span class="title">Pointers and References</span></h1>
+
+<h2 class="date">2021/04/19</h2>
+</div>
+
+<main>
+
+<script src="/cpp/2021/04/19/pointers-and-references/index_files/header-attrs/header-attrs.js"></script>
+
+
+<div id="pointers" class="section level1">
+<h1>Pointers</h1>
+<div id="what-is-a-pointer" class="section level2">
+<h2>What is a pointer?</h2>
+<p>A pointer is a variable that contains a memory address for a value.</p>
+<p>If you pass a pointer into a function, you get a copy of that pointer (so it points to the same address).</p>
+<p>If you then change the value of the copy inside of the function, it affects whatever is at the address that the pointer is pointing at.</p>
+<p>You could point the pointer to different things, and when you dereference it, it will return the value of whatever is at the address is is pointed at.</p>
+</div>
+<div id="how-do-i-declare-a-pointer" class="section level2">
+<h2>How do I declare a pointer?</h2>
+<p>You can declare a pointer by putting an asterisk between the type declaration and the variable name.</p>
+<pre class="cpp"><code>int *myPointer;</code></pre>
+</div>
+</div>
+<div id="references" class="section level1">
+<h1>References</h1>
+<div id="what-is-a-reference" class="section level2">
+<h2>What is a reference?</h2>
+<p>A reference points to a variable, it’s like a label. You can’t move references, they stay referring to the same variable/location in memory.</p>
+</div>
+<div id="how-do-i-declare-a-reference" class="section level2">
+<h2>How do I declare a reference?</h2>
+<p>You can declare a reference by putting an ampersand between the type declaration and the variable name.</p>
+<pre class="cpp"><code>int &amp;myRef = someVar;</code></pre>
+</div>
+</div>
+<div id="pointer-references" class="section level1">
+<h1>Pointer references</h1>
+<p>If you pass by pointer reference (e.g. <code>void my_func(int * &amp; pRef)) pRef = 10</code>, then you pass in a reference to the pointer. You don’t make a copy; you’re adding an alternative name to the original pointer.</p>
+<p>Therefore if you change the value of <code>pRef</code>, you change the value of anything else that is pointing at that address.</p>
+</div>
+<div id="examples" class="section level1">
+<h1>Examples</h1>
+<p>This example is from the video <a href="https://www.youtube.com/watch?v=UWYnUGnChhA">here</a>.</p>
+<pre class="cpp"><code>#include &lt;stdio.h&gt;
+
+// we pass in a copy of the integer into the function
+void passByVal(int val);
+
+// pass by reference
+// doesn&#39;t matter if the ampersand is touching in or val
+// passes in the actual variable
+void passByRef(int &amp; ref);
+
+// pass in the pointer
+// same as above with position of asterisk
+void passByPtr(int * ptr);
+
+int main(){
+    int x = 5;
+    printf(&quot;x = %i\n&quot;, x); // 5
+    passByVal(x); // prints val = 10
+
+    printf(&quot;x = %i\n&quot;, x); // 5
+    passByRef(x); // prints ref = 20
+
+    printf(&quot;x = %i\n&quot;, x); // 20
+
+    // Similar to pass by pointer - also differs from pass by pointer reference
+    // this is an integer pointer, xptr, which points to x
+    // pointers hold adresses
+    int* xptr = &amp;x;
+    printf(&quot;x = %i\n&quot;, x); // 20
+    // print the derferenced value of xptr, i.e. we don&#39;t want to print the pointer itself, but the
+    // value of thing it&#39;s pointing to
+    printf(&quot;*xptr = %i\n&quot;, *xptr); // 20
+
+    passByPtr(xptr); // prints *ptr = 30
+
+    printf(&quot;x = %i\n&quot;, x); // 30
+    printf(&quot;*xptr = %i\n&quot;, *xptr); // 30
+
+    return 0;
+}
+
+// This function passes in a copy of val, so when we modify the value of val in the function body, we can work 
+// with the modified version, but later references to val in other functions work with the original.
+void passByVal(int val){
+    val = 10;
+    // %i = val
+    printf(&quot;val = %i\n&quot;, val);
+}
+
+// This function passes in a reference to &#39;ref&#39; which means that when we set the value of ref to 20 here, later
+// code which works with ref now shows it having a value of 20.
+void passByRef(int &amp; ref){
+    ref = 20;
+    printf(&quot;ref = %i\n&quot;, ref);
+}
+
+// Very similar to passing by reference but the syntax is a little different.  
+void passByPtr(int * ptr){
+    // look at the value of ptr
+    *ptr = 30;
+    printf(&quot;*ptr = %i\n&quot;, *ptr);
+}
+</code></pre>
+</div>
+<div id="what-is-stdsharedptr" class="section level1">
+<h1>What is <code>std::sharedptr</code>?</h1>
+<p>In the examples above, we discuss raw pointers. They are <a href="https://docs.microsoft.com/en-us/cpp/cpp/pointers-cpp?view=msvc-160">discouraged in Modern C++</a> due to the need for manual deletion and memory management. An alternative to raw pointers is <em>smart pointers</em>.</p>
+<div id="smart-pointers" class="section level2">
+<h2>Smart pointers</h2>
+<p>Smart pointers are a modern version of pointers which is a class template and allows memory management to be done via C++ scoping rather than needing to be done manually and without needing to use new or delete keywords.</p>
+<p>They can be declared using <code>std::uniqueptr</code>, <code>std::sharedptr</code>, and <code>std::weakptr</code>.</p>
+<p>From: <a href="https://www.youtube.com/watch?v=UOB7-B2MfwA" class="uri">https://www.youtube.com/watch?v=UOB7-B2MfwA</a></p>
+<ul>
+<li><p><code>std::unique_ptr</code> - A unique pointer is a scoped pointer and it destroyed when out of that scope. It cannot be copied. Instantiate via std::make_unique.</p></li>
+<li><p><code>std::shared_ptr</code> - Work via counting how many references there are to that pointer. When the reference count reaches 0, the memory is freed. Instantiated via std::make_shared. It can be copied</p></li>
+<li><p><code>std::weak_ptr</code> - Doesn’t increase the reference count when you copy a pointer. Good for if you don’t want to take ownership of the entity. It won’t keep it alive.</p></li>
+</ul>
+</div>
+</div>
+
+</main>
+
+  <footer>
+  <script src="//yihui.org/js/math-code.js"></script>
+<script async src="//mathjax.rstudio.com/latest/MathJax.js?config=TeX-MML-AM_CHTML"></script>
+
+<script async src="//yihui.org/js/center-img.js"></script>
+
+  
+  <hr/>
+  © Nic Crane 2016 &ndash; 2021 | <a href="https://github.com/thisisnic">Github</a> | <a href="https://twitter.com/nic_crane">Twitter</a>
+  
+  </footer>
+  </body>
+</html>
+

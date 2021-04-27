@@ -1,0 +1,133 @@
+<!DOCTYPE html>
+<html lang="en-us">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Definitions #1 | A minimal Hugo website</title>
+    <link rel="stylesheet" href="/css/style.css" />
+    <link rel="stylesheet" href="/css/fonts.css" />
+    
+  </head>
+
+  <body>
+    <nav>
+    <ul class="menu">
+      
+      <li><a href="/post/">Home</a></li>
+      
+      <li><a href="/about/">About</a></li>
+      
+      <li><a href="/categories/">Categories</a></li>
+      
+      <li><a href="/tags/">Tags</a></li>
+      
+      <li><a href="/speaking/">Speaking</a></li>
+      
+      <li><a href="/index.xml">Subscribe</a></li>
+      
+      <li><a href="https://twitter.com/nic_crane">Twitter</a></li>
+      
+    </ul>
+    <hr/>
+    </nav>
+
+<div class="article-meta">
+<h1><span class="title">Definitions #1</span></h1>
+
+<h2 class="date">2021/04/27</h2>
+</div>
+
+<main>
+<p>This post contains answers to a number of questions I had when reading through the Apache Arrow dev mailing list.  In future posts I&rsquo;ll look up how to properly use footnotes in markdown!</p>
+<h2 id="what-is-datafusion">What is DataFusion?</h2>
+<blockquote>
+<p>DataFusion is an attempt at building a modern distributed compute platform in Rust, leveraging Apache Arrow as the memory model.</p>
+</blockquote>
+<h2 id="what-is-ballista">What is Ballista?</h2>
+<blockquote>
+<p>Ballista is a distributed compute platform primarily implemented in Rust, powered by Apache Arrow.</p>
+</blockquote>
+<p>It has now been donated to the Arrow project and so development is happening there.</p>
+<p>It is inspired by Apache Spark, but used Rust as the main execution language, is column-based (rather than row-based), and allows other advantages of Arrow to be exploited.</p>
+<h2 id="what-is-orc">What is ORC?</h2>
+<blockquote>
+<p>Apache ORC (Optimized Row Columnar) is a free and open-source column-oriented data storage format of the Apache Hadoop ecosystem. It is similar to the other columnar-storage file formats available in the Hadoop ecosystem such as RCFile and Parquet. It is compatible with most of the data processing frameworks in the Hadoop environment.</p>
+</blockquote>
+<blockquote>
+<p>ORC is a self-describing type-aware columnar file format designed for Hadoop workloads. It is optimized for large streaming reads, but with integrated support for finding required rows quickly. Storing data in a columnar format lets the reader read, decompress, and process only the values that are required for the current query. Because ORC files are type-aware, the writer chooses the most appropriate encoding for the type and builds an internal index as the file is written.</p>
+</blockquote>
+<h2 id="what-is-gandiva">What is Gandiva?</h2>
+<blockquote>
+<p>By combining LLVM with Apache Arrow libraries, Gandiva can perform low-level operations on Arrow in-memory buffers such as sorts, filters, and projections that are highly optimized for specific runtime environments, improving resource utilization and providing faster, lower-cost operations of analytical workloads.</p>
+</blockquote>
+<blockquote>
+<p>Gandiva is a new open source project licensed under the Apache license and developed in the open on GitHub. It is provided as a standalone C++ library for efficient evaluation of arbitrary SQL expressions on Arrow buffers using runtime code-generation in LLVM.</p>
+</blockquote>
+<h2 id="what-is-llvm">What is LLVM?</h2>
+<blockquote>
+<p>The LLVM Project is a collection of modular and reusable compiler and toolchain technologies. Despite its name, LLVM has little to do with traditional virtual machines. The name &ldquo;LLVM&rdquo; itself is not an acronym; it is the full name of the project.</p>
+</blockquote>
+<p>It is a compiler system for C and C++.</p>
+<blockquote>
+<p>While LLVM is an alternative to GCC for general purpose compiling needs, it also provides Just-in-Time compilation capabilities that can incorporate runtime information to produce highly optimized assembly code for the fastest possible evaluation.</p>
+</blockquote>
+<h2 id="what-is-an-lru-cache">What is an LRU cache?</h2>
+<p>There are many possible algorithms one can use for cacheing of data.  LRU stands for &ldquo;Least Recently Used&rdquo; and as the name implies, keeps track of what components were used when, and when it needs to discard items, discards the least recently used item first.</p>
+<h2 id="what-are-hard-and-soft-floating-point-maths">What are hard and soft floating point maths?</h2>
+<p>&ldquo;Hard&rdquo; and &ldquo;soft&rdquo; refer to whether the computation is done on hardware or software.</p>
+<blockquote>
+<p>Hard floats use an on-chip floating point unit. Soft floats emulate one in software. The difference is speed.</p>
+</blockquote>
+<h2 id="what-is-a-mime-typemedia-typeiana">What is a MIME type/media type/IANA?</h2>
+<blockquote>
+<p>A media type (also known as a Multipurpose Internet Mail Extensions or MIME type) is a standard that indicates the nature and format of a document, file, or assortment of bytes.
+The Internet Assigned Numbers Authority (IANA) is responsible for all official MIME types, and you can find the most up-to-date and complete list at their Media Types page.</p>
+</blockquote>
+<h2 id="what-is-flight">What is Flight?</h2>
+<p>Flight is used for fast transfer of Arrow data via HTTP.</p>
+<blockquote>
+<p>[Flight is a] general-purpose client-server framework to simplify high performance transport of large datasets over network interfaces.</p>
+</blockquote>
+<h2 id="what-does-unsafe-mean-in-the-context-of-rust">What does &ldquo;unsafe&rdquo; mean in the context of Rust?</h2>
+<blockquote>
+<p>Memory safety is the state of being protected from various software bugs and security vulnerabilities when dealing with memory access, such as buffer overflows and dangling pointers. For example, Java is said to be memory-safe because its runtime error detection checks array bounds and pointer dereferences. In contrast, C and C++ allow arbitrary pointer arithmetic with pointers implemented as direct memory addresses with no provision for bounds checking, and thus are potentially memory-unsafe.</p>
+</blockquote>
+<blockquote>
+<p>Rust is a multi-paradigm programming language designed for performance and safety, especially safe concurrency. Rust is syntactically similar to C++, but can guarantee memory safety by using a borrow checker to validate references. Rust achieves memory safety without garbage collection, and reference counting is optional.</p>
+</blockquote>
+<blockquote>
+<p>You can take five actions in unsafe Rust, called unsafe superpowers, that you can’t in safe Rust. Those superpowers include the ability to 1) dereference a raw pointer, 2) call an unsafe function or method, 3) access or modify a mutable static variable, 4) implement an unsafe trait, 5) access fields of unions.</p>
+</blockquote>
+<h1 id="references">References</h1>
+<ol>
+<li><a href="https://github.com/andygrove/datafusion">https://github.com/andygrove/datafusion</a></li>
+<li><a href="https://github.com/ballista-compute/ballista/blob/main/README.md">https://github.com/ballista-compute/ballista/blob/main/README.md</a></li>
+<li><a href="https://llvm.org/">https://llvm.org/</a></li>
+<li><a href="https://www.dremio.com/announcing-gandiva-initiative-for-apache-arrow">https://www.dremio.com/announcing-gandiva-initiative-for-apache-arrow</a></li>
+<li><a href="https://en.wikipedia.org/wiki/Cache_replacement_policies#Least_recently_used_(LRU)">https://en.wikipedia.org/wiki/Cache_replacement_policies#Least_recently_used_(LRU)</a></li>
+<li><a href="https://en.wikipedia.org/wiki/Apache_ORC">https://en.wikipedia.org/wiki/Apache_ORC</a></li>
+<li><a href="https://orc.apache.org/docs/">https://orc.apache.org/docs/</a></li>
+<li><a href="https://stackoverflow.com/questions/3321468/whats-the-difference-between-hard-and-soft-floating-point-numbers">https://stackoverflow.com/questions/3321468/whats-the-difference-between-hard-and-soft-floating-point-numbers</a></li>
+<li><a href="https://developer.mozilla.org/en-US/docs/Web/HTTP/Basics_of_HTTP/MIME_types">https://developer.mozilla.org/en-US/docs/Web/HTTP/Basics_of_HTTP/MIME_types</a></li>
+<li><a href="https://arrow.apache.org/blog/2019/10/13/introducing-arrow-flight/">https://arrow.apache.org/blog/2019/10/13/introducing-arrow-flight/</a></li>
+<li><a href="https://en.wikipedia.org/wiki/Memory_safety">https://en.wikipedia.org/wiki/Memory_safety</a></li>
+<li><a href="https://doc.rust-lang.org/book/ch19-01-unsafe-rust.html">https://doc.rust-lang.org/book/ch19-01-unsafe-rust.html</a></li>
+<li><a href="https://en.wikipedia.org/wiki/Rust_(programming_language)">https://en.wikipedia.org/wiki/Rust_(programming_language)</a></li>
+</ol>
+
+</main>
+
+  <footer>
+  <script src="//yihui.org/js/math-code.js"></script>
+<script async src="//mathjax.rstudio.com/latest/MathJax.js?config=TeX-MML-AM_CHTML"></script>
+
+<script async src="//yihui.org/js/center-img.js"></script>
+
+  
+  <hr/>
+  © Nic Crane 2016 &ndash; 2021 | <a href="https://github.com/thisisnic">Github</a> | <a href="https://twitter.com/nic_crane">Twitter</a>
+  
+  </footer>
+  </body>
+</html>
+
