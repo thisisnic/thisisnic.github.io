@@ -51,7 +51,7 @@
 <h2 id="random-number-generation">Random number generation</h2>
 <p>Random number generation was slow on ARM64, with significant differences between different compilers (with clang being much slower than gcc).  It was caused by soft-float math, and resolved by supplying the &ldquo;-ffast-math&rdquo; argument to clang.</p>
 <h2 id="rest-parquet2">Rest parquet2</h2>
-<p>Experimenting with re-writing the Rust parquet implementation which doesn&rsquo;t use &ldquo;unsafe&rdquo; (keyword used to allow functionality that doesn&rsquo;t guarantee memory safety), improving performance, and other things.  There is discussion of moving their implementation to an official Apache repo and people suggest how to go about it.</p>
+<p>One contributor has been experimenting with re-writing the Rust parquet implementation which doesn&rsquo;t use &ldquo;unsafe&rdquo; (keyword used to allow functionality that doesn&rsquo;t guarantee memory safety), improving performance, and other things.  There is discussion of moving their implementation to an official Apache repo and people suggest how to go about it.</p>
 <h2 id="python-datafusion">Python-datafusion</h2>
 <p>Discussion around adding python-datafusion into the project.  Python-datafusion allows the use of Datafusion from Python.  Questions are asked around whether the plan is to move it into the monorepo or kept as a separate apache repo, and the author suggests at least doing releases separately so it can have independent versioning from pyarrow and not automatically bundle it with pyarrow.</p>
 <h2 id="computeisin-rejects-duplicates">compute::isin rejects duplicates</h2>
