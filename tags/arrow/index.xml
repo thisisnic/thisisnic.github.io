@@ -6,7 +6,19 @@
     <description>Recent content in arrow on A minimal Hugo website</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>en-us</language>
-    <lastBuildDate>Tue, 27 Apr 2021 00:00:00 +0000</lastBuildDate><atom:link href="/tags/arrow/index.xml" rel="self" type="application/rss+xml" />
+    <lastBuildDate>Mon, 10 May 2021 00:00:00 +0000</lastBuildDate><atom:link href="/tags/arrow/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>This Fortnight on the Arrow Dev Mailing List</title>
+      <link>/2021/05/10/this-fortnight-on-the-arrow-dev-mailing-list/</link>
+      <pubDate>Mon, 10 May 2021 00:00:00 +0000</pubDate>
+      
+      <guid>/2021/05/10/this-fortnight-on-the-arrow-dev-mailing-list/</guid>
+      <description>New PMC members Benjamin Kietzman has joined the Arrow Project Management Committee.
+New committers Ian Cook, Jonanthan Keane, and Daniël Heres were added as new committers
+OpenTelemetry Discussion around integrating OpenTelemetry (a library for distrubuted tracing) into the C++ codebase. OpenTelemetry allows instrumentation - being able to better make us of telemetry data for diagnosing errors and writing trace information.
+Interval data type Discussion around a proposal to introduce an interval (i.</description>
+    </item>
+    
     <item>
       <title>Definitions #1</title>
       <link>/2021/04/27/definitions-1/</link>
