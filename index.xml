@@ -268,7 +268,7 @@ In the UI file, near the top of the dashboardBody , call tags$head and tags$scri
       <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
       
       <guid>/about/</guid>
-      <description>Hi, I&amp;rsquo;m Nic. I&amp;rsquo;m currently working at Ursa Computing on Apache Arrow. I&amp;rsquo;m co-author of the &amp;ldquo;Developing R Packages&amp;rdquo; course on Data Camp and have made a couple of small contributions to the tidyverse. In my spare time, I love travel, comedy, and food - both the cooking and eating of! Find me on Twitter: @nic_crane.</description>
+      <description>Hi, I&amp;rsquo;m Nic. I&amp;rsquo;m currently working at Ursa Computing on Apache Arrow. In my spare time, I love travel, camping, comedy, and BBQs! Find me on Twitter: @nic_crane.</description>
     </item>
     
     <item>
