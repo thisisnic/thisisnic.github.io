@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>Productivity on A minimal Hugo website</title>
+    <link>/categories/productivity/</link>
+    <description>Recent content in Productivity on A minimal Hugo website</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <language>en-us</language>
+    <lastBuildDate>Sat, 15 May 2021 00:00:00 +0000</lastBuildDate><atom:link href="/categories/productivity/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>In defence of vague goals</title>
+      <link>/2021/05/15/in-defence-of-vague-goals/</link>
+      <pubDate>Sat, 15 May 2021 00:00:00 +0000</pubDate>
+      
+      <guid>/2021/05/15/in-defence-of-vague-goals/</guid>
+      <description>I recently attended a fantastic seminar on documentation and the diataxis framework by Daniele Procida. I found it really helpful in terms of thinking about how to categorise different types of documentation, and I&amp;rsquo;d recommend checking it out.
+A topic that was touched on was how to go about planning the documenting of software. There was an absolutely fabulous drawn summary of this by Linette Voller, shown in the image below.</description>
+    </item>
+    
+  </channel>
+</rss>
