@@ -3,6 +3,7 @@ body {
   margin: auto;
   padding: 1em;
   line-height: 1.5em;
+  background: #EDEEF1;
 }
 
 /* header and footer areas */
@@ -10,11 +11,15 @@ body {
 .menu li { display: inline-block; }
 .article-meta, .menu a {
   text-decoration: none;
-  background: #730000;
-  color: #fff;
+  color: #16171C;
   padding: 5px;
   border-radius: 5px;
 }
+
+a {
+  color: #375251;
+}
+
 .menu, .article-meta, footer { text-align: center; }
 .title { font-size: 1.1em; }
 footer a { text-decoration: none; }
@@ -30,7 +35,7 @@ pre {
   padding: 1em;
   overflow-x: auto;
 }
-code { background: #f9f9f9; }
+code { background: #f3f7f7; }
 pre code { background: none; }
 
 /* misc elements */
@@ -57,3 +62,4 @@ thead, tfoot, tr:nth-child(even) { background: #eee; }
   margin-right: auto;
   width: 50%;
 }
+
