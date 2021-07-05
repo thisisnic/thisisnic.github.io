@@ -6,7 +6,17 @@
     <description>Recent content in Home on Nic Crane</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>en-uk</language>
-    <lastBuildDate>Tue, 18 May 2021 00:00:00 +0000</lastBuildDate><atom:link href="/index.xml" rel="self" type="application/rss+xml" />
+    <lastBuildDate>Mon, 05 Jul 2021 00:00:00 +0000</lastBuildDate><atom:link href="/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>My First 3 Months at Ursa Computing</title>
+      <link>/2021/07/05/my-first-3-months-at-ursa-computing/</link>
+      <pubDate>Mon, 05 Jul 2021 00:00:00 +0000</pubDate>
+      
+      <guid>/2021/07/05/my-first-3-months-at-ursa-computing/</guid>
+      <description>The last time I blogged, I mentioned not being comfortable with the open-ended-ness of everything, but I was confident that in time I would adjust and start to see the benefits. And that’s precisely what has happened.
+One habit I’ve had for a very long time is being possessed by a real sense of urgency, and it’s a double-edged sword. Sure, I get things done, but getting something working without necessarily knowing why it’s working makes for the appearance of being highly productive, without developing a deep understanding that can later transfer to other areas.</description>
+    </item>
+    
     <item>
       <title>R package documentation - what makes a good example?</title>
       <link>/2021/05/18/r-package-documentation-what-makes-a-good-example/</link>
