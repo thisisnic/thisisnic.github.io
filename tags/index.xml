@@ -6,22 +6,31 @@
     <description>Recent content in Tags on Nic Crane</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>en-uk</language>
-    <lastBuildDate>Tue, 18 May 2021 00:00:00 +0000</lastBuildDate><atom:link href="/tags/index.xml" rel="self" type="application/rss+xml" />
+    <lastBuildDate>Sun, 23 Jan 2022 00:00:00 +0000</lastBuildDate><atom:link href="/tags/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>arrow</title>
+      <link>/tags/arrow/</link>
+      <pubDate>Sun, 23 Jan 2022 00:00:00 +0000</pubDate>
+      
+      <guid>/tags/arrow/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>contributing to open source</title>
+      <link>/tags/contributing-to-open-source/</link>
+      <pubDate>Sun, 23 Jan 2022 00:00:00 +0000</pubDate>
+      
+      <guid>/tags/contributing-to-open-source/</guid>
+      <description></description>
+    </item>
+    
     <item>
       <title>documentation</title>
       <link>/tags/documentation/</link>
       <pubDate>Tue, 18 May 2021 00:00:00 +0000</pubDate>
       
       <guid>/tags/documentation/</guid>
-      <description></description>
-    </item>
-    
-    <item>
-      <title>arrow</title>
-      <link>/tags/arrow/</link>
-      <pubDate>Mon, 10 May 2021 00:00:00 +0000</pubDate>
-      
-      <guid>/tags/arrow/</guid>
       <description></description>
     </item>
     

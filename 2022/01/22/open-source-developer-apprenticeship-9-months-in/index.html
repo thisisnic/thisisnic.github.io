@@ -1,0 +1,85 @@
+<!DOCTYPE html>
+<html lang="en-uk">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Open Source Developer Apprenticeship - 9 months in | Nic Crane</title>
+    <link rel="stylesheet" href="/css/style.css" />
+    <link rel="stylesheet" href="/css/fonts.css" />
+    
+  </head>
+
+  <body>
+    <nav>
+    <ul class="menu">
+      
+      <li><a href="/post/">Home</a></li>
+      
+      <li><a href="/about/">About</a></li>
+      
+      <li><a href="/categories/">Categories</a></li>
+      
+      <li><a href="/tags/">Tags</a></li>
+      
+      <li><a href="/speaking/">Speaking</a></li>
+      
+      <li><a href="/index.xml">Subscribe</a></li>
+      
+    </ul>
+    <hr/>
+    </nav>
+
+<div class="article-meta">
+<h1><span class="title">Open Source Developer Apprenticeship - 9 months in</span></h1>
+
+<h2 class="date">2022/01/22</h2>
+</div>
+
+<main>
+
+<script src="/2022/01/22/open-source-developer-apprenticeship-9-months-in/index_files/header-attrs/header-attrs.js"></script>
+
+
+<p>I’ve been meaning to blog for ages, but have been so wrapped up in project things I’ve not found/made the time to do so. Note that around July 2021, Ursa Computing (i.e. where I originally started my apprenticeship) became part of a new company, <a href="https://voltrondata.com/">Voltron Data</a>, but for the sake of simplicity here, I refer to where I work as Voltron Data, even when talking about things that happened prior to July 2021.</p>
+<pre class="r"><code>library(blogdown)</code></pre>
+<div id="open-ended-role" class="section level1">
+<h1>Open-ended role</h1>
+<p>I’m doing a better job of <a href="https://thisisnic.github.io/2021/07/05/my-first-3-months-at-ursa-computing/">adapting to the environment of total freedom within the role</a>. My team has quarterly initiatives to complete but otherwise, my job is just to “be an open source maintainer” and do whatever that entails, with colleagues occasionally asking me to get involved with specific pieces of work. At first, this was deeply disorienting (and certainly I’m not the only one who feels this) - I want to be good at this, and to be good at it I need something to measure myself again, and super-explicit expectations and concrete standards for everything are crucial in this, right? Actually…no. Like everyone else, I have areas in which I’m stronger and weaker, and this environment allows me to play to my strengths, work on my weaknesses when it’s a good time to do so, and figure out where I fit in the wider team. If something isn’t getting done which falls within my remit, I’ll either figure it out, or hear about it, and it’ll get sorted. If I’m doing something catastrophically wrong, I’m sure someone will let me know and help me work out how to fix it. Beyond that, I need to take ownership of asking for feedback, which is weirdly daunting - even from colleagues that I get on really well with - but learning to bite the bullet and do it is important.</p>
+<p>On a practical level, I’ve found that keeping a spreadsheet of things I’m working on and things I intend to work on soon, with checklists of things I need to check each day, has been an effective and straightforward way of organising my time and priorities on a daily/weekly basis. And when I find the time, I plan on making something - perhaps a Shiny dashboard, Slack bot, or API - to help me keep track of answers to questions like “have an PRs been approved but not merged?”, “are there are new R PRs which haven’t yet been reviewed?” and “are there any new GitHub without replies?”</p>
+</div>
+<div id="the-so-non-incident" class="section level1">
+<h1>The SO non-incident</h1>
+<p>There was something that happened around month 5, which was really important at the time and I’ve wanted to write about it. I’d replied to my second Arrow question on Stack Overflow - a little intimidating at the time, interacting in a different domain with different social norms compared to internally at Voltron Data or within the Apache Arrow project. Anyway, my (accurate and correct!) answer got deleted, and upon first glance, it looked like it had happened unfairly (which historically has disproportionately happened to people who aren’t your stereotypical dev). Some of my colleagues took this really seriously and were trying to see what they could do about it. Later, it transpired that this was not the case; I’d accidentally transgressed some rule relating to linking to external source (it was the official docs, so the rule was kinda being pedantically enforced here, but whatever), and I submitted a new answer, which was not deleted. But, my colleagues’ initial reaction to what basically appeared to be discriminatory behaviour was…<em>everything</em>. I feel grateful to work with such excellent humans, and this whole incident made me realise it’s time to replace my mindset of “some people will treat you like this and best avoid those places/interactions if you don’t want to deal with that BS” with a new attitude of “you absolutely belong here, and people have got your back”.</p>
+</div>
+<div id="being-an-open-source-maintainter" class="section level1">
+<h1>Being an open source maintainter</h1>
+<p>Working for Voltron Data and being a maintainer on Apache Arrow is one of the coolest jobs I’ve had in my life, if I’m honest, and I still have moments where I go “huh, I’m paid to work on open-source? Wow!” Don’t get me wrong, there are boring bits where I can spend more hours than I’d like tracking down an elusive bug than only shows up on a certain CI job or resolving some horrible merge conflicts after a rebase. But, these are balanced with things like working with new contributors on their first PR, writing documentation that turns implicit knowledge into explicit writing that can be shared, learning so so many new things, and submitting PRs for things that I personally care about on the project. My highlight reel so far includes:</p>
+<ul>
+<li>Submitting PRs to other projects - having actual problems I wanted to solve, even if it was just adding extra documentation or fixing typos, (as opposed to trying to find things to do/fix as I was more invested in the <strong>idea</strong> of being a contributor), was really gratifying.</li>
+<li>Getting added to the <a href="https://arrow.apache.org/docs/r/authors.html">list of authors</a> on the arrow R package - I’d submitted a ton of PRs for that release but wasn’t expecting to get added to the author list, so it was a great surprise.</li>
+<li>Becoming a <a href="https://arrow.apache.org/committers/">committer on the Apache Arrow project</a> - being given the power to merge PRs was a little intimidating at first, but again, this privilege/responsibility was something I’d thought was further away so it was a super exciting moment when it happened and it was nice to be recognised as “demonstrating a sustained commitment to the project”.</li>
+<li>Being heavily involved in publishing the first versions of the <a href="https://arrow.apache.org/cookbook/">Apache Arrow cookbooks</a> - I’m one of the main authors on the R cookbook and whilst there’s a load of changes I’d like to see, getting the first version out was a real achievement.</li>
+<li>Updating the R package docs - I’m passionate about documentation and did a lot of work for this release adding diagrams and rephrasing the (already great) docs to try to make them simpler to understand and reach a wider audience of users.</li>
+<li>Publishing <a href="https://github.com/thisisnic/docreview/">docreview</a> on <a href="https://cran.r-project.org/web/packages/docreview/index.html">CRAN</a> - I desperately need to make time to work on this side project, but getting the initial version of it together was instrumental in helping me work on the arrow docs, and learn a few things about being a maintainer and starting new projects.</li>
+<li>Getting involved in a lot of CI work - our CI is pretty complex and this is an area which I’ve found challenging, but I love the detective work involved in working out how to maintain and extend our builds.</li>
+<li>In general, building confidence as a developer. This is an ongoing process, and I’m not there yet, but recently I’ve started to notice a real shift in (a somewhat unconscious) mindset from “this is really challenging, how will I ever get this” to “I’m sure I’ll figure it out somehow”.</li>
+<li>Honestly, working with such a badass group of smart, hard-working, considerate people. I regularly find myself observing how people handle certain situations or approaches they take to solving problems, and trying to mirror that behaviour.</li>
+</ul>
+</div>
+
+</main>
+
+  <footer>
+  <script src="//yihui.org/js/math-code.js"></script>
+<script async src="//mathjax.rstudio.com/latest/MathJax.js?config=TeX-MML-AM_CHTML"></script>
+
+<script async src="//yihui.org/js/center-img.js"></script>
+
+  
+  <hr/>
+  © Nic Crane 2016 &ndash; 2021
+  
+  </footer>
+  </body>
+</html>
+
