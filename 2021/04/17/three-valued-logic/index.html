@@ -1,0 +1,104 @@
+<!DOCTYPE html>
+<html lang="en-uk">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Three Valued Logic | Nic Crane</title>
+    <link rel="stylesheet" href="/css/style.css" />
+    <link rel="stylesheet" href="/css/fonts.css" />
+    
+  </head>
+
+  <body>
+    <nav>
+    <ul class="menu">
+      
+      <li><a href="/post/">Home</a></li>
+      
+      <li><a href="/about/">About</a></li>
+      
+      <li><a href="/categories/">Categories</a></li>
+      
+      <li><a href="/tags/">Tags</a></li>
+      
+      <li><a href="/speaking/">Speaking</a></li>
+      
+      <li><a href="/index.xml">Subscribe</a></li>
+      
+    </ul>
+    <hr/>
+    </nav>
+
+<div class="article-meta">
+<h1><span class="title">Three Valued Logic</span></h1>
+
+<h2 class="date">2021/04/17</h2>
+</div>
+
+<main>
+
+<script src="/2021/04/17/three-valued-logic/index_files/header-attrs/header-attrs.js"></script>
+
+
+<p>This week I was writing Arrow bindings for some R functions and came across a concept that was new to me: three-valued logic.</p>
+<p>I encountered this when working out the expected behaviour of the functions <code>any</code> and <code>all</code> which are used for aggregation of boolean/logical values.</p>
+<p>If I have a vector without any NA values, the behaviour of these functions is pretty straightforward. In the example below, <code>vec &gt; 3</code> evaluates to <code>FALSE FALSE FALSE  TRUE  TRUE</code> and so a call to <code>any()</code> results in <code>TRUE</code> and a call to <code>all()</code> results in <code>FALSE</code>.</p>
+<pre class="r"><code>vec &lt;- 1:5
+any(vec &gt; 3) # are any values greater than 5?</code></pre>
+<pre><code>## [1] TRUE</code></pre>
+<pre class="r"><code>all(vec &gt; 3) # are all values greater than 5?</code></pre>
+<pre><code>## [1] FALSE</code></pre>
+<p>Things get a little more complicated when we have a vector containing <code>NA</code> values. My vector, <code>na_vec</code>, has had an <code>NA</code> appended to the end and I’ve changed the expression to <code>na_vec &gt; 5</code>. In this case of <code>all()</code>, as there are definitely some values which are less than 5, we can say definitively that the answer is <code>FALSE</code>. However, in the case of <code>any()</code>, things are less clear. As <code>NA</code> represents a missing value, it might be the case that this missing value is greater than 5, and so even though none of the known values are greater than 5, we cannot be sure that the missing one is not. Therefore, we get <code>NA</code> back.</p>
+<pre class="r"><code>na_vec &lt;- c(1:5, NA)
+any(na_vec &gt; 5) # are any values greater than 5?</code></pre>
+<pre><code>## [1] NA</code></pre>
+<pre class="r"><code>all(na_vec &gt; 5) # are all values greater than 5?</code></pre>
+<pre><code>## [1] FALSE</code></pre>
+<p>If needed in principle, we can set the argument <code>na.rm = TRUE</code> for both of these functions, stripping out the <code>NA</code> values and continuing with the evaluation as if they were not there.</p>
+<p>I don’t think this is overly complex when using these functions, though it makes things more interesting when trying to implement them. There a <a href="https://en.wikipedia.org/wiki/Three-valued_logic">Wikipedia article</a> on the topic, and it also has other names like “Kleene logic”.</p>
+<p>I drew this out as a simple flowchart to make sure I had it right, and this is the logic inside it:</p>
+<div id="in-the-case-of-any" class="section level4">
+<h4>In the case of <code>any</code>:</h4>
+<ol style="list-style-type: decimal">
+<li>Can you say that the condition has been met? If yes, return TRUE. If no, go to next step.</li>
+<li>Are there are missing values? If no, return FALSE. If yes, return NA.</li>
+</ol>
+</div>
+<div id="and-in-the-case-of-all" class="section level4">
+<h4>And in the case of <code>all</code>:</h4>
+<ol style="list-style-type: decimal">
+<li>Can you say that the condition has been met? If no, return FALSE. If yes from the non-missing values (so more like “maybe”!), go to next step.</li>
+<li>Are there are missing values? If no, return TRUE If yes, return NA.</li>
+</ol>
+<p><img src="images/three_valued_logic.jpeg" style="width:25.0%" /></p>
+<p>Now I write it out, it doesn’t seem overly complex, but it was pretty interesting encountering it for the first time. This concept also exists in SQL and I’m surprised I’ve not come across it before.</p>
+</div>
+
+</main>
+
+  <footer>
+  <script src="//yihui.org/js/math-code.js"></script>
+<script async src="//mathjax.rstudio.com/latest/MathJax.js?config=TeX-MML-AM_CHTML"></script>
+
+<script async src="//yihui.org/js/center-img.js"></script>
+
+<script type="application/javascript">
+var doNotTrack = false;
+if (!doNotTrack) {
+	(function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+	(i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+	m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+	})(window,document,'script','https://www.google-analytics.com/analytics.js','ga');
+	ga('create', 'UA-116704434-1', 'auto');
+	
+	ga('send', 'pageview');
+}
+</script>
+  
+  <hr/>
+  © Nic Crane 2016 &ndash; 2022
+  
+  </footer>
+  </body>
+</html>
+

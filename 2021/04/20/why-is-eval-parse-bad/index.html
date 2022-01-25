@@ -1,0 +1,165 @@
+<!DOCTYPE html>
+<html lang="en-uk">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Why is eval parse bad? | Nic Crane</title>
+    <link rel="stylesheet" href="/css/style.css" />
+    <link rel="stylesheet" href="/css/fonts.css" />
+    
+  </head>
+
+  <body>
+    <nav>
+    <ul class="menu">
+      
+      <li><a href="/post/">Home</a></li>
+      
+      <li><a href="/about/">About</a></li>
+      
+      <li><a href="/categories/">Categories</a></li>
+      
+      <li><a href="/tags/">Tags</a></li>
+      
+      <li><a href="/speaking/">Speaking</a></li>
+      
+      <li><a href="/index.xml">Subscribe</a></li>
+      
+    </ul>
+    <hr/>
+    </nav>
+
+<div class="article-meta">
+<h1><span class="title">Why is eval parse bad?</span></h1>
+
+<h2 class="date">2021/04/20</h2>
+</div>
+
+<main>
+
+<script src="/2021/04/20/why-is-eval-parse-bad/index_files/header-attrs/header-attrs.js"></script>
+
+
+<p>I was writing Arrow bindings for <code>na.omit</code> and needed a way of applying <code>is.na</code> to every column of a table at once. I’d originally implemented using <code>dplyr::filter</code>, but had failed to realise that Arrow only suggests <code>dplyr</code> but doesn’t import it, and so needed to refactor it.</p>
+<p>Table objects in <code>Arrow</code> have a <code>Filter</code> method, and I knew that a naive implementation would be a for loop which iteratively called <code>Table$Filter(!is.na(column_name))</code> for each column in my table. However, this would be ugly at best and inefficient at worst, and so what I really wanted was to be able to call <code>Table$Filter(!is.na(col1) &amp; !is.na(col2) &amp; ... !is.na(colN))</code> where <code>1</code>…<code>N</code> are my column names.</p>
+<p>An early implementation without <code>dplyr::filter</code> looked like this:</p>
+<pre class="r"><code>filter_text = paste0(&quot;!is.na(tbl$&quot;, names(tbl), &quot;)&quot;, collapse = &quot; &amp; &quot;)
+filter = rlang::parse_expr(filter_text)
+tbl$Filter(rlang::eval_bare(filter))</code></pre>
+<p>To break this down a bit, I’ll demonstrate a line by line run, using <code>airquality</code> as my input data. Below you can see that we start off with 153 rows.</p>
+<pre class="r"><code>tbl = arrow::Table$create(airquality)
+tbl</code></pre>
+<pre><code>## Table
+## 153 rows x 6 columns
+## $Ozone &lt;int32&gt;
+## $Solar.R &lt;int32&gt;
+## $Wind &lt;double&gt;
+## $Temp &lt;int32&gt;
+## $Month &lt;int32&gt;
+## $Day &lt;int32&gt;
+## 
+## See $metadata for additional Schema metadata</code></pre>
+<p>If I call <code>na.omit</code> on the <code>airquality</code> data.frame, I’m left with 111 rows.</p>
+<pre class="r"><code>nrow(na.omit(airquality))</code></pre>
+<pre><code>## [1] 111</code></pre>
+<p>So now for the Arrow implementation. I first construct my filter:</p>
+<pre class="r"><code>filter_text = paste0(&quot;!is.na(tbl$&quot;, names(tbl), &quot;)&quot;, collapse = &quot; &amp; &quot;)
+filter_text</code></pre>
+<pre><code>## [1] &quot;!is.na(tbl$Ozone) &amp; !is.na(tbl$Solar.R) &amp; !is.na(tbl$Wind) &amp; !is.na(tbl$Temp) &amp; !is.na(tbl$Month) &amp; !is.na(tbl$Day)&quot;</code></pre>
+<p>I then convert the string to an expression.</p>
+<pre class="r"><code>filter = rlang::parse_expr(filter_text)
+filter</code></pre>
+<pre><code>## !is.na(tbl$Ozone) &amp; !is.na(tbl$Solar.R) &amp; !is.na(tbl$Wind) &amp; 
+##     !is.na(tbl$Temp) &amp; !is.na(tbl$Month) &amp; !is.na(tbl$Day)</code></pre>
+<p>Finally, I evaluate the expression:</p>
+<pre class="r"><code>tbl$Filter(rlang::eval_bare(filter))</code></pre>
+<pre><code>## Table
+## 111 rows x 6 columns
+## $Ozone &lt;int32&gt;
+## $Solar.R &lt;int32&gt;
+## $Wind &lt;double&gt;
+## $Temp &lt;int32&gt;
+## $Month &lt;int32&gt;
+## $Day &lt;int32&gt;
+## 
+## See $metadata for additional Schema metadata</code></pre>
+<p>It looks like it’s worked - it has! - but something feels wrong. I’ve heard people in the past talk about <code>eval(parse(text = stuff))</code> being a bad way of doing things, and my solution felt a bit dirty in a similar way, though I wasn’t sure why.</p>
+<p>A bit of a search and I found <a href="https://stackoverflow.com/questions/13649979/what-specifically-are-the-dangers-of-evalparse">an answer on StackOverflow</a>. In short, the main reasons that eval/parse is warned against are:</p>
+<ul>
+<li>if you’re evaluating text passed in by a user there could be security concerns</li>
+<li>there are other more efficient and human-readable ways of accomplishing the same thing</li>
+<li>it may be unclear what’s being evaluated from what environment</li>
+</ul>
+<p>So, my code wasn’t as bad as I thought. However, in another bit of the Arrow codebase I’d seen some pretty nice code written using data masks and environment, and so refactored my code a little to mirror this style.</p>
+<pre class="r"><code># paste together the filter function as a character vector
+filter_text = paste0(
+  &quot;.data$Filter(&quot;,
+  paste0(&quot;!is.na(.data$&quot;, names(tbl), &quot;)&quot;, collapse = &quot; &amp; &quot;),
+  &quot;)&quot;
+)
+# parse expression; results in:
+# .data$Filter(!is.na(.data$Ozone) &amp; !is.na(.data$Solar.R) &amp; !is.na(.data$Wind) &amp; 
+#  !is.na(.data$Temp) &amp; !is.na(.data$Month) &amp; !is.na(.data$Day))
+filter = rlang::parse_expr(filter_text)
+
+# tidily evaluate the results, within the data mask
+rlang::eval_tidy(filter,  rlang::new_data_mask(rlang::env(.data = tbl)))</code></pre>
+<p>The above solution is my latest one at time of writing but hasn’t been reviewed or merged yet, so may require further changes. Here, I move in the called to <code>Table$Filter</code> into the filter text, so the whole expression is captured. This now means that I can use the <code>.data</code> pronoun to refer to the dataset, and instead of depending on the fact that a variable called <code>tbl</code> has been passed into my function, can instead manually pass it in when I call <code>rlang::env</code>.</p>
+<p>I’m happier with this solution; whilst it still feels weird to construct calls using strings, at least this way, what is being called against what feels a little cleaner.</p>
+<p>One thing that really helped me work all this out was the <a href="https://raw.githubusercontent.com/rstudio/cheatsheets/master/tidyeval.pdf"><code>rlang</code> cheatsheet</a>, which is a resource I’d recommend to anyone wrestling with tidy eval.</p>
+<p>[Edited to add below]</p>
+<p>So in the end, after discussing with a colleague, we decided that parsing an expression was still potentially problematic. Although I’d dismissed the possible security concerns, they mentioned that it could be the case that someone has a dodgy column name, and it was unclear whether encapsulating things in their own environment would remove this risk or not. They suggested that I see if I could get <code>purrr</code> to do something useful, and after a little experimentation, here was my eventual solution.</p>
+<pre class="r"><code># Creates a list of ChunkedArrays containing true/false for each value depending
+# if it&#39;s an NA or not
+not_na &lt;- purrr::map(tbl$columns, ~!is.na(.x))
+
+# reduces across lists to a single ChunkedArray (i.e. only true if all rows contain true)
+not_na_agg &lt;- purrr::reduce(not_na, `&amp;`)
+
+# filter only to retrieve rows which match with true
+tbl$Filter(not_na_agg)</code></pre>
+<p>As is common in these circumstances, there was a simpler and more aesthetically pleasing solution available that didn’t require parsing of expressions. I’m much happier with the above code - it feels like a much better approach!</p>
+<p>[Edited again!]</p>
+<p>Ultimately we went with a different approach that implemented functionality that already exists in the Arrow package. This approach is even better as, instead of evaluating <code>!is.na</code> on each column of data and combining them, we instead build an expression that is evaluated against the dataset.</p>
+<pre class="r"><code>not_na &lt;- purrr::map(tbl$columns, ~arrow:::build_array_expression(&quot;is_valid&quot;, .x))
+not_na_agg &lt;- Reduce(&quot;&amp;&quot;, not_na)
+tbl$Filter(arrow:::eval_array_expression(not_na_agg))</code></pre>
+<pre><code>## Table
+## 111 rows x 6 columns
+## $Ozone &lt;int32&gt;
+## $Solar.R &lt;int32&gt;
+## $Wind &lt;double&gt;
+## $Temp &lt;int32&gt;
+## $Month &lt;int32&gt;
+## $Day &lt;int32&gt;
+## 
+## See $metadata for additional Schema metadata</code></pre>
+
+</main>
+
+  <footer>
+  <script src="//yihui.org/js/math-code.js"></script>
+<script async src="//mathjax.rstudio.com/latest/MathJax.js?config=TeX-MML-AM_CHTML"></script>
+
+<script async src="//yihui.org/js/center-img.js"></script>
+
+<script type="application/javascript">
+var doNotTrack = false;
+if (!doNotTrack) {
+	(function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+	(i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+	m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+	})(window,document,'script','https://www.google-analytics.com/analytics.js','ga');
+	ga('create', 'UA-116704434-1', 'auto');
+	
+	ga('send', 'pageview');
+}
+</script>
+  
+  <hr/>
+  © Nic Crane 2016 &ndash; 2022
+  
+  </footer>
+  </body>
+</html>
+

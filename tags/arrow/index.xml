@@ -1,0 +1,64 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>arrow on Nic Crane</title>
+    <link>/tags/arrow/</link>
+    <description>Recent content in arrow on Nic Crane</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <language>en-uk</language>
+    <lastBuildDate>Sun, 23 Jan 2022 00:00:00 +0000</lastBuildDate><atom:link href="/tags/arrow/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>Open Source Developer Apprenticeship - 9 months in</title>
+      <link>/2022/01/23/open-source-developer-apprenticeship-9-months-in/</link>
+      <pubDate>Sun, 23 Jan 2022 00:00:00 +0000</pubDate>
+      
+      <guid>/2022/01/23/open-source-developer-apprenticeship-9-months-in/</guid>
+      <description>I’ve been meaning to blog for ages but have been so wrapped up in project things and getting nerd-sniped. Here’s a bit about the last six months.
+Open-ended role I’m doing a better job of adapting to the environment of total freedom within the role. My team has quarterly initiatives to complete, but otherwise, my job is just to “be an open-source maintainer” and do whatever that entails, with colleagues occasionally asking me to get involved with specific pieces of work.</description>
+    </item>
+    
+    <item>
+      <title>This Fortnight on the Arrow Dev Mailing List</title>
+      <link>/2021/05/10/this-fortnight-on-the-arrow-dev-mailing-list/</link>
+      <pubDate>Mon, 10 May 2021 00:00:00 +0000</pubDate>
+      
+      <guid>/2021/05/10/this-fortnight-on-the-arrow-dev-mailing-list/</guid>
+      <description>New PMC members Benjamin Kietzman has joined the Arrow Project Management Committee.
+New committers Ian Cook, Jonanthan Keane, and Daniël Heres were added as new committers
+OpenTelemetry Discussion around integrating OpenTelemetry (a library for distrubuted tracing) into the C++ codebase. OpenTelemetry allows instrumentation - being able to better make us of telemetry data for diagnosing errors and writing trace information.
+Interval data type Discussion around a proposal to introduce an interval (i.</description>
+    </item>
+    
+    <item>
+      <title>Definitions #1</title>
+      <link>/2021/04/27/definitions-1/</link>
+      <pubDate>Tue, 27 Apr 2021 00:00:00 +0000</pubDate>
+      
+      <guid>/2021/04/27/definitions-1/</guid>
+      <description>This post contains answers to a number of questions I had when reading through the Apache Arrow dev mailing list. In future posts I&amp;rsquo;ll look up how to properly use footnotes in markdown!
+What is DataFusion?  DataFusion is an attempt at building a modern distributed compute platform in Rust, leveraging Apache Arrow as the memory model.
+ What is Ballista?  Ballista is a distributed compute platform primarily implemented in Rust, powered by Apache Arrow.</description>
+    </item>
+    
+    <item>
+      <title>This Week on the Arrow Dev Mailing List</title>
+      <link>/2021/04/27/this-week-on-the-arrow-dev-mailing-list/</link>
+      <pubDate>Tue, 27 Apr 2021 00:00:00 +0000</pubDate>
+      
+      <guid>/2021/04/27/this-week-on-the-arrow-dev-mailing-list/</guid>
+      <description>Inspired by &amp;ldquo;This Week in Ballista&amp;rdquo;, and my desire to keep up-to-date with everything happening in Arrow, here&amp;rsquo;s my first &amp;ldquo;This Week in Arrow&amp;rdquo;, summarising the main occurrences on the dev mailing list from 20th - 27th April 2021.
+Release candidate 1 There were votes on a few release candidates. RC1 was blocked due to a number of issues. There was an update which changed the default memory pool to prefer mimalloc instead of jemalloc on MacOs, as this had been shown to lead to better peformance on macOS.</description>
+    </item>
+    
+    <item>
+      <title>Why is eval parse bad?</title>
+      <link>/2021/04/20/why-is-eval-parse-bad/</link>
+      <pubDate>Tue, 20 Apr 2021 00:00:00 +0000</pubDate>
+      
+      <guid>/2021/04/20/why-is-eval-parse-bad/</guid>
+      <description>I was writing Arrow bindings for na.omit and needed a way of applying is.na to every column of a table at once. I’d originally implemented using dplyr::filter, but had failed to realise that Arrow only suggests dplyr but doesn’t import it, and so needed to refactor it.
+Table objects in Arrow have a Filter method, and I knew that a naive implementation would be a for loop which iteratively called Table$Filter(!</description>
+    </item>
+    
+  </channel>
+</rss>

@@ -1,0 +1,137 @@
+<!DOCTYPE html>
+<html lang="en-uk">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>What the heck is quasiquotation? | Nic Crane</title>
+    <link rel="stylesheet" href="/css/style.css" />
+    <link rel="stylesheet" href="/css/fonts.css" />
+    
+  </head>
+
+  <body>
+    <nav>
+    <ul class="menu">
+      
+      <li><a href="/post/">Home</a></li>
+      
+      <li><a href="/about/">About</a></li>
+      
+      <li><a href="/categories/">Categories</a></li>
+      
+      <li><a href="/tags/">Tags</a></li>
+      
+      <li><a href="/speaking/">Speaking</a></li>
+      
+      <li><a href="/index.xml">Subscribe</a></li>
+      
+    </ul>
+    <hr/>
+    </nav>
+
+<div class="article-meta">
+<h1><span class="title">What the heck is quasiquotation?</span></h1>
+<h2 class="author">Nic Crane</h2>
+<h2 class="date">2018/03/31</h2>
+</div>
+
+<main>
+
+<script src="/rmarkdown-libs/header-attrs/header-attrs.js"></script>
+
+
+<p>In a <a href="https://thisisnic.github.io/2018/03/29/what-is-tidy-eval-and-why-should-i-care/">previous entry</a>, I introduced the concept of tidy eval. If you’re completely new to tidy eval and haven’t read that post yet, I’d suggest you go back to it before continuing, as this post will build upon the concepts I discussed there.</p>
+<p>To recap, tidy eval refers to the ‘special’ type of evaluation used by dplyr functions. Whereas in base R, you have to refer the data frame in question if you want to returns particular rows, this is not the case with dplyr functions. Consider the two following equivalent pieces of R code. The first uses base R:</p>
+<pre class="r"><code>iris[iris$Sepal.Length &gt; 7.5, ]</code></pre>
+<pre><code>##     Sepal.Length Sepal.Width Petal.Length Petal.Width   Species
+## 106          7.6         3.0          6.6         2.1 virginica
+## 118          7.7         3.8          6.7         2.2 virginica
+## 119          7.7         2.6          6.9         2.3 virginica
+## 123          7.7         2.8          6.7         2.0 virginica
+## 132          7.9         3.8          6.4         2.0 virginica
+## 136          7.7         3.0          6.1         2.3 virginica</code></pre>
+<p>And the second uses the filter function from dplyr:</p>
+<pre class="r"><code>library(dplyr)
+filter(iris, Sepal.Length &gt; 7.5)</code></pre>
+<pre><code>##   Sepal.Length Sepal.Width Petal.Length Petal.Width   Species
+## 1          7.6         3.0          6.6         2.1 virginica
+## 2          7.7         3.8          6.7         2.2 virginica
+## 3          7.7         2.6          6.9         2.3 virginica
+## 4          7.7         2.8          6.7         2.0 virginica
+## 5          7.9         3.8          6.4         2.0 virginica
+## 6          7.7         3.0          6.1         2.3 virginica</code></pre>
+<p>In the case of call to <code>filter()</code>, we didn’t need to refer back to the <code>iris</code> data frame. This is because dplyr functions use tidy evaluation to <strong>quote the expression and evaluate it within the context of the data frame being referred to</strong>.</p>
+<div id="definition-1-quotation" class="section level2">
+<h2>Definition 1: Quotation</h2>
+<p>From the help file for quotation from the rlang package:</p>
+<blockquote>
+<blockquote>
+<p>Quotation is a mechanism by which an expression supplied as argument is captured by a function. Instead of seeing the value of the argument, the function sees the recipe (the R code) to make that value.</p>
+</blockquote>
+</blockquote>
+<p>So now we’ve defined quotation, what is quasiquotation?</p>
+</div>
+<div id="definition-2-quasiquotation" class="section level2">
+<h2>Definition 2: Quasiquotation</h2>
+<p>Take a look at this example from a previous post:</p>
+<pre class="r"><code>library(rlang)
+
+wrangle_data &lt;- function(x, col_name, val){
+  
+  one_col &lt;- select(x, !!sym(col_name))
+  filter(one_col, !!sym(col_name) == val)
+}
+
+wrangle_data(iris, &quot;Species&quot;, &quot;versicolor&quot;) %&gt;%
+  head()</code></pre>
+<pre><code>##      Species
+## 1 versicolor
+## 2 versicolor
+## 3 versicolor
+## 4 versicolor
+## 5 versicolor
+## 6 versicolor</code></pre>
+<p>In the example, in both the calls to <code>select()</code> and <code>filter()</code>, we wrap <code>col_name</code> in a call to <code>sym()</code>, which takes the content of <code>col_name</code> (a string) and turns it into something that will look like R code to dplyr (a symbol). We then use the <code>!!</code> (bang bang) operator to unquote the call to <code>sym()</code>, or rather, to immediately evaluate it.</p>
+<p>This combination of quoting and unquoting is termed quasiquotation. Let’s have a look at the definition from the help file for quasiquotation from the rlang package:</p>
+<blockquote>
+<blockquote>
+<p>Quasiquotation is the mechanism that makes it possible to program flexibly with tidy evaluation grammars like dplyr.</p>
+</blockquote>
+</blockquote>
+<blockquote>
+<blockquote>
+<p>Quasiquotation is the combination of quoting an expression while allowing immediate evaluation (unquoting) of part of that expression. We provide both syntactic operators and functional forms for unquoting.</p>
+</blockquote>
+</blockquote>
+<p>Quasiquotation is an essential concept to be aware of when including dplyr functions within your own functions. In future posts, I’m going to continue to explore the different functions and operators that are used in quasiquotation.</p>
+<p>As ever, I’m no expert on tidy eval, just a newie <a href="https://maraaverick.rbind.io/2017/11/learning-out-loud-slides-from-earl-boston/">learning out loud</a> and any feedback on this post <a href="https://twitter.com/nic_crane/status/980039347692081152">via Twitter</a> is much welcomed!</p>
+</div>
+
+</main>
+
+  <footer>
+  <script src="//yihui.org/js/math-code.js"></script>
+<script async src="//mathjax.rstudio.com/latest/MathJax.js?config=TeX-MML-AM_CHTML"></script>
+
+<script async src="//yihui.org/js/center-img.js"></script>
+
+<script type="application/javascript">
+var doNotTrack = false;
+if (!doNotTrack) {
+	(function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+	(i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+	m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+	})(window,document,'script','https://www.google-analytics.com/analytics.js','ga');
+	ga('create', 'UA-116704434-1', 'auto');
+	
+	ga('send', 'pageview');
+}
+</script>
+  
+  <hr/>
+  © Nic Crane 2016 &ndash; 2022
+  
+  </footer>
+  </body>
+</html>
+

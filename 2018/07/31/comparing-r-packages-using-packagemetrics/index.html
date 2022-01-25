@@ -1,0 +1,108 @@
+<!DOCTYPE html>
+<html lang="en-uk">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Comparing R packages using packagemetrics | Nic Crane</title>
+    <link rel="stylesheet" href="/css/style.css" />
+    <link rel="stylesheet" href="/css/fonts.css" />
+    
+  </head>
+
+  <body>
+    <nav>
+    <ul class="menu">
+      
+      <li><a href="/post/">Home</a></li>
+      
+      <li><a href="/about/">About</a></li>
+      
+      <li><a href="/categories/">Categories</a></li>
+      
+      <li><a href="/tags/">Tags</a></li>
+      
+      <li><a href="/speaking/">Speaking</a></li>
+      
+      <li><a href="/index.xml">Subscribe</a></li>
+      
+    </ul>
+    <hr/>
+    </nav>
+
+<div class="article-meta">
+<h1><span class="title">Comparing R packages using packagemetrics</span></h1>
+<h2 class="author">Nic Crane</h2>
+<h2 class="date">2018/07/31</h2>
+</div>
+
+<main>
+
+
+
+<p>A colleague asked for my opinion on 2 packages; <code>loggit</code> and <code>futile.logger</code>. Whilst I have used <code>futile.logger</code> before, I hadn’t used <code>loggit</code> and so used the metrics of the package to evaluate the package itself.</p>
+<p>The <code>packagemetrics</code> package allows us to generate a number of metrics about a package, so we can compare them. The first thing I do is call <code>package_list_metrics()</code> to get metrics about these
+two packages. I’ve changed the shape of the table, just so it’s easier to read in this blog post.</p>
+<pre class="r"><code>library(packagemetrics)
+library(dplyr)</code></pre>
+<pre class="r"><code>pkg_df &lt;- package_list_metrics(c(&quot;loggit&quot;, &quot;futile.logger&quot;))
+as_data_frame(t(pkg_df), rownames = &quot;stat&quot;) </code></pre>
+<pre><code>## # A tibble: 18 x 3
+##    stat               V1                           V2                     
+##    &lt;chr&gt;              &lt;chr&gt;                        &lt;chr&gt;                  
+##  1 package            loggit                       futile.logger          
+##  2 published          2018-04-09                   2016-07-10             
+##  3 title              Effortless Exception Logging A Logging Utility for R
+##  4 depends_count      1                            1                      
+##  5 suggests_count     3                            2                      
+##  6 tidyverse_happy    &quot; TRUE&quot;                      FALSE                  
+##  7 has_vignette_build FALSE                        FALSE                  
+##  8 has_tests          TRUE                         TRUE                   
+##  9 reverse_count      &quot; 0&quot;                         27                     
+## 10 dl_last_month      &quot;  250&quot;                      37313                  
+## 11 ci                 Travis                       &lt;NA&gt;                   
+## 12 test_coverage      NONE                         &lt;NA&gt;                   
+## 13 forks              &quot; 0&quot;                         &lt;NA&gt;                   
+## 14 stars              15                           &lt;NA&gt;                   
+## 15 watchers           &quot; 5&quot;                         &lt;NA&gt;                   
+## 16 last_commit        &lt;NA&gt;                         &lt;NA&gt;                   
+## 17 last_issue_closed  8.4                          &lt;NA&gt;                   
+## 18 contributors       &quot; 3&quot;                         &lt;NA&gt;</code></pre>
+<p>You can see from the table that the last publication date for <code>loggit</code> is April 2018 whereas for <code>futile.logger</code> it is July 2016. It can be quite hard to gain much from this metric; whereas more recent updates can suggest active development and ongoing improvements to functionality, a lack of update may indicate that a package has reached a stable state.</p>
+<p>Reverse dependencies, however, tells us a lot more; if a package has a high number of reverse dependencies, one might conclude that there is a higher degree of trust in it in the community, but also more importantly, that it has been exposed to a higher number of users and therefore be less likely to have undiscovered bug. This is also true for the number of downloads.</p>
+<p>The second half of the values in the table are blank, implying that futile.logger isn’t on GitHub. For me, if this were true, it’d be a cause for concern as I’d like to be able to see the number of open issues and how recent updates were. However, a quick Google search tells me that futile.logger is in fact on GitHub, but just not linked to in its CRAN page.</p>
+<p>Reading GitHub issues pages is fairly simple. Rather than read every issue in detail, I try to get a rough idea of what’s going on, by skimming through. Typically a large number of issues tend to stem from user questions and enhancement requests, so just looking at the raw numbers isn’t enough.</p>
+<p><img src="/images/futile.logger-issues.png" width="50%" /></p>
+<p>Looking through the open issues for <code>futile.logger</code>, the package authors has already flagged a couple of items as bugs, reducing my work. They appear to be do with namespacing issues, so certainly something to be aware of although not necessarily important.</p>
+<p>Going to the equivalent page for <code>loggit</code>, I see that there is only one ticket open, but has been flagged as an enhancement. However, fewer issues is not necessarily a sign of package quality, as it cannot be decoupled from package popularity.</p>
+<p><img src="/images/loggit-issues.png" width="50%" /></p>
+<p>At this point, I could go on, and explore the source code for each package, but at this point I feel it’d lead to diminishing returns. The conclusion I draw and pass on to my colleague is that both packages seem to be functional with no glaring issues. As I’ve used <code>futile.logger</code> before, and it seems to be more widely used, I’d lean towards that one. My colleague thanks me for my advice and goes with <code>loggit</code> anyway because he’s used it before on a project and it worked pretty well there, which is fair enough.</p>
+<p>Package metrics can be a useful source of information about a package, but ultimately, there’s no substitute for experience. Other logging packages are available; these were merely the ones I’d heard of.</p>
+
+</main>
+
+  <footer>
+  <script src="//yihui.org/js/math-code.js"></script>
+<script async src="//mathjax.rstudio.com/latest/MathJax.js?config=TeX-MML-AM_CHTML"></script>
+
+<script async src="//yihui.org/js/center-img.js"></script>
+
+<script type="application/javascript">
+var doNotTrack = false;
+if (!doNotTrack) {
+	(function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+	(i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+	m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+	})(window,document,'script','https://www.google-analytics.com/analytics.js','ga');
+	ga('create', 'UA-116704434-1', 'auto');
+	
+	ga('send', 'pageview');
+}
+</script>
+  
+  <hr/>
+  © Nic Crane 2016 &ndash; 2022
+  
+  </footer>
+  </body>
+</html>
+

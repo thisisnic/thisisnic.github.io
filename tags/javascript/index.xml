@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>JavaScript on Nic Crane</title>
+    <link>/tags/javascript/</link>
+    <description>Recent content in JavaScript on Nic Crane</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <language>en-uk</language>
+    <lastBuildDate>Tue, 16 Aug 2016 00:00:00 +0000</lastBuildDate><atom:link href="/tags/javascript/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>Pop-up to confirm action in Shiny</title>
+      <link>/2016/08/16/pop-up-to-confirm-action-in-shiny/</link>
+      <pubDate>Tue, 16 Aug 2016 00:00:00 +0000</pubDate>
+      
+      <guid>/2016/08/16/pop-up-to-confirm-action-in-shiny/</guid>
+      <description>It’s a gorgeous evening in Bath tonight, and my evening has been improved by finding a free table outside at the pub, a large glass of Sauvignon Blanc, and working out how to include a JavaScript confirmation box in Shiny. Here, I’m using Shiny dashboard, although this methodology will work fine with other UI layouts.
+In the UI file, near the top of the dashboardBody , call tags$head and tags$script to give the source of the JavaScript file:</description>
+    </item>
+    
+  </channel>
+</rss>

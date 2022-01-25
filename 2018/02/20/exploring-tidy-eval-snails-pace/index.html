@@ -1,0 +1,160 @@
+<!DOCTYPE html>
+<html lang="en-uk">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Exploring Tidy Eval at a Snail&#39;s Pace | Nic Crane</title>
+    <link rel="stylesheet" href="/css/style.css" />
+    <link rel="stylesheet" href="/css/fonts.css" />
+    
+  </head>
+
+  <body>
+    <nav>
+    <ul class="menu">
+      
+      <li><a href="/post/">Home</a></li>
+      
+      <li><a href="/about/">About</a></li>
+      
+      <li><a href="/categories/">Categories</a></li>
+      
+      <li><a href="/tags/">Tags</a></li>
+      
+      <li><a href="/speaking/">Speaking</a></li>
+      
+      <li><a href="/index.xml">Subscribe</a></li>
+      
+    </ul>
+    <hr/>
+    </nav>
+
+<div class="article-meta">
+<h1><span class="title">Exploring Tidy Eval at a Snail&rsquo;s Pace</span></h1>
+<h2 class="author">Nic Crane</h2>
+<h2 class="date">2018/02/20</h2>
+</div>
+
+<main>
+
+<script src="/rmarkdown-libs/header-attrs/header-attrs.js"></script>
+
+
+<p>I recently attended rstudio::conf, with my favourite talks being those which taught me new things that I am going to use in my day-to-day work. I attended and enjoyed Hadley Wickham’s talk, ‘Tidy eval: programming with dplyr, tidyr, and ggplot2’, although got sidetracked trying to keep up typing whilst listening.</p>
+<p>When I’m delivering training courses, this is the one thing I advise all attendees <em>not</em> to do - it’s so easy to miss important points whilst running code.</p>
+<p>Anyway, Hadley’s talk covered lots of important background information about tidy eval, but I’m still finding a lot of it pretty unintuitive, so I thought I’d explore the aspects of tidy eval that I come across in my day-to-day work, at a snail’s pace, in the hope that it’ll start making sense.</p>
+<p><img src="images/pallida.jpg" width="50%" /></p>
+<p>The example I’m going to use in this post is the iris dataset. I’ve yet to meet someone who has been learning R for a while who isn’t sick of this dataset by now, but for the sake of completeness, let’s take a quick look at the first few lines now.</p>
+<pre class="r"><code>head(iris)</code></pre>
+<pre><code>##   Sepal.Length Sepal.Width Petal.Length Petal.Width Species
+## 1          5.1         3.5          1.4         0.2  setosa
+## 2          4.9         3.0          1.4         0.2  setosa
+## 3          4.7         3.2          1.3         0.2  setosa
+## 4          4.6         3.1          1.5         0.2  setosa
+## 5          5.0         3.6          1.4         0.2  setosa
+## 6          5.4         3.9          1.7         0.4  setosa</code></pre>
+<p>Let’s say we discovered that all of the plants in this dataset belonged to a new species, pallida, and we wanted to update the value of that column to reflect this. In this example, we’ll look at different ways we might decide to do this using dplyr syntax.</p>
+<div id="typical-usage" class="section level2">
+<h2>Typical Usage</h2>
+<p>The first way in which we can update the contents of this column is by using the most common way of interacting with mutate, and this is the format that most people will be familiar with. When we use <code>mutate()</code> to create or update columns, after we’ve specified the dataset, we specify the columns to create or update in the form of <em>name-value pairs</em>.</p>
+<pre class="r"><code>mutate(iris, Species = &quot;Pallida&quot;) %&gt;%
+  head()</code></pre>
+<pre><code>##   Sepal.Length Sepal.Width Petal.Length Petal.Width Species
+## 1          5.1         3.5          1.4         0.2 Pallida
+## 2          4.9         3.0          1.4         0.2 Pallida
+## 3          4.7         3.2          1.3         0.2 Pallida
+## 4          4.6         3.1          1.5         0.2 Pallida
+## 5          5.0         3.6          1.4         0.2 Pallida
+## 6          5.4         3.9          1.7         0.4 Pallida</code></pre>
+<p>By default, <code>dplyr</code> <em>quotes the name</em> and <em>evaluates the value</em>. Read that sentence a few times, as this is the one which made this start to finally make sense to me. In other words, although we’ve specified ‘Species’ like we might any other object, it is quoted by <code>dplyr</code> and took to represent a column name. And we have specified ‘Pallida’ as a character vector of length 1, which is then evaluated.</p>
+<p>That’s why, we can easily swap the <em>value</em> side of the pair for an object, and again, it is evaluated, and we get an identical result.</p>
+<pre class="r"><code>targetValue = &quot;Pallida&quot;
+mutate(iris, Species = targetValue) %&gt;%
+  head()</code></pre>
+<pre><code>##   Sepal.Length Sepal.Width Petal.Length Petal.Width Species
+## 1          5.1         3.5          1.4         0.2 Pallida
+## 2          4.9         3.0          1.4         0.2 Pallida
+## 3          4.7         3.2          1.3         0.2 Pallida
+## 4          4.6         3.1          1.5         0.2 Pallida
+## 5          5.0         3.6          1.4         0.2 Pallida
+## 6          5.4         3.9          1.7         0.4 Pallida</code></pre>
+<p>This is great if we want to either specify the target value within the function or as another variable, but things get tricky if we want to do something similar with the name. Let’s look first at what goes wrong.</p>
+</div>
+<div id="tidy-eval" class="section level2">
+<h2>Tidy Eval</h2>
+<p>I might naively try to define the target column name as a variable and try to use that in my mutate call.</p>
+<pre class="r"><code>targetColumn = &quot;Species&quot;
+mutate(iris, targetColumn = &quot;Pallida&quot;) %&gt;%
+  head()</code></pre>
+<pre><code>##   Sepal.Length Sepal.Width Petal.Length Petal.Width Species targetColumn
+## 1          5.1         3.5          1.4         0.2  setosa      Pallida
+## 2          4.9         3.0          1.4         0.2  setosa      Pallida
+## 3          4.7         3.2          1.3         0.2  setosa      Pallida
+## 4          4.6         3.1          1.5         0.2  setosa      Pallida
+## 5          5.0         3.6          1.4         0.2  setosa      Pallida
+## 6          5.4         3.9          1.7         0.4  setosa      Pallida</code></pre>
+<p>However, as ‘targetColumn’ is quoted instead of evaluated, we simply add a new column, literally called ‘targetColumn’.</p>
+<p>If you’re familiar with more “old school” R syntax, you might think to wrap ‘targetColumn’ in a call to <code>eval</code> in order to evaluate it, but this generates an error message.</p>
+<pre class="r"><code>mutate(iris, eval(targetColumn) = &quot;Pallida&quot;) %&gt;%
+  head()</code></pre>
+<pre><code>## Error: &lt;text&gt;:1:33: unexpected &#39;=&#39;
+## 1: mutate(iris, eval(targetColumn) =
+##                                     ^</code></pre>
+<p>A bit of searching, and you might find the !! (<strong>“bang bang”</strong>) operator and the identical function <code>UQ()</code>. The purpose of these functions is to unquote their argument. This sounds promising; if before we were <em>quoting the name</em> and <em>evaluating the value</em>, then unquoting the name should surely solve our problem?</p>
+<pre class="r"><code>mutate(iris, !!targetColumn = &quot;Pallida&quot;) %&gt;%
+  head()</code></pre>
+<pre><code>## Error: &lt;text&gt;:1:29: unexpected &#39;=&#39;
+## 1: mutate(iris, !!targetColumn =
+##                                 ^</code></pre>
+<p>Unfortunately not! There’s one small piece of the puzzle missing, and that’s <code>:=</code>, or, the <strong>definition operator</strong>.</p>
+<pre class="r"><code>mutate(iris, !!targetColumn := &quot;Pallida&quot;) %&gt;%
+  head()</code></pre>
+<pre><code>##   Sepal.Length Sepal.Width Petal.Length Petal.Width Species
+## 1          5.1         3.5          1.4         0.2 Pallida
+## 2          4.9         3.0          1.4         0.2 Pallida
+## 3          4.7         3.2          1.3         0.2 Pallida
+## 4          4.6         3.1          1.5         0.2 Pallida
+## 5          5.0         3.6          1.4         0.2 Pallida
+## 6          5.4         3.9          1.7         0.4 Pallida</code></pre>
+<p>The reasoning for the definition operator appears to be some underlying mechanism of how R evaluates things generally when using <code>=</code>, as mentioned in the below quote from documentation on quasiquotation in the <code>rlang</code> package:</p>
+<p>“Unfortunately R is very strict about the kind of expressions supported on the LHS of =. This is why we have made the more flexible := operator an alias of =. You can use it to supply names, e.g. a := b is equivalent to a = b.”</p>
+<p>And voila, we’ve done it! For the sake of completeness, I wanted to show a final example which uses variables for both the name and the value components in our <code>mutate</code> call. Using the <code>!!</code> and <code>:=</code> operators don’t affect how the value is evaluated and so we can simply use a predefined variable here.</p>
+<pre class="r"><code>mutate(iris, !!targetColumn := targetValue) %&gt;%
+  head()</code></pre>
+<pre><code>##   Sepal.Length Sepal.Width Petal.Length Petal.Width Species
+## 1          5.1         3.5          1.4         0.2 Pallida
+## 2          4.9         3.0          1.4         0.2 Pallida
+## 3          4.7         3.2          1.3         0.2 Pallida
+## 4          4.6         3.1          1.5         0.2 Pallida
+## 5          5.0         3.6          1.4         0.2 Pallida
+## 6          5.4         3.9          1.7         0.4 Pallida</code></pre>
+</div>
+
+</main>
+
+  <footer>
+  <script src="//yihui.org/js/math-code.js"></script>
+<script async src="//mathjax.rstudio.com/latest/MathJax.js?config=TeX-MML-AM_CHTML"></script>
+
+<script async src="//yihui.org/js/center-img.js"></script>
+
+<script type="application/javascript">
+var doNotTrack = false;
+if (!doNotTrack) {
+	(function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+	(i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+	m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+	})(window,document,'script','https://www.google-analytics.com/analytics.js','ga');
+	ga('create', 'UA-116704434-1', 'auto');
+	
+	ga('send', 'pageview');
+}
+</script>
+  
+  <hr/>
+  © Nic Crane 2016 &ndash; 2022
+  
+  </footer>
+  </body>
+</html>
+

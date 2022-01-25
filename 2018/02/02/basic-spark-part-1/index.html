@@ -1,0 +1,99 @@
+<!DOCTYPE html>
+<html lang="en-uk">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Basic Spark Part 1 - Umm, remind me about big data please? | Nic Crane</title>
+    <link rel="stylesheet" href="/css/style.css" />
+    <link rel="stylesheet" href="/css/fonts.css" />
+    
+  </head>
+
+  <body>
+    <nav>
+    <ul class="menu">
+      
+      <li><a href="/post/">Home</a></li>
+      
+      <li><a href="/about/">About</a></li>
+      
+      <li><a href="/categories/">Categories</a></li>
+      
+      <li><a href="/tags/">Tags</a></li>
+      
+      <li><a href="/speaking/">Speaking</a></li>
+      
+      <li><a href="/index.xml">Subscribe</a></li>
+      
+    </ul>
+    <hr/>
+    </nav>
+
+<div class="article-meta">
+<h1><span class="title">Basic Spark Part 1 - Umm, remind me about big data please?</span></h1>
+<h2 class="author">Nic Crane</h2>
+<h2 class="date">2018/02/02</h2>
+</div>
+
+<main>
+
+<script src="/rmarkdown-libs/header-attrs/header-attrs.js"></script>
+
+
+<p>When I started my career in data science, I was in the common position of having familiarity with technologies like R, Python, and SQL, but much less with big data technologies. I remember feeling intimidated by big data; there were lots of different technologies named after animals or making some sort of pun I wasn’t clued up enough to understand.</p>
+<p>Flash forward 18 months and with experience, some parts of the big data landscape felt a bit more familiar. I’d had a play around with Cloudera Impala using SQL syntax to query big data, and sat in on the sparklyr workshop at EARL Boston 2017, finding myself pleasantly surprised to find how much of the familiar syntax from R’s dplyr package I could use to interact with Spark from R.</p>
+<p>Whilst I was comfortable with sparklyr, I still felt that I was in need of a bit of background knowledge about Spark and distributed computing in general. Whilst I’m a data scientist and not a data engineer, I believe that a bit of knowledge of what’s going on under the hood has really helped cement my understanding of Spark, and so I’ve created this series of blog posts to capture what I found useful.</p>
+<p>My assumptions about anyone reading this series of blog posts:</p>
+<ul>
+<li><p>You have a basic understanding of data science.</p></li>
+<li><p>You are interested in big data processing but don’t know a huge amount about it.</p></li>
+<li><p>You have basic familiarity with R and the dplyr package</p></li>
+</ul>
+<div id="a-few-definitions" class="section level2">
+<h2>A few definitions…</h2>
+<p>Before we get started, I need to define a few terms:</p>
+<ul>
+<li><p>Node – one single computer.</p></li>
+<li><p>Cluster – a group of computers connected via a network</p></li>
+<li><p>Distributed computing – multiple nodes are combined in a cluster in order to increase efficiency and power. Data is partitioned and distributed across the cluster, and so can be processed in smaller chunks. Distributed computing is at the root of big data processing and allows complex processing of datasets that a single machine would simply not have enough resources to process alone.</p></li>
+</ul>
+</div>
+<div id="how-is-big-data-processed" class="section level2">
+<h2>How is big data processed?</h2>
+<p>There are a number of steps that are common across different big data processing frameworks, as defined by the MapReduce programming model. This refers to a specialised version of the split-apply-combine strategy for data analysis which you may be more familiar with.</p>
+<ul>
+<li><p>Split – divide the file(s) into multiple partitions which are distributed across the different nodes in the cluster.</p></li>
+<li><p>Apply – an operation such as a user-defined function is run on each node. This bit is the ‘Map’ in ‘MapReduce’.</p></li>
+<li><p>Combine – the separate results from each node are brought back together into a single set of results. This bit is the ‘Reduce’ in ‘MapReduce’. Before the data can be reduced, it may need to be shuffled and sorted to make sure the relevant data points are adjacent, if, for example, we want to group the data.</p></li>
+</ul>
+<p>And that’s the basics of the theory covered. In my next post, I’m going to talk about the technologies used to implement these frameworks.</p>
+</div>
+
+</main>
+
+  <footer>
+  <script src="//yihui.org/js/math-code.js"></script>
+<script async src="//mathjax.rstudio.com/latest/MathJax.js?config=TeX-MML-AM_CHTML"></script>
+
+<script async src="//yihui.org/js/center-img.js"></script>
+
+<script type="application/javascript">
+var doNotTrack = false;
+if (!doNotTrack) {
+	(function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+	(i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+	m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+	})(window,document,'script','https://www.google-analytics.com/analytics.js','ga');
+	ga('create', 'UA-116704434-1', 'auto');
+	
+	ga('send', 'pageview');
+}
+</script>
+  
+  <hr/>
+  © Nic Crane 2016 &ndash; 2022
+  
+  </footer>
+  </body>
+</html>
+

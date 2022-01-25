@@ -1,0 +1,112 @@
+<!DOCTYPE html>
+<html lang="en-uk">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Examining C&#43;&#43; syntax - RecordBatch::SelectColumns | Nic Crane</title>
+    <link rel="stylesheet" href="/css/style.css" />
+    <link rel="stylesheet" href="/css/fonts.css" />
+    
+  </head>
+
+  <body>
+    <nav>
+    <ul class="menu">
+      
+      <li><a href="/post/">Home</a></li>
+      
+      <li><a href="/about/">About</a></li>
+      
+      <li><a href="/categories/">Categories</a></li>
+      
+      <li><a href="/tags/">Tags</a></li>
+      
+      <li><a href="/speaking/">Speaking</a></li>
+      
+      <li><a href="/index.xml">Subscribe</a></li>
+      
+    </ul>
+    <hr/>
+    </nav>
+
+<div class="article-meta">
+<h1><span class="title">Examining C++ syntax - RecordBatch::SelectColumns</span></h1>
+
+<h2 class="date">2021/04/21</h2>
+</div>
+
+<main>
+
+<script src="/2021/04/21/examining-c-plus-plus-syntax-recordbatch-selectcolumns/index_files/header-attrs/header-attrs.js"></script>
+
+
+<p>I’m approaching learning C++ by taking both a top-down and bottom-up approach, looking at tutorials and learning the basics whilst also working with existing C++ code in the Arrow codebase.</p>
+<p>I wanted to take a snippet of code from something that I’ve been working on an enhance my understanding of it. I posted this on Slack, and my colleagues were generous with their time and knowledge, helping me check my understanding, which I’m now going to outline below.</p>
+<p>Here’s the code in one chunk; I’ll be breaking it down into smaller pieces as I explore it.</p>
+<pre class="rcpp"><code>Result&lt;std::shared_ptr&lt;RecordBatch&gt;&gt; RecordBatch::SelectColumns(const std::vector&lt;int&gt;&amp; indices) const {
+  int n = static_cast&lt;int&gt;(indices.size());
+  FieldVector fields(n);
+  ArrayVector columns(n);
+  for (int i = 0; i &lt; n; i++) {
+    int pos = indices[i];
+    if (pos &lt; 0 || pos &gt; num_columns() - 1) {
+      return Status::Invalid(&quot;Invalid column index &quot;, pos, &quot; to select columns.&quot;);
+    }
+    fields[i] = schema()-&gt;field(pos);
+    columns[i] = column(pos);
+  }
+  auto new_schema =
+      std::make_shared&lt;arrow::Schema&gt;(std::move(fields), schema()-&gt;metadata());
+  return RecordBatch::Make(new_schema, num_rows(), std::move(columns));
+}</code></pre>
+<p>The notes below are not entirely my own, and are adapted from snippets of conversation with others - thanks everyone who helped me work this out!</p>
+<div id="method-definition-and-arguments" class="section level2">
+<h2>Method definition and arguments</h2>
+<p>For context, RecordBatch is a kind of <code>data.frame</code> type structure, and this <code>SelectColumns</code> method is used to return a subset of its columns. This code is implementing the SelectColumns method for the RecordBatch class.</p>
+<p><code>Result&lt;std::shared_ptr&lt;RecordBatch&gt;&gt;</code> is declaring that the return type from this method is a Result<RecordBatch> object. It’s actually a shared pointer that points to the object. We often use shared pointers as objects can be large and we don’t want to copy them every time. Another benefit of using shared pointers is that the object’s lifetime is managed automatically and it doesn’t have to be manually deleted when it’s no longer being used.</p>
+<p>Result is a template. Arrow does not throw exceptions, but instead returns an error code after each call. However, that is kind of inconvenient because the error code occupies your valuable return spot. Instead, Arrow returns Result<T> to mean “I am giving you a T but if something fails you will get a Status instead”. Any Result<X> type is a distinct type from another Result<Y>. The Result template defines behaviour that is abstractly common between all Result<T> types, but those types are nevertheless distinct and cannot be substituted for one another (except if conversions are explicitly defined).</p>
+<p>The function has 1 argument - <code>indices</code> - which is a vector of ints; the <code>&amp;</code> means that we are passing in a reference to the original object and the <code>const</code> keyword is used to flag that it won’t be changed inside the method. There is a <code>const</code> before the method’s opening bracket because this should be done if a method “does not change the state of the object, and should be callable on an object that is itself <code>const</code>.”</p>
+</div>
+<div id="method-body" class="section level2">
+<h2>Method body</h2>
+<p><code>int n = static_cast&lt;int&gt;(indices.size());</code> is simply assigning to variable <code>n</code> the output of the <code>size()</code> method of indices. The use of <code>static_cast&lt;int&gt;</code> ensures it is of the intended type.</p>
+<p>There are two subsequent declarations; <code>FieldVector fields(n);</code> and <code>ArrayVector columns(n);</code>. These are using aliases; the code to define <code>FieldVector</code> is <code>using FieldVector = std::vector&lt;std::shared_ptr&lt;Field&gt;&gt;;</code> and the <code>ArrayVector</code> code is very similar. This is done to save space and make code more readable.</p>
+<p>Next, we have the for loop. It loops through each of the supplied indices, and appends both fields and columns with the field or column at that position in the original RecordBatch object. An interesting bit of syntax there is <code>schema()-&gt;field(pos);</code>. This actually means call the <code>schema()</code> method on the current object (the supplied RecordBatch) and then call its <code>field()</code> method passing in the value of <code>pos</code>. Here, the <code>-&gt;</code> syntax is used to call the method rather than <code>.</code> is because the object is a pointer.</p>
+<p>Once those variables have been assigned their values, we begin to assemble a new RecordBatch. First, we begin with creating a new Schema from their values: <code>auto new_schema = std::make_shared&lt;arrow::Schema&gt;(std::move(fields), schema()-&gt;metadata());</code></p>
+<p>Schema here has its type inferred automatically via the <code>auto</code> keyword. The code <code>std::make_shared</code> is used to make a new shared pointer to the Schema object. <code>std::move</code> is used so that the actual objects themselves are moved rather than creating a copy when passing into the function call. When an object will not be used afterwards, you can move it when passing it to another function, which can spare a copy. For the most simple types, copies are costless so we don’t bother (no need to move an int for example). But, typically, copies are expensive for strings, vectors and larger objects.</p>
+</div>
+<div id="method-return-statement" class="section level2">
+<h2>Method return statement</h2>
+<p>Finally, the return statement creates a new RecordBatch object to return.</p>
+<p><code>return RecordBatch::Make(new_schema, num_rows(), std::move(columns));</code></p>
+<p>It takes the new schema, and the <code>columns</code> object is moved rather than passed in.</p>
+</div>
+
+</main>
+
+  <footer>
+  <script src="//yihui.org/js/math-code.js"></script>
+<script async src="//mathjax.rstudio.com/latest/MathJax.js?config=TeX-MML-AM_CHTML"></script>
+
+<script async src="//yihui.org/js/center-img.js"></script>
+
+<script type="application/javascript">
+var doNotTrack = false;
+if (!doNotTrack) {
+	(function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+	(i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+	m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+	})(window,document,'script','https://www.google-analytics.com/analytics.js','ga');
+	ga('create', 'UA-116704434-1', 'auto');
+	
+	ga('send', 'pageview');
+}
+</script>
+  
+  <hr/>
+  © Nic Crane 2016 &ndash; 2022
+  
+  </footer>
+  </body>
+</html>
+

@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>C&#43;&#43; on Nic Crane</title>
+    <link>/tags/c&#43;&#43;/</link>
+    <description>Recent content in C&#43;&#43; on Nic Crane</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <language>en-uk</language>
+    <lastBuildDate>Wed, 21 Apr 2021 00:00:00 +0000</lastBuildDate><atom:link href="/tags/c++/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>Examining C&#43;&#43; syntax - RecordBatch::SelectColumns</title>
+      <link>/2021/04/21/examining-c-plus-plus-syntax-recordbatch-selectcolumns/</link>
+      <pubDate>Wed, 21 Apr 2021 00:00:00 +0000</pubDate>
+      
+      <guid>/2021/04/21/examining-c-plus-plus-syntax-recordbatch-selectcolumns/</guid>
+      <description>I’m approaching learning C++ by taking both a top-down and bottom-up approach, looking at tutorials and learning the basics whilst also working with existing C++ code in the Arrow codebase.
+I wanted to take a snippet of code from something that I’ve been working on an enhance my understanding of it. I posted this on Slack, and my colleagues were generous with their time and knowledge, helping me check my understanding, which I’m now going to outline below.</description>
+    </item>
+    
+  </channel>
+</rss>

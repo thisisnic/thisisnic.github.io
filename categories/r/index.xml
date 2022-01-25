@@ -1,0 +1,143 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>R on Nic Crane</title>
+    <link>/categories/r/</link>
+    <description>Recent content in R on Nic Crane</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <language>en-uk</language>
+    <lastBuildDate>Tue, 18 May 2021 00:00:00 +0000</lastBuildDate><atom:link href="/categories/r/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>R package documentation - what makes a good example?</title>
+      <link>/2021/05/18/r-package-documentation-what-makes-a-good-example/</link>
+      <pubDate>Tue, 18 May 2021 00:00:00 +0000</pubDate>
+      
+      <guid>/2021/05/18/r-package-documentation-what-makes-a-good-example/</guid>
+      <description>I&amp;rsquo;m currently working on adding to the documentation of the arrow R package, and I&amp;rsquo;ve started thinking about the qualities of good examples. Specifically, I&amp;rsquo;m referring to the examples included as part of function documentation. In my experience, the best way for me to achieve rapid familiarity with an R function I haven&amp;rsquo;t worked with before, or understand how to use a function about which I already understand the basics, is by having example code that I can run.</description>
+    </item>
+    
+    <item>
+      <title>Why is eval parse bad?</title>
+      <link>/2021/04/20/why-is-eval-parse-bad/</link>
+      <pubDate>Tue, 20 Apr 2021 00:00:00 +0000</pubDate>
+      
+      <guid>/2021/04/20/why-is-eval-parse-bad/</guid>
+      <description>I was writing Arrow bindings for na.omit and needed a way of applying is.na to every column of a table at once. I’d originally implemented using dplyr::filter, but had failed to realise that Arrow only suggests dplyr but doesn’t import it, and so needed to refactor it.
+Table objects in Arrow have a Filter method, and I knew that a naive implementation would be a for loop which iteratively called Table$Filter(!</description>
+    </item>
+    
+    <item>
+      <title>Three Valued Logic</title>
+      <link>/2021/04/17/three-valued-logic/</link>
+      <pubDate>Sat, 17 Apr 2021 00:00:00 +0000</pubDate>
+      
+      <guid>/2021/04/17/three-valued-logic/</guid>
+      <description>This week I was writing Arrow bindings for some R functions and came across a concept that was new to me: three-valued logic.
+I encountered this when working out the expected behaviour of the functions any and all which are used for aggregation of boolean/logical values.
+If I have a vector without any NA values, the behaviour of these functions is pretty straightforward. In the example below, vec &amp;gt; 3 evaluates to FALSE FALSE FALSE TRUE TRUE and so a call to any() results in TRUE and a call to all() results in FALSE.</description>
+    </item>
+    
+    <item>
+      <title>UseR!2019: A Shiny Perspective</title>
+      <link>/2019/07/28/user-2019/</link>
+      <pubDate>Sun, 28 Jul 2019 00:00:00 +0000</pubDate>
+      
+      <guid>/2019/07/28/user-2019/</guid>
+      <description>UseR!2019 UseR!2019 was a fantastic conference. I’ve previously attended RStudio Conference and EARL, both of which are very different conferences. I’ve enjoyed all three, and especially like how they each bring something different to the R conference playing field.
+I mainly work in Shiny, and so most of this post will be including some of my Shiny-focussed highlights, with a few other special mentions.
+The conference kicked off with a Tidyverse Developer Day, organised by RStudio.</description>
+    </item>
+    
+    <item>
+      <title>Iterating with names</title>
+      <link>/2018/12/19/iterating-with-names/</link>
+      <pubDate>Wed, 19 Dec 2018 00:00:00 +0000</pubDate>
+      
+      <guid>/2018/12/19/iterating-with-names/</guid>
+      <description>title: ‘Iterating with names’  author: ’’  date: ‘2018-12-19’  slug: iterating-with-names  categories: [  ‘R’  ]  tags: [‘tidyverse’, ‘purrr’]  type: post    The Problem I’ve come across this problem a few times lately, when I’ve wanted to iterate through some sort of named list or vector, and use both the name and value in each iteration.
+To illustrate, here’s a vector, which I have creatively named myvec.</description>
+    </item>
+    
+    <item>
+      <title>Scraping rstudio::conf 2018 Abstracts</title>
+      <link>/2018/08/22/scraping-rstudio-conf-2018-abstracts/</link>
+      <pubDate>Wed, 22 Aug 2018 00:00:00 +0000</pubDate>
+      
+      <guid>/2018/08/22/scraping-rstudio-conf-2018-abstracts/</guid>
+      <description>RStudio Conference 2019 takes place in January 2019, and this week RStudio put out a call for contributed talks and e-posters. Though I was eager to browse previous years’ abstracts for inspiration, I couldn’t find them all in one place, and so I decided to use one of my favourite R packages, rvest, to do some web scraping to grab the content.
+My main aim was to find all of the abstracts for the contributed talks only from 2018.</description>
+    </item>
+    
+    <item>
+      <title>How do I make my own dplyr-style functions?</title>
+      <link>/2018/04/16/how-do-i-make-my-own-dplyr-style-functions/</link>
+      <pubDate>Mon, 16 Apr 2018 00:00:00 +0000</pubDate>
+      
+      <guid>/2018/04/16/how-do-i-make-my-own-dplyr-style-functions/</guid>
+      <description>In this series of blog posts introducing tidy eval, we’ve been looking at why tidy eval is important, and terms like “quotation” and “quasiquotation”.
+The next step is to look at how we can write our own dplyr-style functions in R.
+This post will look at the following terms and functions:
+ quosures quo() enquo()  What is a quosure? Quosures are a topic which come up frequently when talking about tidy eval.</description>
+    </item>
+    
+    <item>
+      <title>What the heck is quasiquotation?</title>
+      <link>/2018/03/31/what-the-heck-is-quasiquotation/</link>
+      <pubDate>Sat, 31 Mar 2018 00:00:00 +0000</pubDate>
+      
+      <guid>/2018/03/31/what-the-heck-is-quasiquotation/</guid>
+      <description>In a previous entry, I introduced the concept of tidy eval. If you’re completely new to tidy eval and haven’t read that post yet, I’d suggest you go back to it before continuing, as this post will build upon the concepts I discussed there.
+To recap, tidy eval refers to the ‘special’ type of evaluation used by dplyr functions. Whereas in base R, you have to refer the data frame in question if you want to returns particular rows, this is not the case with dplyr functions.</description>
+    </item>
+    
+    <item>
+      <title>What is tidy eval and why should I care?</title>
+      <link>/2018/03/29/what-is-tidy-eval-and-why-should-i-care/</link>
+      <pubDate>Thu, 29 Mar 2018 00:00:00 +0000</pubDate>
+      
+      <guid>/2018/03/29/what-is-tidy-eval-and-why-should-i-care/</guid>
+      <description>I’m going to begin this post somewhat backwards, and start with the conclusion: tidy eval is important to anyone who writes R functions and uses dplyr and/or tidyr.
+I’m going to load a couple of packages, and then show you exactly why.
+library(dplyr) library(rlang) Data wrangling with base R Here’s an example function I have written in base R. Its purpose is to take a data set, and extract values from a single column that match a specific value, with both input and output both being in data frame format.</description>
+    </item>
+    
+    <item>
+      <title>Using Tidy Eval with dplyr::filter</title>
+      <link>/2018/03/27/using-tidy-eval-with-dplyr-filter/</link>
+      <pubDate>Tue, 27 Mar 2018 00:00:00 +0000</pubDate>
+      
+      <guid>/2018/03/27/using-tidy-eval-with-dplyr-filter/</guid>
+      <description>I previously blogged about using tidy eval with dplyr::mutate, and found that post handy to refer back to. I still haven’t got round to having an in-depth look at the principles of tidy eval, so instead I’m continuing to explore problems as and when they come up. In this post, I’ll be taking a look at using tidy eval with dplyr::filter. Once again, I’ll be using the iris dataset to create examples that should be simple to follow.</description>
+    </item>
+    
+    <item>
+      <title>Exploring Tidy Eval at a Snail&#39;s Pace</title>
+      <link>/2018/02/20/exploring-tidy-eval-snails-pace/</link>
+      <pubDate>Tue, 20 Feb 2018 00:00:00 +0000</pubDate>
+      
+      <guid>/2018/02/20/exploring-tidy-eval-snails-pace/</guid>
+      <description>I recently attended rstudio::conf, with my favourite talks being those which taught me new things that I am going to use in my day-to-day work. I attended and enjoyed Hadley Wickham’s talk, ‘Tidy eval: programming with dplyr, tidyr, and ggplot2’, although got sidetracked trying to keep up typing whilst listening.
+When I’m delivering training courses, this is the one thing I advise all attendees not to do - it’s so easy to miss important points whilst running code.</description>
+    </item>
+    
+    <item>
+      <title>Pop-up to confirm action in Shiny</title>
+      <link>/2016/08/16/pop-up-to-confirm-action-in-shiny/</link>
+      <pubDate>Tue, 16 Aug 2016 00:00:00 +0000</pubDate>
+      
+      <guid>/2016/08/16/pop-up-to-confirm-action-in-shiny/</guid>
+      <description>It’s a gorgeous evening in Bath tonight, and my evening has been improved by finding a free table outside at the pub, a large glass of Sauvignon Blanc, and working out how to include a JavaScript confirmation box in Shiny. Here, I’m using Shiny dashboard, although this methodology will work fine with other UI layouts.
+In the UI file, near the top of the dashboardBody , call tags$head and tags$script to give the source of the JavaScript file:</description>
+    </item>
+    
+    <item>
+      <title>Getting started with Leaflet in Shiny - interactive map apps</title>
+      <link>/2016/04/28/getting-started-with-leaflet-in-shiny-interactive-map-apps/</link>
+      <pubDate>Thu, 28 Apr 2016 00:00:00 +0000</pubDate>
+      
+      <guid>/2016/04/28/getting-started-with-leaflet-in-shiny-interactive-map-apps/</guid>
+      <description>Lately I’ve been enjoying learning how to use Shiny, and experimenting with making a fairly basic app, and wanted to develop my skills further. I’d been looking at an example app from the Shiny website which shows live bus locations in the US, refreshing at short intervals. It looked fairly complex at first, so I was pretty happy when, within 48 hours I’d managed to recreate something of similar complexity, so here’s your guide on how you can quickly get up to speed using interactive reactive maps in Shiny.</description>
+    </item>
+    
+  </channel>
+</rss>

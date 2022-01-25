@@ -1,0 +1,149 @@
+<!DOCTYPE html>
+<html lang="en-uk">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Ten Steps to Becoming a Tidyverse Contributor | Nic Crane</title>
+    <link rel="stylesheet" href="/css/style.css" />
+    <link rel="stylesheet" href="/css/fonts.css" />
+    
+  </head>
+
+  <body>
+    <nav>
+    <ul class="menu">
+      
+      <li><a href="/post/">Home</a></li>
+      
+      <li><a href="/about/">About</a></li>
+      
+      <li><a href="/categories/">Categories</a></li>
+      
+      <li><a href="/tags/">Tags</a></li>
+      
+      <li><a href="/speaking/">Speaking</a></li>
+      
+      <li><a href="/index.xml">Subscribe</a></li>
+      
+    </ul>
+    <hr/>
+    </nav>
+
+<div class="article-meta">
+<h1><span class="title">Ten Steps to Becoming a Tidyverse Contributor</span></h1>
+
+<h2 class="date">2018/11/28</h2>
+</div>
+
+<main>
+
+
+
+<p>This year has been a crazy whirlwind for me – I moved job once, moved house 3 times, <a href="https://www.datacamp.com/courses/developing-r-packages">co-authored a course on Data Camp</a>, got invited by a former colleague to assist with a workshop at rstudio::conf 2019, was accepted to present at the very same conference, and became a <a href="https://github.com/tidymodels/broom/pull/486">minor contributor to the tidyverse</a>. In this blog post I’ll talk about reasons for contributing and then walk through the steps I took to help guide others.</p>
+<p>A disclaimer before I start: I am no expert here and am talking about something I have done once. My aim here is to clarify the process and hopefully make it clear to other members of the R community that this isn’t as hard or intimidating as it might sound.</p>
+<p>It all started with the <a href="https://www.rstudio.com/resources/videos/contributing-to-tidyverse-packages/">fantastic talk by Mara Averick at the 2018 RStudio Conference</a>. Mara talked about different ways of getting involved and made me realise that contributing, specifically code, was both something I wanted to do, and something that was within reach.</p>
+<p>A while later, I saw this tweet by <a href="http://www.alexpghayes.com/">Alex Hayes</a>, who was doing an <a href="https://blog.rstudio.com/2018/04/18/summer-interns/">internship</a> at RStudio, and couldn’t turn down the opportunity. Massive thanks once again to both Alex and Mara!</p>
+<p><img src="/images/alex_hayes_tweet.png" width="30%" /></p>
+<p>I’d never thought about getting involved in contributing code because of my perception of some of the toxic culture of open source, and <a href="https://opensourcesurvey.org/2017/#insights">this perception isn’t totally unwarranted</a>.</p>
+<p>This year, however, I’ve seen <a href="https://www.theregister.co.uk/2018/09/17/linus_torvalds_linux_apology_break/">a lot of</a> <a href="https://stackoverflow.blog/2018/04/26/stack-overflow-isnt-very-welcoming-its-time-for-that-to-change/">evidence to suggest that this is changing</a>, and, regardless, the R community, is <a href="https://forwards.github.io/">way</a> <a href="https://rladies.org/">ahead</a> <a href="https://community.rstudio.com/">of the curve</a> in terms of being <a href="https://www.r-bloggers.com/the-r-community-is-awesome-and-fast/">welcoming, friendly</a>, and <a href="https://blog.revolutionanalytics.com/2017/06/r-community.html">willing to help newbies of all varieties to get involved</a>. <strong>I do not believe for even a split second that my concerns apply to the R community in 2018.</strong></p>
+<p>There are a lot of good reasons to contribute to open-source; half of the respondents to the Open Source Survey in 2017 <a href="https://opensourcesurvey.org/2017/#data">said that their open source contributions helped them get their current job</a>. My personal reasons for getting involved, however, were more about a) getting acquainted with some top-notch R code and hopefully levelling up my skills as a result, b) interacting with more of the R community, and c) helping lessen my imposter syndrome. I think it’s time for an inspirational quote now:</p>
+<blockquote>
+<p>“When I started my transition into data science, I said yes to pretty much every opportunity that came my way, even if it felt slightly beyond my skill set or experience level…I said yes to many of these things when it felt like I wasn’t sure if I was ready.” - Julia Silge (Interview with And Comfort, October 2018)</p>
+</blockquote>
+<p>So, without further ado, let’s take a look at the ten steps to becoming a tidyverse contributor. Please note that there may be nuances and details that I have missed here, but this should provide a rough guide to anyone who’s thinking about getting involved and wants to know a bit more about exactly what that looks like.</p>
+<p>Just to be clear; these steps apply to contributing to R packages in general and not just the tidyverse. However, the tidyverse team have been especially good for <a href="https://www.tidyverse.org/articles/2017/08/contributing/">encouraging people to get involved</a>.</p>
+<div id="step-1---decide-how-to-contribute" class="section level1">
+<h1>Step 1 - Decide How to Contribute</h1>
+<p>I want to emphasise at this point that contributing code is not the only way to get involved; the reason why I’m focussing on this in this blog post is because a) it’s what I did, and b) it’s the method of contribution I feel like people know the least about.</p>
+<p>However, as <a href="https://www.rstudio.com/resources/videos/contributing-to-tidyverse-packages/">Mara discusses in her talk</a> (no really, just go watch it now, seriously!), there are other equally valid and important ways of getting involved.</p>
+</div>
+<div id="step-2---learn" class="section level1">
+<h1>Step 2 - Learn!</h1>
+<p>Whilst there is some pre-requisite knowledge required to contribute code to R packages, it’s not as much as I expected. You absolutely should be comfortable with working with and writing functions in R. Beyond that, some familiarity with git is needed – things like clone, commit, and push, though doing it all via RStudio is fine. You’ll need to know the basics of R package building – when I say basics, what I mean is that you’re not writing a package from scratch, so don’t need to know every little detail. However, you should have a good idea of the directory structure of an R package, how to write tests and documentation, and how to build the page. Finally, you’ll need to know how to create a pull request on GitHub, which, once you’ve conquered the other items on the list, fairly uncomplicated. I’ve linked to resources for all of these things at the end of this post.</p>
+</div>
+<div id="step-3---find-an-issue" class="section level1">
+<h1>Step 3 - Find an Issue</h1>
+<p>The next step is finding an issue to work on. Luckily, many issues are tagged on GitHub with “beginner friendly”, “help wanted”, or “good first issue” to help point you in the right direction.</p>
+<p>In the GIF below, I show how to get from the CRAN page for a package – broom in this case – to a potential issue to work on. I first click on the URL next to “BugReports” to get taken to the GitHub issues page. Next I find a relevant tag – “beginner friendly” in this case. Once I click on the tag, I’m shown all issues with that tag. I then pick one, and read the description to see if it’s something I think would be good to look at getting involved with.</p>
+<p><img src="/images/broom_find_issue.gif" width="75%" /></p>
+</div>
+<div id="step-4---ask-if-you-can-help" class="section level1">
+<h1>Step 4 - Ask if You Can Help</h1>
+<p>Don’t charge straight into trying to write code! You need to ask for help – it’s always good to check that someone else isn’t already working on this issue, and ask to get involved. You don’t want to spend ages working on something and then find out someone else has submitted a pull request first!
+Try to be as specific as possible – unlike my comment here, ellessenne says exactly what they’ll be looking at!</p>
+<p><img src="/images/ask_to_help.png" /></p>
+</div>
+<div id="step-5---fork-the-repo" class="section level1">
+<h1>Step 5 - Fork the Repo</h1>
+<p>Forking the repo means making a copy of it which is saved to your GitHub account. Click on the button as shown below.</p>
+<p><img src="/images/fork.png" /></p>
+</div>
+<div id="step-6---open-as-new-project-in-rstudio-make-a-branch" class="section level1">
+<h1>Step 6 - Open as New Project in RStudio &amp; Make a Branch</h1>
+<p>Create a new project (“from version control”) in RStudio using the URL for your copy of the repo - the location for the URL is shown below.</p>
+<p><img src="/images/clone_url.png" width="50%" /></p>
+<p>Once you’re in this project, make a new branch, making sure “sync with remote” is checked.</p>
+<p><img src="/images/branch_in_rstudio.gif" /></p>
+</div>
+<div id="step-7---familiarise-yourself-with-the-code" class="section level1">
+<h1>Step 7 - Familiarise Yourself with the Code</h1>
+<p>Play with the code and see if you can reproduce the issue, and work out the cause. I tend to run through things one line at a time, not moving on til I have a pretty good idea what each line is meant to be doing.</p>
+</div>
+<div id="step-8---write-code" class="section level1">
+<h1>Step 8 - Write Code</h1>
+<p>Once you’ve worked out how to fix the issue, it’s time to write your code! Conform to the coding style used in the rest of the code, be concise but clear, and don’t introduce any new dependencies (if this is needed, it should be discussed first). Don’t forget to update any function parameter documentation.</p>
+<p>The image below shows a diff of the file I edited before and after the changes I made. There is very little changed – it’s best to work on small issues to build trust with the package maintainer over time.</p>
+<p><img src="/images/write_code.png" /></p>
+</div>
+<div id="step-9---submit-pr-and-wait" class="section level1">
+<h1>Step 9 - Submit PR and Wait</h1>
+<p>Once I’d submitted my pull request, I waited with the patience of your average toddler that’s been sat down in front of a plate of marshmallows and told not to eat any. Look, I was excited – I was making my first tidyverse pull request! I nearly lost sight of the fact that people have lives, jobs, and frankly, other things to be doing with their time. Ultimately, I’m glad I didn’t nudge as I feel like it would have felt rude. There were a few changes and additions needed, but eventually my changes got merged into the master branch.</p>
+<p><img src="/images/pr_and_wait.png" width="50%" /></p>
+</div>
+<div id="step-10---celebrate-then-encourage-others-to-get-involved-and-share-your-experience" class="section level1">
+<h1>Step 10 - Celebrate! Then Encourage Others to Get Involved and Share Your Experience</h1>
+<p><img src="/images/ermagerd.png" width="50%" /></p>
+<p>I was pleasantly surprised by the fact that I already had most of the background knowledge required, and all I really needed was some inspiration to get involved and the patient Alex Hayes being awesome at guiding me through the process.</p>
+<p>I’d like to end by emphasising that, although I’ve been using R on and off for 8 years, and as part of my job for 3, I believe I could have contributed sooner if I’d known more about the process. A lot is still unclear to me but I’m learning more by talking to people. If you’re unsure, watch the repos and see the conversations and how people go about different things. Look at the individual commits people make. Get a feel for what’s going on.</p>
+<p>I’m still so new to this, and still agonise on phrasing every time I open an issue or pull request, but I think that as long as you’re polite, accept feedback well, and don’t try to get too far ahead of yourself, it’s probably going to be a really positive experience for you. The R community is made up of a lot of really awesome people.</p>
+</div>
+<div id="resources" class="section level1">
+<h1>Resources</h1>
+<p>Talk by Mara Averick on contributing:
+<a href="https://www.rstudio.com/resources/videos/contributing-to-tidyverse-packages/">https://www.rstudio.com/resources/videos/contributing-to-tidyverse-packages/</a></p>
+<p>Guide to contributing code to the tidyverse:
+<a href="https://www.tidyverse.org/articles/2017/08/contributing/">https://www.tidyverse.org/articles/2017/08/contributing/</a></p>
+<p>rOpenSci contributing guide:
+<a href="https://ropensci.github.io/dev_guide/contributingguide.html">https://ropensci.github.io/dev_guide/contributingguide.html</a></p>
+<p>Repo walking through making a pull request:
+<a href="https://github.com/firstcontributions/first-contributions">https://github.com/firstcontributions/first-contributions</a></p>
+</div>
+
+</main>
+
+  <footer>
+  <script src="//yihui.org/js/math-code.js"></script>
+<script async src="//mathjax.rstudio.com/latest/MathJax.js?config=TeX-MML-AM_CHTML"></script>
+
+<script async src="//yihui.org/js/center-img.js"></script>
+
+<script type="application/javascript">
+var doNotTrack = false;
+if (!doNotTrack) {
+	(function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+	(i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+	m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+	})(window,document,'script','https://www.google-analytics.com/analytics.js','ga');
+	ga('create', 'UA-116704434-1', 'auto');
+	
+	ga('send', 'pageview');
+}
+</script>
+  
+  <hr/>
+  © Nic Crane 2016 &ndash; 2022
+  
+  </footer>
+  </body>
+</html>
+

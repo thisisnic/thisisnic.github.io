@@ -1,0 +1,188 @@
+<!DOCTYPE html>
+<html lang="en-uk">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>How do I make my own dplyr-style functions? | Nic Crane</title>
+    <link rel="stylesheet" href="/css/style.css" />
+    <link rel="stylesheet" href="/css/fonts.css" />
+    
+  </head>
+
+  <body>
+    <nav>
+    <ul class="menu">
+      
+      <li><a href="/post/">Home</a></li>
+      
+      <li><a href="/about/">About</a></li>
+      
+      <li><a href="/categories/">Categories</a></li>
+      
+      <li><a href="/tags/">Tags</a></li>
+      
+      <li><a href="/speaking/">Speaking</a></li>
+      
+      <li><a href="/index.xml">Subscribe</a></li>
+      
+    </ul>
+    <hr/>
+    </nav>
+
+<div class="article-meta">
+<h1><span class="title">How do I make my own dplyr-style functions?</span></h1>
+<h2 class="author">Nic Crane</h2>
+<h2 class="date">2018/04/16</h2>
+</div>
+
+<main>
+
+<script src="/rmarkdown-libs/header-attrs/header-attrs.js"></script>
+
+
+<p>In this series of blog posts introducing tidy eval, we’ve been looking at <a href="https://thisisnic.github.io/2018/03/29/what-is-tidy-eval-and-why-should-i-care/">why tidy eval is important</a>, and terms like <a href="https://thisisnic.github.io/2018/03/31/what-the-heck-is-quasiquotation/">“quotation” and “quasiquotation”</a>.</p>
+<p>The next step is to look at how we can write our own dplyr-style functions in R.</p>
+<p>This post will look at the following terms and functions:</p>
+<ul>
+<li>quosures</li>
+<li><code>quo()</code></li>
+<li><code>enquo()</code></li>
+</ul>
+<div id="what-is-a-quosure" class="section level2">
+<h2>What is a quosure?</h2>
+<p>Quosures are a topic which come up frequently when talking about tidy eval. But what is a quosure? From <a href="https://www.rdocumentation.org/packages/rlang/versions/0.1.6/topics/quosure">here</a></p>
+<blockquote>
+<blockquote>
+<p>Quosures are quoted expressions that keep track of an environment</p>
+</blockquote>
+</blockquote>
+<p>On it’s own, this definition is a little abstract. We can guess from its name that the term “quosure” is related to “closure”, meaning a function which keeps track of its parent environment, but in the case of “quosure”, we’re referring specifically to quoted expressions instead of functions.</p>
+<p>In order to give it a little more context, let’s look at an example of where you might need to use a quosure.</p>
+</div>
+<div id="using-dplyr-inside-custom-functions" class="section level2">
+<h2>Using dplyr Inside Custom Functions</h2>
+<p>In a number of previous posts, we looked at how we can use <code>sym()</code> and <code>!!</code> to help us work with <em>dplyr</em> functions when called inside our own functions. As a recap, here’s an example of a function, <code>wrangle_data()</code>, which selects a column specified by the user, filters based on a user-supplied value, and then returns the first 6 lines of the resulting dataset:</p>
+<pre class="r"><code>library(dplyr)
+library(rlang)
+
+wrangle_data &lt;- function(x, col_name, val){
+  
+  one_col &lt;- select(x, !!sym(col_name))
+  filtered &lt;- filter(one_col, !!sym(col_name) == val)
+  head(filtered)
+}
+
+wrangle_data(iris, &quot;Species&quot;, &quot;versicolor&quot;)</code></pre>
+<pre><code>##      Species
+## 1 versicolor
+## 2 versicolor
+## 3 versicolor
+## 4 versicolor
+## 5 versicolor
+## 6 versicolor</code></pre>
+<p>This works fine, although you may notice that the syntax is a little different to if you were to use <em>dplyr</em> functions directly; for example, when we use <code>select()</code> to return specified columns, we don’t need to put the column names in quotes.</p>
+<pre class="r"><code>select(iris, Species) %&gt;%
+  head()</code></pre>
+<pre><code>##   Species
+## 1  setosa
+## 2  setosa
+## 3  setosa
+## 4  setosa
+## 5  setosa
+## 6  setosa</code></pre>
+<p>So, how can we write our own functions that work in the same way?</p>
+</div>
+<div id="capturing-user-input" class="section level2">
+<h2>Capturing User Input</h2>
+<p>Let’s take a quick look at what happens if we try to call our function without putting quote marks around the column name.</p>
+<pre class="r"><code>wrangle_data(iris, Species, &quot;versicolor&quot;)</code></pre>
+<pre><code>## Error: object &#39;Species&#39; not found</code></pre>
+<p>We get an error message. This is because R is trying to find an object named <code>Species</code>, but no object with this name exists. We need some way of capturing the expression that the user has input and evaluating it in the correct context.</p>
+<div id="quosures-quo-and-enquo" class="section level3">
+<h3>Quosures: quo() and enquo()</h3>
+<p>This brings is back to our earlier definition of quosures:</p>
+<blockquote>
+<blockquote>
+<p>Quosures are quoted expressions that keep track of an environment</p>
+</blockquote>
+</blockquote>
+<p>We might try using <code>quo()</code> to create a quosure. Note that we have also removed the call to <code>sym()</code>.</p>
+<pre class="r"><code>wrangle_data &lt;- function(x, col_name, val){
+  
+  col_name &lt;- quo(col_name)
+  
+  one_col &lt;- select(x, !!col_name)
+  filtered &lt;- filter(one_col, !!col_name == val)
+  head(filtered)
+}
+
+wrangle_data(iris, Species, &quot;versicolor&quot;)</code></pre>
+<pre><code>## Note: Using an external vector in selections is ambiguous.
+## ℹ Use `all_of(col_name)` instead of `col_name` to silence this message.
+## ℹ See &lt;https://tidyselect.r-lib.org/reference/faq-external-vector.html&gt;.
+## This message is displayed once per session.</code></pre>
+<pre><code>## Error: Must subset columns with a valid subscript vector.
+## x Subscript has the wrong type `quosure/formula`.
+## ℹ It must be numeric or character.</code></pre>
+<p>This is almost correct, but not quote there! To make this function run, we need to use <code>enquo()</code>.</p>
+<pre class="r"><code>wrangle_data &lt;- function(x, col_name, val){
+  
+  col_name &lt;- enquo(col_name)
+  
+  one_col &lt;- select(x, !!col_name)
+  filtered &lt;- filter(one_col, !!col_name == val)
+  head(filtered)
+}
+
+wrangle_data(iris, Species, &quot;versicolor&quot;)</code></pre>
+<pre><code>##      Species
+## 1 versicolor
+## 2 versicolor
+## 3 versicolor
+## 4 versicolor
+## 5 versicolor
+## 6 versicolor</code></pre>
+<p>So what is the difference between <code>quo()</code> and <code>enquo()</code> then?</p>
+</div>
+<div id="comparing-quo-and-enquo" class="section level3">
+<h3>Comparing quo() and enquo()</h3>
+<p>When we call <code>quo()</code> on an expression, it takes that expression and wraps it in a quosure, in this case, returning <code>col_name</code> as a quosure. However, what we actually wanted to do was return <code>Species</code> as a quosure, and this extra step can be performed by using <code>enquo()</code> instead.</p>
+<p>From <a href="https://dplyr.tidyverse.org/articles/programming.html">the programming vignette from dplyr</a>:</p>
+<blockquote>
+<blockquote>
+<p>enquo() uses some dark magic to look at the argument, see what the user typed, and return that value as a quosure.</p>
+</blockquote>
+</blockquote>
+<p>To look at it another way, if we wanted to turn a variable we supplied ourself into a quosure, we’d probably use <code>quo()</code>, but if it’s one supplied by the user, then we should use <code>enquo()</code>.</p>
+<p>To conclude, <code>enquo()</code> is crucial if we wish to create our own <em>dplyr</em> style functions which capture user input. Any feedback on this post is welcome <a href="https://twitter.com/nic_crane/status/985767823157923842">via Twitter</a>.</p>
+</div>
+</div>
+
+</main>
+
+  <footer>
+  <script src="//yihui.org/js/math-code.js"></script>
+<script async src="//mathjax.rstudio.com/latest/MathJax.js?config=TeX-MML-AM_CHTML"></script>
+
+<script async src="//yihui.org/js/center-img.js"></script>
+
+<script type="application/javascript">
+var doNotTrack = false;
+if (!doNotTrack) {
+	(function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+	(i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+	m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+	})(window,document,'script','https://www.google-analytics.com/analytics.js','ga');
+	ga('create', 'UA-116704434-1', 'auto');
+	
+	ga('send', 'pageview');
+}
+</script>
+  
+  <hr/>
+  © Nic Crane 2016 &ndash; 2022
+  
+  </footer>
+  </body>
+</html>
+

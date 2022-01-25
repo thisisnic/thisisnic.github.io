@@ -1,0 +1,87 @@
+<!DOCTYPE html>
+<html lang="en-uk">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>My First 3 Months at Ursa Computing | Nic Crane</title>
+    <link rel="stylesheet" href="/css/style.css" />
+    <link rel="stylesheet" href="/css/fonts.css" />
+    
+  </head>
+
+  <body>
+    <nav>
+    <ul class="menu">
+      
+      <li><a href="/post/">Home</a></li>
+      
+      <li><a href="/about/">About</a></li>
+      
+      <li><a href="/categories/">Categories</a></li>
+      
+      <li><a href="/tags/">Tags</a></li>
+      
+      <li><a href="/speaking/">Speaking</a></li>
+      
+      <li><a href="/index.xml">Subscribe</a></li>
+      
+    </ul>
+    <hr/>
+    </nav>
+
+<div class="article-meta">
+<h1><span class="title">My First 3 Months at Ursa Computing</span></h1>
+
+<h2 class="date">2021/07/05</h2>
+</div>
+
+<main>
+
+<script src="/2021/07/05/my-first-3-months-at-ursa-computing/index_files/header-attrs/header-attrs.js"></script>
+
+
+<p>The last time I blogged, I mentioned not being comfortable with the open-ended-ness of everything, but I was confident that in time I would adjust and start to see the benefits. And that’s precisely what has happened.</p>
+<p>One habit I’ve had for a very long time is being possessed by a real sense of urgency, and it’s a double-edged sword. Sure, I get things done, but getting something working without necessarily knowing <em>why</em> it’s working makes for the appearance of being highly productive, without developing a deep understanding that can later transfer to other areas. Being able to slow down and really dive deep into a topic is a great opportunity, and I’ve been reminding myself that I shouldn’t squander it.</p>
+<p>I’ve made some career decisions too. Initially, I started off wanting to do a bit of everything - R, Python, and C++. Whilst I did learn some basic C++ and applied those skills, I quickly realised that there are only so many hours in the day, and whilst I would like to learn more, I’m getting a lot more enjoyment out of levelling up my R skills, and general software development skills. Most of my experience is in R, and whilst I’m glad I have experience deploying Python to a production environment, it’s not my current focus. In terms of medium-term career goals, I’ve decided I no longer want to be a data scientist and would instead rather be an R developer.</p>
+<p>When I was doing my PhD, I remember thinking that I hated collecting data (I did psychology research, so it involved a lot of time waiting around for participants to show up!). Still, I enjoyed writing the code that ran my experiments, and to a certain extent, analysing my collected data. A year or so later, I heard of the term “data science” and figured it was everything I wanted. Now, with 5 years of data science experience under my belt, I feel differently. I’ve developed a wide variety of skills, a few in-depth, but many only a little, leaving me feeling like a “jack of all trades, master of none”. I’ve done bits of package development, classroom teaching, online teaching, web app development, machine learning, NLP, DevOps, software development, project management, data analysis, data visualisation, consultancy, architecture, public speaking, technical sales, and probably a whole load of other things I haven’t listed. Though I’ve enjoyed all of these things, and I’m sure they look great on my CV, I want to just slow down and really develop a deep mastery of a smaller subset of skills. To a certain extent, I feel like “data scientist” is a cursed job title - it means so many different things to different people, and now I’ve had time to explore and work out what I do and don’t like; I am so over having “the sexiest job of the 21st century”. Of course, “R developer” isn’t a well-defined term (and I’ll be on a panel discussion at UseR! Conference tomorrow discussing exactly that!), and I might end up with a “data scientist” title again one day, but I’m going to be a lot more focused in what I do.</p>
+<p>Enough of what I don’t want to do; how about what I <em>do</em> want to do? One of the things I did a deep dive on since last time was CI. We needed to upgrade our builds to use R 4.1, and given that Apache Arrow has, erm, complicated CI, this wasn’t so simple. I do enjoy riding the emotional rollercoaster of solving a complex problem and got a good chunk of it done, with the rest figured out by some excellent colleagues of mine. I don’t have a tonne of experience of deploying things to CI, and I want to dig further into what I like about it, but for now, I’ll say it’s like having a fascinating logic puzzle to solve, and it interests me the same way that writing code does.</p>
+<p>I’ve also ended up doing a few code reviews - some of it for the C++ code on the project. It’s been a great lesson in working collaboratively and the fact that I don’t have to be an expert in a topic to be able to have something relevant to say about implementation. I’ve also done some code reviews on the R side of things, and it’s been really nice to apply the things I’ve learned so far to become more part of that process.</p>
+<p>I also wanted to talk about what I’ve learned about contributing to open source and what things I now know that would have prevented me from contributing in the past.</p>
+<p>One of the things I’ve realised is that you can’t treat “open source” as one great big homogenous lump. Even when you have communities and subcommunities about which you could probably describe the culture quite easily (e.g. “the R community in general”, “R core”, “the tidyverse/R4DS etc community”, “ROpenSci”, etc etc), at the end of the day, every R package has a specific maintainer or groups of maintainers. Each may have different norms around contributing, different release cycles, or maintainer activity. Whilst there may be some generic guidance that can help (e.g. “where possible, create a reproducible example when reporting a bug”), not everything is the same from project to project. I remember reading <a href="https://www.jimhester.com/post/2017-08-08-contributing/">this guide by Jim Hester about contributing to the tidyverse</a> a while ago and not really “getting” the recommendation to explore previously merged contributions. This is actually useful for several reasons:
+1. Checking conventions - what kinds of things do code reviews flag up frequently? What can you do to be consistent with previously merged PRs?
+2. What have people done before - if there are many ways of achieving the change you are submitting, what have people done before? Make good use of the search functionality on the “Pull requests” tab on GitHub to find closed PRs similar to yours. This was a massive help to me when I started writing R bindings for Arrow C++ functions which required me to update the C++ code too.</p>
+<p>Another piece of advice I never really previously “got” was to read other people’s code. Sure, I’d skimmed it, but there’s a lot more to reading code than simply casting your eyes across it. One of the things I did early on here was when I was trying to understand how non-standard evaluation (i.e. dplyr-style) functions in Arrow work. I asked a vague question, and a colleague suggested instead that I wrote down everything I understood so they could then help direct me to fill in the missing pieces. I started off a Google Doc, which quickly grew large, first treating blocks of interrelated code like black boxes, and documented how they fit together, and then going back and opening up each of these boxes, documenting their internals.</p>
+<p>Most importantly, the colleague who was helping me nudged me to try to work out <em>why</em> things had been done a certain way rather than just documenting the <em>what</em>. This took time, and at some points, I’d be going through the code one line at a time very slowly, but it was absolutely worth it. Whilst this didn’t feel “productive” in the way I’m used to, this knowledge helped me massively when later reviewing other peoples code.</p>
+<p>Going back to the topic of a deep dive, when writing my “10 steps to contributing to the tidyverse” blogpost in 2018, I had a vague feeling that my approach was a little off in the motivation. I wanted to contributed to the tidyverse as it felt like a great achievement - which it absolutely was at the time - but then my subsequent plan on sitting around occasionally browsing different tidyverse package issues pages for tickets flagged as “help needed” or “great first issue” didn’t really pan out, as I wanted quick progress, but most things I saw had either been taken up by someone else or after 10 minutes of thinking about how to solve it, I wasn’t sure. Subsequently, I heard advice about contributing to packages you are a frequent user of yourself, and again, this was just more evidence that my “paint by numbers” approach wasn’t working. I now tend to agree with this advice and see a different path to contribution in the longer term.</p>
+<p>It’s all about a shift in mindset. When I was trying to get things done quickly, I’d run examples, google things and play with code from Stack Overflow, but ultimately switch to using a different package if I couldn’t quickly achieve what I wanted to with the one I was trying. This approach gets things done, it looks productive, but it doesn’t lead to a deeper understanding. Now I’ve had reason to try to slow down, I’ve ended up really taking the time to try to get things working without giving up, and have found that submitting PRs to packages has come naturally to me as part of this process. For example, recently, I’ve been playing with a package idea that involves calling a function from <code>covr</code>. The particular function I was trying to use didn’t have any examples in the function documentation, so once I figured out how to run my code, I submitted a PR adding the examples I thought would be helpful.</p>
+<p>Similarly, as I was trying to work out how to do something with <code>bookdown</code>, I found a small typo in the docs, so I submitted a PR to fix that too. There was no searching for ways to get involved, no looking for an issue that vaguely made sense, but just fixing things that I noticed or found useful. Whilst the previous approach, I think, is totally appropriate for submitting your first PR and learning about the process of doing so, I don’t think (for me anyway!) this makes as much sense in the longer term.</p>
+<p>Overall, I think I’ve learned a lot in my first few months, and still am loving this apprenticeship. I’ve a few goals I want to work on around asking for help more, making the time to work on side projects like blogging, and have a really good think about what I want to get out of this, but feel like I’m learning a lot.</p>
+
+</main>
+
+  <footer>
+  <script src="//yihui.org/js/math-code.js"></script>
+<script async src="//mathjax.rstudio.com/latest/MathJax.js?config=TeX-MML-AM_CHTML"></script>
+
+<script async src="//yihui.org/js/center-img.js"></script>
+
+<script type="application/javascript">
+var doNotTrack = false;
+if (!doNotTrack) {
+	(function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+	(i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+	m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+	})(window,document,'script','https://www.google-analytics.com/analytics.js','ga');
+	ga('create', 'UA-116704434-1', 'auto');
+	
+	ga('send', 'pageview');
+}
+</script>
+  
+  <hr/>
+  © Nic Crane 2016 &ndash; 2022
+  
+  </footer>
+  </body>
+</html>
+
