@@ -6,7 +6,17 @@
     <description>Recent content in Posts on Nic Crane</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>en-uk</language>
-    <lastBuildDate>Sun, 23 Jan 2022 00:00:00 +0000</lastBuildDate><atom:link href="/post/index.xml" rel="self" type="application/rss+xml" />
+    <lastBuildDate>Sat, 09 Apr 2022 00:00:00 +0000</lastBuildDate><atom:link href="/post/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>Error chaining</title>
+      <link>/2022/04/09/error-chaining/</link>
+      <pubDate>Sat, 09 Apr 2022 00:00:00 +0000</pubDate>
+      
+      <guid>/2022/04/09/error-chaining/</guid>
+      <description>In this post, I’m going to talk about error chaining - overriding default error messages to add further hints for a user. I had a need to learn this while working on Arrow on code which resulted in a C++ error message, to which I wanted to add extra hints relevant to R users. I’ve used a toy example below to make it more straightforward to demonstrate.
+Introduction Let’s imagine I work in the HR department of the UK’s number 1 employer of cats.</description>
+    </item>
+    
     <item>
       <title>Open Source Developer Apprenticeship - 9 months in</title>
       <link>/2022/01/23/open-source-developer-apprenticeship-9-months-in/</link>

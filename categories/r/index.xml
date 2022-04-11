@@ -27,15 +27,6 @@ Table objects in Arrow have a Filter method, and I knew that a naive implementat
     </item>
     
     <item>
-      <title>What is SEXP?</title>
-      <link>/cpp/2021/04/19/what-is-sexp/</link>
-      <pubDate>Mon, 19 Apr 2021 00:00:00 +0000</pubDate>
-      
-      <guid>/cpp/2021/04/19/what-is-sexp/</guid>
-      <description>SEXP is short for S Expression. It is the C struct used to represent every type of object in R. C functions that talk to R must used the SEXP type for both inputs and outputs.</description>
-    </item>
-    
-    <item>
       <title>Three Valued Logic</title>
       <link>/2021/04/17/three-valued-logic/</link>
       <pubDate>Sat, 17 Apr 2021 00:00:00 +0000</pubDate>

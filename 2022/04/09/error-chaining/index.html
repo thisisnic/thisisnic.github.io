@@ -1,0 +1,278 @@
+<!DOCTYPE html>
+<html lang="en-uk">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Error chaining | Nic Crane</title>
+    <link rel="stylesheet" href="/css/style.css" />
+    <link rel="stylesheet" href="/css/fonts.css" />
+    
+  </head>
+
+  <body>
+    <nav>
+    <ul class="menu">
+      
+      <li><a href="/post/">Home</a></li>
+      
+      <li><a href="/about/">About</a></li>
+      
+      <li><a href="/categories/">Categories</a></li>
+      
+      <li><a href="/tags/">Tags</a></li>
+      
+      <li><a href="/speaking/">Speaking</a></li>
+      
+      <li><a href="/index.xml">Subscribe</a></li>
+      
+    </ul>
+    <hr/>
+    </nav>
+
+<div class="article-meta">
+<h1><span class="title">Error chaining</span></h1>
+<h2 class="author">Nic Crane</h2>
+<h2 class="date">2022/04/09</h2>
+</div>
+
+<main>
+
+<script src="/2022/04/09/error-chaining/index_files/header-attrs/header-attrs.js"></script>
+
+
+<p>In this post, I’m going to talk about error chaining - overriding default error messages to add further hints for a user. I had a need to learn this while working on Arrow on code which resulted in a C++ error message, to which I wanted to add extra hints relevant to R users. I’ve used a toy example below to make it more straightforward to demonstrate.</p>
+<div id="introduction" class="section level2">
+<h2>Introduction</h2>
+<p>Let’s imagine I work in the HR department of the UK’s number 1 employer of cats. Our employees are available for modelling, snuggles, and avian assassination. Our individual offices keep records of new employees, and send them to me via email so I can collate them. Our process could be better, but it works for now.</p>
+<p><img src="images/business-cat-working.gif" /></p>
+</div>
+<div id="basic-data-validation" class="section level2">
+<h2>Basic data validation</h2>
+<p>When I get a new set of records, I want to do some analysis, and because I’m awesome, I want to do it in R. Unfortunately our regional office input data manually, which is subject to human error. I’ve decided I want to write some R code which automates data import and validation for me.</p>
+<p>I know that Dave in the Birmingham office often inputs the cat’s ages wrong - too little caffeine in the mornings really throws him off his game - but given the fact that the world’s oldest cat was 38, we can safely say that if the data shows an age older than that it’s either an input error or cause to call the Guinness Book of World Records.</p>
+<p>Here’s my initial function with import and basic validation!</p>
+<pre class="r"><code>library(readr)
+library(dplyr, warn.conflicts = FALSE)
+library(rlang)
+
+# function with basic validation
+import_cat_data &lt;- function(file){
+  
+  # Column types are always the same so I may as well specify them here
+  data &lt;- readr::read_csv(
+    file,
+    col_types = cols(
+      col_double(),
+      col_integer(),
+      col_double()
+    )
+  )
+  
+  # Validation
+  if (any(data$age &gt; 38)) {
+    rlang::abort(
+      c(
+        &quot;Values in `age` must be 38 or less&quot;,
+        paste(&quot;Invalid values detected:&quot;, paste0(data$age[data$age &gt; 38], collapse = &quot;, &quot;))
+      )
+    )
+  }
+  
+  data
+}</code></pre>
+<p>So how does this look if I have perfectly good data?</p>
+<pre class="r"><code># Create some example data and write to a CSV dile
+cats &lt;- tibble::tibble(age = c(5, 0.5, 13), paws = rep(4, 3), teeth = c(30, 26, 26))
+readr::write_csv(cats, file = &quot;cats.csv&quot;)
+
+# Import data
+import_cat_data(&quot;cats.csv&quot;)</code></pre>
+<pre><code>## # A tibble: 3 × 3
+##     age  paws teeth
+##   &lt;dbl&gt; &lt;int&gt; &lt;dbl&gt;
+## 1   5       4    30
+## 2   0.5     4    26
+## 3  13       4    26</code></pre>
+<p>And how does this look when I run it on Dave’s dodgy data?</p>
+<pre class="r"><code>dave_data &lt;- tibble::tibble(age = c(10, 200), paws = c(3, 4), teeth = c(30, 30))
+readr::write_csv(dave_data, file = &quot;dave_data.csv&quot;)
+
+# Triggers the error
+import_cat_data(&quot;dave_data.csv&quot;)</code></pre>
+<pre><code>## Error in `import_cat_data()`:
+## ! Values in `age` must be 38 or less
+## • Invalid values detected: 200</code></pre>
+</div>
+<div id="custom-warning-handling" class="section level2">
+<h2>Custom warning handling</h2>
+<p>OK, so we’ve covered Dave’s dodgy data, but what other problems do I have in my pipeline? Sometimes Anja in our Wigan branch will send me <code>.tsv.</code> files instead of <code>.csv</code>. I’m not interested in detecting the file type - I just want an error message. So, what does it look like when I try to import that data?</p>
+<pre class="r"><code># Set up tsv file saved as a csv
+even_more_cats &lt;- tibble::tibble(age = c(7, 3), paws = c(4, 4), teeth = c(30, 28))
+cats_tsv &lt;- readr::write_tsv(even_more_cats, file = &quot;even_more_cats.csv&quot;)
+
+# Import the file
+import_cat_data(&quot;even_more_cats.csv&quot;)</code></pre>
+<pre><code>## Warning: Unnamed `col_types` should have the same length as `col_names`. Using
+## smaller of the two.</code></pre>
+<pre><code>## Warning: 2 parsing failures.
+## row              col               expected   actual                 file
+##   1 age  paws    teeth no trailing characters 7  4   30 &#39;even_more_cats.csv&#39;
+##   2 age  paws    teeth no trailing characters 3  4   28 &#39;even_more_cats.csv&#39;</code></pre>
+<pre><code>## Warning: Unknown or uninitialised column: `age`.</code></pre>
+<pre><code>## # A tibble: 2 × 1
+##   `age\tpaws\tteeth`
+##                &lt;dbl&gt;
+## 1                 NA
+## 2                 NA</code></pre>
+<p>Urgh, this is kinda messy. I keep forgetting that it’s Anja’s dodgy tsv files which cause this, so I want to do 2 things here:</p>
+<ol style="list-style-type: decimal">
+<li>Promote the warning to an error</li>
+<li>Give myself a little reminder about the cause of the error</li>
+</ol>
+<p>I’ve now wrapped my data import stage in a <code>tryCatch()</code> so I can provide some custom behaviour if this warning appears, via another function I’ve written called <code>handle_cats_import_warning()</code>.</p>
+<pre class="r"><code>import_cat_data &lt;- function(file){
+  
+  tryCatch(
+    data &lt;- readr::read_csv(
+      file,
+      col_types = cols(
+        col_double(),
+        col_integer(),
+        col_double()
+      )
+    ),
+    warning = function(w){
+      handle_cats_import_warning(w)
+    }
+  )
+
+  if (any(data$age &gt; 38)) {
+    rlang::abort(
+      c(
+        &quot;Values in `age` must be 38 or less&quot;,
+        paste(&quot;Invalid values detected:&quot;, paste0(data$age[data$age &gt; 38], collapse = &quot;, &quot;))
+      )
+    )
+  }
+  
+  data
+}</code></pre>
+<p>The warning helper is below. Basically, it extracts the message from the warning, and if this message matches the one I saw above, I append it with an extra little informational message as a hint about the possible cause. Then I call <code>rlang::abort()</code> to raise an error containing the content of the message. Remember, even if the warning is caused by something else, I still want it to error.</p>
+<pre class="r"><code>handle_cats_import_warning &lt;- function(w){
+  msg &lt;- conditionMessage(w)
+  if (grepl(&quot;Unnamed `col_types` should have the same length as `col_names`.&quot;, msg)) {
+    msg &lt;- c(
+        msg,
+        i = &quot;Is the file you&#39;re importing a `.tsv`? Only `.csv&#39; files are accepted.&quot;
+    )
+  }
+  rlang::abort(msg)
+}</code></pre>
+<p>So how does this look now?</p>
+<pre class="r"><code>import_cat_data(&quot;even_more_cats.csv&quot;)</code></pre>
+<pre><code>## Error in `handle_cats_import_warning()`:
+## ! Unnamed `col_types` should have the same length as `col_names`. Using smaller of the two.
+## ℹ Is the file you&#39;re importing a `.tsv`? Only `.csv&#39; files are accepted.</code></pre>
+<p>It looks OK, but it’s not done yet - you might have noticed that the error is reported as coming from <code>handle_cats_import_warning()</code>. This isn’t quite right - that function is just the warning helper; I want to report the error as coming from <code>import_cat_data()</code>. So how do I do this? Let’s take a quick look at the source of the error - we’ll come back to this later.</p>
+<pre class="r"><code>rlang::last_error()</code></pre>
+<pre><code>## &lt;error/rlang_error&gt;
+## Error in `handle_cats_import_warning()`:
+## ! Unnamed `col_types` should have the same length as `col_names`. Using smaller of the two.
+## ℹ Is the file you&#39;re importing a `.tsv`? Only `.csv&#39; files are accepted.
+## Backtrace:
+##  1. global import_cat_data(&quot;even_more_cats.csv&quot;)
+##  2. base::tryCatch(...)
+##  3. base tryCatchList(expr, classes, parentenv, handlers)
+##  4. base tryCatchOne(expr, names, parentenv, handlers[[1L]])
+##  5. value[[3L]](cond)
+##  6. global handle_cats_import_warning(w)
+## Run `rlang::last_trace()` to see the full context.</code></pre>
+<p>We can see from the enumerated items on the backtrace that the function we want to show as the source of the error (<code>import_cat_data()</code>) is 5 items higher that the function currently being shown as the source of the error (<code>handle_cats_import_warning()</code>). So how do we change the reported error source?</p>
+</div>
+<div id="changing-the-calling-environment" class="section level2">
+<h2>Changing the calling environment</h2>
+<p>It basically comes down to using the <code>call</code> parameter when calling <code>rlang::abort()</code>. If you take a look at the docs, you’ll see it documented as:</p>
+<blockquote>
+<p>The execution environment of a currently running function, e.g. call = caller_env(). The corresponding function call is retrieved and mentioned in error messages as the source of the error.</p>
+</blockquote>
+<blockquote>
+<p>You only need to supply call when throwing a condition from a helper function which wouldn’t be relevant to mention in the message.</p>
+</blockquote>
+<p>OK, perfect! So all I need to do is add another parameter to my warning helper function below - this means that wherever I’m calling it from, I can pass in information about the correct environment to report in the error message.</p>
+<pre class="r"><code>handle_cats_import_warning &lt;- function(w, call){
+  msg &lt;- conditionMessage(w)
+  if (grepl(&quot;Unnamed `col_types` should have the same length as `col_names`.&quot;, msg)) {
+    msg &lt;- c(
+        msg,
+        i = &quot;Is the file you&#39;re importing a `.tsv`? Only `.csv&#39; files are accepted.&quot;
+    )
+  }
+  rlang::abort(msg, call = call)
+}</code></pre>
+<p>Next, I need to update my call to <code>tryCatch()</code> to also incorporate this change, and I use <code>rlang::caller_env()</code> to specify the environment. The parameter <code>n = 4</code> means “go back 4 callers”.</p>
+<pre class="r"><code>import_cat_data &lt;- function(file){
+  
+  tryCatch(
+    data &lt;- readr::read_csv(
+      file,
+      col_types = cols(
+        col_double(),
+        col_integer(),
+        col_double()
+      )
+    ),
+    warning = function(w, call = caller_env(n = 4)){
+      handle_cats_import_warning(w, call)
+    }
+  )
+
+  # Validation
+  
+  if (any(data$age &gt; 38)) {
+    rlang::abort(
+      c(
+        &quot;Values in `age` must be 38 or less&quot;,
+        paste(&quot;Invalid values detected:&quot;, paste0(data$age[data$age &gt; 38], collapse = &quot;, &quot;))
+      )
+    )
+  }
+  
+  data
+}</code></pre>
+<p>I discovered this number through trial and error, but after reading a bit more about the stack trace, I have a better idea about the reason Remember before when I said the function call we wanted to say was the error’s source was five items higher on the stack? In the warning handler above, we call <code>caller_env()</code> one place higher in the stack than <code>handle_cats_import_warning()</code>, and so 5 - 1 = 4.</p>
+<p>So now let’s take a look - is our error message attributed to the right place in the call stack?</p>
+<pre class="r"><code>import_cat_data(&quot;even_more_cats.tsv&quot;)</code></pre>
+<pre><code>## Error: &#39;even_more_cats.tsv&#39; does not exist in current working directory (&#39;/home/nic2/blog/content/post/2022-04-09-error-chaining&#39;).</code></pre>
+<p>Yes, it is!</p>
+<p><img src="images/awesome-great-success.jpg" /></p>
+<p>It was super interesting figuring out the details of this, and if you need to write code which involves error helpers and/or error chaining, I’d recommend that you check out this <a href="https://rlang.r-lib.org/reference/topic-error-chaining.html">excellent rlang vignette on error chaining</a> which covers even more things you can do around this.</p>
+</div>
+
+</main>
+
+  <footer>
+  <script src="//yihui.org/js/math-code.js"></script>
+<script async src="//mathjax.rstudio.com/latest/MathJax.js?config=TeX-MML-AM_CHTML"></script>
+
+<script async src="//yihui.org/js/center-img.js"></script>
+
+<script type="application/javascript">
+var doNotTrack = false;
+if (!doNotTrack) {
+	(function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+	(i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+	m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+	})(window,document,'script','https://www.google-analytics.com/analytics.js','ga');
+	ga('create', 'UA-116704434-1', 'auto');
+	
+	ga('send', 'pageview');
+}
+</script>
+  
+  <hr/>
+  © Nic Crane 2016 &ndash; 2022
+  
+  </footer>
+  </body>
+</html>
+

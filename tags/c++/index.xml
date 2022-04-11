@@ -6,16 +6,7 @@
     <description>Recent content in C&#43;&#43; on Nic Crane</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>en-uk</language>
-    <lastBuildDate>Thu, 22 Apr 2021 00:00:00 +0000</lastBuildDate><atom:link href="/tags/c++/index.xml" rel="self" type="application/rss+xml" />
-    <item>
-      <title>What is a struct?</title>
-      <link>/cpp/2021/04/22/what-is-a-struct/</link>
-      <pubDate>Thu, 22 Apr 2021 00:00:00 +0000</pubDate>
-      
-      <guid>/cpp/2021/04/22/what-is-a-struct/</guid>
-      <description>A struct, short for structure, is similar to an R list in that it can be used to contain multiple objects of different types.</description>
-    </item>
-    
+    <lastBuildDate>Wed, 21 Apr 2021 00:00:00 +0000</lastBuildDate><atom:link href="/tags/c++/index.xml" rel="self" type="application/rss+xml" />
     <item>
       <title>Examining C&#43;&#43; syntax - RecordBatch::SelectColumns</title>
       <link>/2021/04/21/examining-c-plus-plus-syntax-recordbatch-selectcolumns/</link>
@@ -24,35 +15,6 @@
       <guid>/2021/04/21/examining-c-plus-plus-syntax-recordbatch-selectcolumns/</guid>
       <description>I’m approaching learning C++ by taking both a top-down and bottom-up approach, looking at tutorials and learning the basics whilst also working with existing C++ code in the Arrow codebase.
 I wanted to take a snippet of code from something that I’ve been working on an enhance my understanding of it. I posted this on Slack, and my colleagues were generous with their time and knowledge, helping me check my understanding, which I’m now going to outline below.</description>
-    </item>
-    
-    <item>
-      <title>Modern C&#43;&#43;</title>
-      <link>/cpp/2021/04/19/modern-c/</link>
-      <pubDate>Mon, 19 Apr 2021 00:00:00 +0000</pubDate>
-      
-      <guid>/cpp/2021/04/19/modern-c/</guid>
-      <description>  When people use the phrase “modern C++”, they’re usually referring to C++ 11 onwards.
-Libraries The main libraries in C++ are:
-The C++ standard library Standard Template Library (contains things like algorithms, iterators, etc) Boost (some really great stuff in here; some of it is moving into the standard library) QT framework (for cross-platform UI) Intel libraries (lots of others!)   </description>
-    </item>
-    
-    <item>
-      <title>What is const?</title>
-      <link>/cpp/2021/04/19/what-is-const/</link>
-      <pubDate>Mon, 19 Apr 2021 00:00:00 +0000</pubDate>
-      
-      <guid>/cpp/2021/04/19/what-is-const/</guid>
-      <description>const is a keyword we use to define constants; variables which are not changed after their creation.</description>
-    </item>
-    
-    <item>
-      <title>What is SEXP?</title>
-      <link>/cpp/2021/04/19/what-is-sexp/</link>
-      <pubDate>Mon, 19 Apr 2021 00:00:00 +0000</pubDate>
-      
-      <guid>/cpp/2021/04/19/what-is-sexp/</guid>
-      <description>SEXP is short for S Expression. It is the C struct used to represent every type of object in R. C functions that talk to R must used the SEXP type for both inputs and outputs.</description>
     </item>
     
   </channel>
