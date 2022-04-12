@@ -241,8 +241,10 @@ import_cat_data(&quot;even_more_cats.csv&quot;)</code></pre>
 }</code></pre>
 <p>I discovered this number through trial and error, but after reading a bit more about the stack trace, I have a better idea about the reason Remember before when I said the function call we wanted to say was the error’s source was five items higher on the stack? In the warning handler above, we call <code>caller_env()</code> one place higher in the stack than <code>handle_cats_import_warning()</code>, and so 5 - 1 = 4.</p>
 <p>So now let’s take a look - is our error message attributed to the right place in the call stack?</p>
-<pre class="r"><code>import_cat_data(&quot;even_more_cats.tsv&quot;)</code></pre>
-<pre><code>## Error: &#39;even_more_cats.tsv&#39; does not exist in current working directory (&#39;/home/nic2/blog/content/post/2022-04-09-error-chaining&#39;).</code></pre>
+<pre class="r"><code>import_cat_data(&quot;even_more_cats.csv&quot;)</code></pre>
+<pre><code>## Error in `import_cat_data()`:
+## ! Unnamed `col_types` should have the same length as `col_names`. Using smaller of the two.
+## ℹ Is the file you&#39;re importing a `.tsv`? Only `.csv&#39; files are accepted.</code></pre>
 <p>Yes, it is!</p>
 <p><img src="images/awesome-great-success.jpg" /></p>
 <p>It was super interesting figuring out the details of this, and if you need to write code which involves error helpers and/or error chaining, I’d recommend that you check out this <a href="https://rlang.r-lib.org/reference/topic-error-chaining.html">excellent rlang vignette on error chaining</a> which covers even more things you can do around this.</p>
