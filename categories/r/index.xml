@@ -13,7 +13,7 @@
       <pubDate>Fri, 15 Apr 2022 00:00:00 +0000</pubDate>
       
       <guid>/2022/04/15/customising-pkgdown-with-a-version-selector/</guid>
-      <description>One of the things I&amp;rsquo;ve been working on lately is implementing a version for the Arrow pkgdown site, so that users can browse to previous versions of the documentation. In this post, I discuss the problem and the implemented solution.
+      <description>One of the things I&amp;rsquo;ve been working on lately is implementing a version selector for the Arrow pkgdown site, so that users can browse to previous versions of the documentation. In this post, I discuss the problem and the implemented solution.
 The problem I was excited to work on this feature as its importance is clear to me from my consulting days; I&amp;rsquo;ve worked with many organisations who have had to lock down versions of R packages they allow employees to install, and so upgrading to the latest version isn&amp;rsquo;t an option.</description>
     </item>
     
