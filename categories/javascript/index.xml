@@ -6,7 +6,17 @@
     <description>Recent content in JavaScript on Nic Crane</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>en-uk</language>
-    <lastBuildDate>Tue, 16 Aug 2016 00:00:00 +0000</lastBuildDate><atom:link href="/categories/javascript/index.xml" rel="self" type="application/rss+xml" />
+    <lastBuildDate>Fri, 15 Apr 2022 00:00:00 +0000</lastBuildDate><atom:link href="/categories/javascript/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>Customising pkgdown with a version selector</title>
+      <link>/2022/04/15/customising-pkgdown-with-a-version-selector/</link>
+      <pubDate>Fri, 15 Apr 2022 00:00:00 +0000</pubDate>
+      
+      <guid>/2022/04/15/customising-pkgdown-with-a-version-selector/</guid>
+      <description>One of the things I&amp;rsquo;ve been working on lately is implementing a version for the Arrow pkgdown site, so that users can browse to previous versions of the documentation. In this post, I discuss the problem and the implemented solution.
+The problem I was excited to work on this feature as its importance is clear to me from my consulting days; I&amp;rsquo;ve worked with many organisations who have had to lock down versions of R packages they allow employees to install, and so upgrading to the latest version isn&amp;rsquo;t an option.</description>
+    </item>
+    
     <item>
       <title>Pop-up to confirm action in Shiny</title>
       <link>/2016/08/16/pop-up-to-confirm-action-in-shiny/</link>

@@ -2,13 +2,25 @@
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9"
   xmlns:xhtml="http://www.w3.org/1999/xhtml">
   <url>
-    <loc>/2022/04/09/error-chaining/</loc>
-    <lastmod>2022-04-09T00:00:00+00:00</lastmod>
+    <loc>/categories/</loc>
+    <lastmod>2022-04-15T00:00:00+00:00</lastmod>
+  </url><url>
+    <loc>/2022/04/15/customising-pkgdown-with-a-version-selector/</loc>
+    <lastmod>2022-04-15T00:00:00+00:00</lastmod>
   </url><url>
     <loc>/</loc>
-    <lastmod>2022-04-09T00:00:00+00:00</lastmod>
+    <lastmod>2022-04-15T00:00:00+00:00</lastmod>
+  </url><url>
+    <loc>/categories/javascript/</loc>
+    <lastmod>2022-04-15T00:00:00+00:00</lastmod>
   </url><url>
     <loc>/post/</loc>
+    <lastmod>2022-04-15T00:00:00+00:00</lastmod>
+  </url><url>
+    <loc>/categories/r/</loc>
+    <lastmod>2022-04-15T00:00:00+00:00</lastmod>
+  </url><url>
+    <loc>/2022/04/09/error-chaining/</loc>
     <lastmod>2022-04-09T00:00:00+00:00</lastmod>
   </url><url>
     <loc>/tags/arrow/</loc>
@@ -26,16 +38,10 @@
     <loc>/2021/07/05/my-first-3-months-at-ursa-computing/</loc>
     <lastmod>2021-07-05T00:00:00+00:00</lastmod>
   </url><url>
-    <loc>/categories/</loc>
-    <lastmod>2021-05-18T00:00:00+00:00</lastmod>
-  </url><url>
     <loc>/tags/documentation/</loc>
     <lastmod>2021-05-18T00:00:00+00:00</lastmod>
   </url><url>
     <loc>/categories/python/</loc>
-    <lastmod>2021-05-18T00:00:00+00:00</lastmod>
-  </url><url>
-    <loc>/categories/r/</loc>
     <lastmod>2021-05-18T00:00:00+00:00</lastmod>
   </url><url>
     <loc>/2021/05/18/r-package-documentation-what-makes-a-good-example/</loc>
@@ -123,9 +129,6 @@
     <lastmod>2018-02-02T00:00:00+00:00</lastmod>
   </url><url>
     <loc>/tags/javascript/</loc>
-    <lastmod>2016-08-16T00:00:00+00:00</lastmod>
-  </url><url>
-    <loc>/categories/javascript/</loc>
     <lastmod>2016-08-16T00:00:00+00:00</lastmod>
   </url><url>
     <loc>/2016/08/16/pop-up-to-confirm-action-in-shiny/</loc>
