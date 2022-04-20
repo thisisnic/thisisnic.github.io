@@ -267,7 +267,7 @@ In the UI file, near the top of the dashboardBody , call tags$head and tags$scri
       <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
       
       <guid>/about/</guid>
-      <description>Hi, I&amp;rsquo;m Nic. I&amp;rsquo;m an R developer, currently working at Ursa Computing on Apache Arrow. After completing a PhD in Psychology and Statistics, I started off my career as an R consultant and educator, and developed a passion for breaking down complex topics and helping people level up their coding skills, co-authoring a course on building R packages.
+      <description>Hi, I&amp;rsquo;m Nic. I&amp;rsquo;m an R developer, currently working at Voltron Data on Apache Arrow. After completing a PhD in Psychology and Statistics, I started off my career as an R consultant and educator, and developed a passion for breaking down complex topics and helping people level up their coding skills, co-authoring a course on building R packages.
 I spent the next few years expanding my skillset, working as a data scientist, developing end-to-end machine learning pipelines in R and Python.</description>
     </item>
     
