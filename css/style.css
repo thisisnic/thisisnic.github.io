@@ -34,6 +34,7 @@ pre {
   box-shadow: 5px 5px 5px #eee;
   padding: 1em;
   overflow-x: auto;
+  background: white;
 }
 code { background: #f3f7f7; }
 pre code { background: none; }
