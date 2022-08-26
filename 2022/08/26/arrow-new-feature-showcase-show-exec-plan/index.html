@@ -1,0 +1,112 @@
+<!DOCTYPE html>
+<html lang="en-uk">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Arrow New Feature Showcase: `show_exec_plan()` | Nic Crane</title>
+    <link rel="stylesheet" href="/css/style.css" />
+    <link rel="stylesheet" href="/css/fonts.css" />
+    
+  </head>
+
+  <body>
+    <nav>
+    <ul class="menu">
+      
+      <li><a href="/post/">Home</a></li>
+      
+      <li><a href="/about/">About</a></li>
+      
+      <li><a href="/categories/">Categories</a></li>
+      
+      <li><a href="/tags/">Tags</a></li>
+      
+      <li><a href="/speaking/">Speaking</a></li>
+      
+      <li><a href="/index.xml">Subscribe</a></li>
+      
+    </ul>
+    <hr/>
+    </nav>
+
+<div class="article-meta">
+<h1><span class="title">Arrow New Feature Showcase: <code>show_exec_plan()</code></span></h1>
+<h2 class="author">Nic Crane</h2>
+<h2 class="date">2022/08/26</h2>
+</div>
+
+<main>
+
+<script src="/2022/08/26/arrow-new-feature-showcase-show-exec-plan/index_files/htmlwidgets/htmlwidgets.js"></script>
+<script src="/2022/08/26/arrow-new-feature-showcase-show-exec-plan/index_files/viz/viz.js"></script>
+<link href="/2022/08/26/arrow-new-feature-showcase-show-exec-plan/index_files/DiagrammeR-styles/styles.css" rel="stylesheet" />
+<script src="/2022/08/26/arrow-new-feature-showcase-show-exec-plan/index_files/grViz-binding/grViz.js"></script>
+
+
+<p>The <code>arrow</code> package allows you to take advantage of the power of the <a href="https://arrow.apache.org/docs/cpp/streaming_execution.html">Acero execution engine</a> for data manipulation and analysis. The code in <code>arrow</code> provides bindings to <code>dplyr</code> verbs and <code>tidyverse</code> functions, so that you can use these interfaces without having to understand the inner workings of Acero. But what if you actually want to know more?</p>
+<p>In the latest release of <code>arrow</code>, version 9.0.0, the <a href="https://arrow.apache.org/docs/r/reference/show_exec_plan.html"><code>show_exec_plan()</code></a> function is introduced. This function allows you to see the execution plan generated from your code. For example:</p>
+<pre class="r"><code>library(arrow)
+library(dplyr)
+mtcars %&gt;%
+  arrow_table() %&gt;%
+  filter(mpg &gt; 20) %&gt;%
+  mutate(wt_kg = (wt*1000) * 0.453592)  %&gt;%
+  show_exec_plan()</code></pre>
+<pre><code>## ExecPlan with 4 nodes:
+## 3:SinkNode{}
+##   2:ProjectNode{projection=[mpg, cyl, disp, hp, drat, wt, qsec, vs, am, gear, carb, &quot;wt_kg&quot;: multiply_checked(multiply_checked(wt, 1000), 0.453592)]}
+##     1:FilterNode{filter=(mpg &gt; 20)}
+##       0:TableSourceNode{}</code></pre>
+<p>This functionality is similar to that of <a href="https://dplyr.tidyverse.org/reference/explain.html"><code>dplyr::explain()</code></a> and you’ll get the same result whether you call <a href="https://arrow.apache.org/docs/r/reference/show_exec_plan.html"><code>arrow::show_exec_plan()</code></a>, <a href="https://dplyr.tidyverse.org/reference/explain.html"><code>dplyr::explain()</code></a> or <a href="https://dplyr.tidyverse.org/reference/explain.html"><code>dplyr::show_query()</code></a> on an <code>arrow_dplyr_query</code> object.</p>
+<p>Shout out to <a href="https://twitter.com/dragosmg">Dragoș Moldovan-Grünfeld</a> who made the PR to implement this function!</p>
+<p>See sections below for definitions of the terms mentioned above.</p>
+<div id="what-is-acero" class="section level2">
+<h2>What is Acero?</h2>
+<p>Acero is an Arrow-native query execution engine, developed as part of the Arrow C++ / R libraries.</p>
+</div>
+<div id="what-is-a-query-execution-engine" class="section level2">
+<h2>What is a query execution engine?</h2>
+<p>A query execution engine is a piece of software which allows users to execute queries against a data source. It typically has multiple steps, which could include things like taking the query and parsing it into an algebraic format, re-ordering and optimising the query in order to run it in the most efficient way, and actually running the query.</p>
+</div>
+<div id="what-is-an-execplan" class="section level2">
+<h2>What is an ExecPlan?</h2>
+<p>Queries to be run on Acero are specified as execution plans aka ExecPlans. These are directed graphs which express what operations need to take place via nodes - called ExecNodes in this case. The graph for the ExecPlan in the code example earlier in this post looks like this.</p>
+<div id="htmlwidget-1" style="width:672px;height:480px;" class="grViz html-widget"></div>
+<script type="application/json" data-for="htmlwidget-1">{"x":{"diagram":"\ndigraph graph2 {\ngraph [layout = dot]\n# node definitions with substituted label text\nnode [shape = rectangle, width = 4, fillcolor = Biege]\na [label = \"TableSourceNode\"]\nb [label = \"FilterNode\"]\nc [label = \"ProjectNode\"]\nd [label = \"SinkNode\"]\na -> b -> c -> d\n}\n","config":{"engine":"dot","options":null}},"evals":[],"jsHooks":[]}</script>
+<p>The ExecNodes in the plan above are:</p>
+<ul>
+<li><p><a href="https://arrow.apache.org/docs/cpp/streaming_execution.html#table-source">TableSourceNode</a> - used to input the data</p></li>
+<li><p><a href="https://arrow.apache.org/docs/cpp/streaming_execution.html#filter">FilterNode</a> - where we apply our filter to only retain rows where the value of <code>mpg</code> is greater than 20</p></li>
+<li><p><a href="https://arrow.apache.org/docs/cpp/streaming_execution.html#project">ProjectNode</a> - this then specifies which columns we want, including the new column <code>wt_kg</code> as a <a href="https://arrow.apache.org/docs/cpp/api/compute.html">compute expression</a></p></li>
+<li><p><a href="https://arrow.apache.org/docs/cpp/streaming_execution.html#sink">SinkNode</a> - this provides the output</p></li>
+</ul>
+</div>
+
+</main>
+
+  <footer>
+  <script src="//yihui.org/js/math-code.js"></script>
+<script async src="//mathjax.rstudio.com/latest/MathJax.js?config=TeX-MML-AM_CHTML"></script>
+
+<script async src="//yihui.org/js/center-img.js"></script>
+
+<script type="application/javascript">
+var doNotTrack = false;
+if (!doNotTrack) {
+	(function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+	(i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+	m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+	})(window,document,'script','https://www.google-analytics.com/analytics.js','ga');
+	ga('create', 'UA-116704434-1', 'auto');
+	
+	ga('send', 'pageview');
+}
+</script>
+  
+  <hr/>
+  © Nic Crane 2016 &ndash; 2022
+  
+  </footer>
+  </body>
+</html>
+
