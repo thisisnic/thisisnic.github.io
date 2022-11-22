@@ -6,7 +6,7 @@
     <title>Error chaining | Nic Crane</title>
     <link rel="stylesheet" href="/css/style.css" />
     <link rel="stylesheet" href="/css/fonts.css" />
-    
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.5.1/styles/github.min.css" rel="stylesheet">
   </head>
 
   <body>
@@ -239,7 +239,7 @@ import_cat_data(&quot;even_more_cats.csv&quot;)</code></pre>
   
   data
 }</code></pre>
-<p>I discovered this number through trial and error, but after reading a bit more about the stack trace, I have a better idea about the reason. Remember before when I said the function call we wanted to say was the error’s source was five items higher on the stack? In the warning handler above, we call <code>caller_env()</code> one place higher in the stack than <code>handle_cats_import_warning()</code>, and so 5 - 1 = 4.</p>
+<p>I discovered this number through trial and error, but after reading a bit more about the stack trace, I have a better idea about the reason Remember before when I said the function call we wanted to say was the error’s source was five items higher on the stack? In the warning handler above, we call <code>caller_env()</code> one place higher in the stack than <code>handle_cats_import_warning()</code>, and so 5 - 1 = 4.</p>
 <p>So now let’s take a look - is our error message attributed to the right place in the call stack?</p>
 <pre class="r"><code>import_cat_data(&quot;even_more_cats.csv&quot;)</code></pre>
 <pre><code>## Error in `import_cat_data()`:
@@ -269,6 +269,14 @@ if (!doNotTrack) {
 	
 	ga('send', 'pageview');
 }
+</script>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.5.1/highlight.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.6.0/languages/r.min.js"></script>
+
+<script>
+hljs.configure({languages: []});
+hljs.initHighlightingOnLoad();
 </script>
   
   <hr/>
