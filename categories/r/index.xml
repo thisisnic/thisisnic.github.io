@@ -13,7 +13,7 @@
       <pubDate>Mon, 21 Nov 2022 00:00:00 +0000</pubDate>
       
       <guid>/2022/11/21/type-inference-in-readr-and-arrow/</guid>
-      <description>Type inference in readr and arrow The CSV format is widely used in data science, and at its best works well as a simple human-readable format that is widely known and understood. The simplicity of CSVs though, as a basic text format also has its drawbacks. One is that it contains no information about data types of its columns, and if you’re working with CSVs in an application more complex than a text editor, those data types must be inferred by whatever is reading the data.</description>
+      <description>The CSV format is widely used in data science, and at its best works well as a simple human-readable format that is widely known and understood. The simplicity of CSVs though, as a basic text format also has its drawbacks. One is that it contains no information about data types of its columns, and if you’re working with CSVs in an application more complex than a text editor, those data types must be inferred by whatever is reading the data.</description>
     </item>
     
     <item>

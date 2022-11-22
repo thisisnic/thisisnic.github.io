@@ -39,8 +39,6 @@
 
 
 
-<div id="type-inference-in-readr-and-arrow" class="section level1">
-<h1>Type inference in readr and arrow</h1>
 <p>The CSV format is widely used in data science, and at its best works
 well as a simple human-readable format that is widely known and
 understood. The simplicity of CSVs though, as a basic text format also
@@ -51,15 +49,24 @@ whatever is reading the data.</p>
 <p>In this blog post, I’m going to discuss how CSV type inference works in
 the R packages <a href="https://readr.tidyverse.org/">readr</a> and <a href="https://arrow.apache.org/docs/r/">arrow</a>, and highlight the differences between
 the two.</p>
+<p>Before I get started though, I’d like to acknowledge that this post is
+an exercise in examining the underlying mechanics of the two packages.
+In practice, I’ve found that when working with datasets small enough
+to fit in-memory, it’s much more fruitful to either read in the data
+first and then manipulate it into the required shape, or just specify
+the column types up front. Still, the strategies for automatic guessing
+are interesting to explore.</p>
 <p align="center">
 <img src="images/readr_hex.png" width="200" />
 <img src="images/arrow-logo_hex_black-txt_white-bg.png" width="200" />
 </p>
 <div id="how-does-type-inference-work-in-readr" class="section level2">
 <h2>How does type inference work in readr?</h2>
-<p>In readr, the first step is reading in a subset of the data (by default,
-1000 rows, though this can be customised). The type inference is done by
-a C++ function in readr called <code>collectorGuess()</code> which guesses types in
+<p>Since readr version 2.0.0 (released in July 2020), there was a significant
+overhaul of the underlying code, which subsequently depended on the
+<a href="https://vroom.r-lib.org/">vroom</a> package.</p>
+<p>The type inference is done by
+a C++ function in vroom called <code>guess_type__()</code> which guesses types in
 the following order:</p>
 <ul>
 <li><p>Does the column contain 0 rows? If yes, return “character”</p></li>
@@ -81,7 +88,8 @@ representing numbers and then convert them to doubles)</p></li>
 <p>The ordering above in the parsing bullet point goes from most to least
 strict in terms of the conditions which have to be met to successfully
 parse an input as that data type. For example, for a column to be of
-logical type, it can only contain <code>TRUE</code>, <code>FALSE</code>, or <code>NA</code> values, which
+logical type, it can only contain a small subset of values representing
+true (<code>T</code>, <code>t</code>, <code>True</code>, <code>TRUE</code>, <code>true</code>), false (<code>F</code>, <code>f</code>, <code>False</code>, <code>FALSE</code>, <code>false</code>) or NA, which
 is why this is the most strict type, but all of the other types could be
 read in as character data, which is the least strict and why this is
 last in the order.</p>
@@ -93,8 +101,7 @@ interface has been designed to closely follow the excellent APIs of
 <code>readr::read_csv()</code> and <code>vroom::vroom()</code>. The intention here is that
 users can use parameter names they’re familiar with from the
 aforementioned readers when using arrow, and get the same results. The
-underlying code is pretty different though, and type inference is done
-on the whole column rather than an initial subset.</p>
+underlying code is pretty different though.</p>
 <p>In addition, Arrow has a different set of possible data types compared
 to R; see <a href="https://arrow.apache.org/docs/r/articles/arrow.html">the Arrow docs</a> for more
 information about the mapping between R data types and Arrow types.</p>
@@ -140,7 +147,8 @@ arrow::read_csv_arrow(&quot;simple_data.csv&quot;, as_data_frame = TRUE)</code><
 <p>Although there appear to be quite a few differences between the order of type inference when comparing arrow and readr, in practice, this doesn’t have much effect. Type inference for logical/boolean and integer values are the opposite way round, but given that the underlying data that translates into these types looks very different, they’re not going to be mixed up. The biggest differences come from custom behaviours which are specific to readr and arrow; I’ve outlined them below.</p>
 <div id="guessing-integers" class="section level3">
 <h3>Guessing integers</h3>
-<p>In the code for readr, the default setting is for numeric values to always be read in as doubles but never integers. If you want readr to guess that a column may be an integer, you need to read it in as character data, and then call <code>type_convert()</code>. In arrow, if data can be represented as integers but not doubles, then it will be.</p>
+<p>In the code for readr, the default setting is for numeric values to always be read in as doubles but never integers. If you want readr to guess that a column may be an integer, you need to read it in as character data, and then call <code>type_convert()</code>. This isn’t necessarily a great workflow though, and in most cases it would make sense to just manually specify the column type instead of having it inferred.</p>
+<p>In arrow, if data can be represented as integers but not doubles, then it will be.</p>
 <pre class="r"><code>int_or_dbl &lt;- data.frame(
   x = c(1L, 2L, 3L)
 )
@@ -164,7 +172,7 @@ readr::read_csv(&quot;int_or_dbl.csv&quot;)</code></pre>
 ## 1     1
 ## 2     2
 ## 3     3</code></pre>
-<pre class="r"><code># integer
+<pre class="r"><code># integer via inference
 readr::read_csv(&quot;int_or_dbl.csv&quot;, col_types = list(.default = col_character())) %&gt;%
   type_convert(guess_integer = TRUE)</code></pre>
 <pre><code>## 
@@ -178,7 +186,15 @@ readr::read_csv(&quot;int_or_dbl.csv&quot;, col_types = list(.default = col_char
 ## 1     1
 ## 2     2
 ## 3     3</code></pre>
-<pre class="r"><code># integer
+<pre class="r"><code># integer via specification
+readr::read_csv(&quot;int_or_dbl.csv&quot;, col_types = list(col_integer()))</code></pre>
+<pre><code>## # A tibble: 3 × 1
+##       x
+##   &lt;int&gt;
+## 1     1
+## 2     2
+## 3     3</code></pre>
+<pre class="r"><code># integer via inference
 arrow::read_csv_arrow(&quot;int_or_dbl.csv&quot;)</code></pre>
 <pre><code>## # A tibble: 3 × 1
 ##       x
@@ -189,7 +205,7 @@ arrow::read_csv_arrow(&quot;int_or_dbl.csv&quot;)</code></pre>
 </div>
 <div id="bit-integers" class="section level3">
 <h3>32-bit integers</h3>
-<p>Another difference between readr and arrow is the difference between how integers larger than 32 bits are read in. Natively, R can only support 32-bit integers, though it can support 64-bit integers via the bit64 package. If we create a CSV with one column containing the largest integer that R can natively support, and then another column containing that value plus 1, we get different behaviour when we import this data with readr and arrow. In readr, when we enable integer guessing, the smaller value is read in as an integer, and the larger value is read in as a double. In arrow, the use of the bit64 package means both values can be represented as integers.</p>
+<p>Another difference between readr and arrow is the difference between how integers larger than 32 bits are read in. Natively, R can only support 32-bit integers, though it can support 64-bit integers via the <a href="https://cran.r-project.org/web/packages/bit64/index.html">bit64</a> package. If we create a CSV with one column containing the largest integer that R can natively support, and then another column containing that value plus 1, we get different behaviour when we import this data with readr and arrow. In readr, when we enable integer guessing, the smaller value is read in as an integer, and the larger value is read in as a double. However, once we move over to manually specifying column types, we can use <code>vroom::col_big_integer()</code> to use bit64 and get us a large integer column. The arrow package also uses bit64, and its integer guessing results in 64-bit integer via inference.</p>
 <pre class="r"><code>sixty_four &lt;- data.frame(x = 2^31 - 1, y = 2^31)
 
 readr::write_csv(sixty_four, &quot;sixty_four.csv&quot;)
@@ -207,12 +223,6 @@ readr::read_csv(&quot;sixty_four.csv&quot;)</code></pre>
 ##            x          y
 ##        &lt;dbl&gt;      &lt;dbl&gt;
 ## 1 2147483647 2147483648</code></pre>
-<pre class="r"><code># 32 or 64 bit integer depending on value size
-arrow::read_csv_arrow(&quot;sixty_four.csv&quot;)</code></pre>
-<pre><code>## # A tibble: 1 × 2
-##            x          y
-##        &lt;int&gt;    &lt;int64&gt;
-## 1 2147483647 2147483648</code></pre>
 <pre class="r"><code># 32 bit integer or double depending on value size
 readr::read_csv(&quot;sixty_four.csv&quot;, col_types = list(.default = col_character())) %&gt;%
   type_convert(guess_integer = TRUE)</code></pre>
@@ -226,17 +236,32 @@ readr::read_csv(&quot;sixty_four.csv&quot;, col_types = list(.default = col_char
 ##            x          y
 ##        &lt;int&gt;      &lt;dbl&gt;
 ## 1 2147483647 2147483648</code></pre>
+<pre class="r"><code># integers by specification
+readr::read_csv(
+  &quot;sixty_four.csv&quot;,
+  col_types = list(x = col_integer(), y = vroom::col_big_integer())
+)</code></pre>
+<pre><code>## # A tibble: 1 × 2
+##            x          y
+##        &lt;int&gt;    &lt;int64&gt;
+## 1 2147483647 2147483648</code></pre>
+<pre class="r"><code># integers by inference
+arrow::read_csv_arrow(&quot;sixty_four.csv&quot;)</code></pre>
+<pre><code>## # A tibble: 1 × 2
+##            x          y
+##        &lt;int&gt;    &lt;int64&gt;
+## 1 2147483647 2147483648</code></pre>
 </div>
-<div id="the-number-type" class="section level3">
-<h3>The “number” type</h3>
-<p>One really cool feature in readr is the “number” type. This allows reading in of values which have been stored as character data with commas to separate the thousands as doubles. This is not supported in arrow.</p>
+<div id="the-number-parsing-strategy" class="section level3">
+<h3>The “number” parsing strategy</h3>
+<p>One really cool feature in readr is the “number” parsing strategy. This allows values which have been stored as character data with commas to separate the thousands to be read in as doubles. This is not supported in arrow.</p>
 <pre class="r"><code>number_type &lt;- data.frame(
   x = c(&quot;1,000&quot;, &quot;1,250&quot;)
 )
 
 readr::write_csv(number_type, &quot;number_type.csv&quot;)
 
-# double type, but read in as number initially
+# double type, but parsed in as number in column spec shown below
 readr::read_csv(&quot;number_type.csv&quot;)</code></pre>
 <pre><code>## Rows: 2 Columns: 1
 ## ── Column specification ────────────────────────────────────────────────────────
@@ -304,6 +329,21 @@ arrow::read_csv_arrow(&quot;dict_type.csv&quot;, convert_options = auto_dict_opt
 ## 3 yes  
 ## 4 no</code></pre>
 </div>
+<div id="custom-logicalboolean-values" class="section level3">
+<h3>Custom logical/boolean values</h3>
+<p>Another slightly niche but potentially useful piece of functionality available in arrow is the ability to customise which values can be parsed as logical/boolean type and how they translate to <code>TRUE</code>/<code>FALSE</code>. This can be achieved by setting some custom conversion options.</p>
+<pre class="r"><code>alternative_true_false &lt;- arrow::CsvConvertOptions$create(
+  false_values = &quot;no&quot;, true_values = &quot;yes&quot;
+)
+arrow::read_csv_arrow(&quot;dict_type.csv&quot;, convert_options = alternative_true_false)</code></pre>
+<pre><code>## # A tibble: 4 × 1
+##   x    
+##   &lt;lgl&gt;
+## 1 TRUE 
+## 2 FALSE
+## 3 TRUE 
+## 4 FALSE</code></pre>
+</div>
 </div>
 <div id="using-schemas-for-manual-control-of-data-types" class="section level2">
 <h2>Using schemas for manual control of data types</h2>
@@ -361,6 +401,9 @@ arrow::read_csv_arrow(&quot;given_types.csv&quot;, schema = schema(x = int8(), y
 <h2>Further Reading</h2>
 <p>If you want a much more detailed discussion of Arrow data types, see <a href="https://blog.djnavarro.net/posts/2022-03-04_data-types-in-arrow-and-r/">this excellent blog post</a> by Danielle Navarro.</p>
 </div>
+<div id="thanks" class="section level2">
+<h2>Thanks</h2>
+<p>Huge thanks to everyone who helped review and tweak this blog post, and special thanks to <a href="https://github.com/jennybc">Jenny Bryan</a> who gave some really helpful feedback on the content on readr/vroom!</p>
 </div>
 
 </main>
