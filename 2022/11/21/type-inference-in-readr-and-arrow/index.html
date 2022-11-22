@@ -1,0 +1,391 @@
+<!DOCTYPE html>
+<html lang="en-uk">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Type inference in readr and arrow | Nic Crane</title>
+    <link rel="stylesheet" href="/css/style.css" />
+    <link rel="stylesheet" href="/css/fonts.css" />
+    
+  </head>
+
+  <body>
+    <nav>
+    <ul class="menu">
+      
+      <li><a href="/post/">Home</a></li>
+      
+      <li><a href="/about/">About</a></li>
+      
+      <li><a href="/categories/">Categories</a></li>
+      
+      <li><a href="/tags/">Tags</a></li>
+      
+      <li><a href="/speaking/">Speaking</a></li>
+      
+      <li><a href="/index.xml">Subscribe</a></li>
+      
+    </ul>
+    <hr/>
+    </nav>
+
+<div class="article-meta">
+<h1><span class="title">Type inference in readr and arrow</span></h1>
+<h2 class="author">Nic Crane</h2>
+<h2 class="date">2022/11/21</h2>
+</div>
+
+<main>
+
+
+
+<p>The CSV format is widely used in data science, and at its best works
+well as a simple human-readable format that is widely known and
+understood. The simplicity of CSVs though, as a basic text format also
+has its drawbacks. One is that it contains no information about data
+types of its columns, and if you’re working with CSVs in an application
+more complex than a text editor, those data types must be inferred by
+whatever is reading the data.</p>
+<p>In this blog post, I’m going to discuss how CSV type inference works in
+the R packages <a href="https://readr.tidyverse.org/">readr</a> and <a href="https://arrow.apache.org/docs/r/">arrow</a>, and highlight the differences between
+the two.</p>
+<p align="center">
+<img src="images/readr_hex.png" width="200" />
+<img src="images/arrow-logo_hex_black-txt_white-bg.png" width="200" />
+</p>
+<div id="how-does-type-inference-work-in-readr" class="section level2">
+<h2>How does type inference work in readr?</h2>
+<p>In readr, the first step is reading in a subset of the data (by default,
+1000 rows, though this can be customised). The type inference is done by
+a C++ function in readr called <code>collectorGuess()</code> which guesses types in
+the following order:</p>
+<ul>
+<li><p>Does the column contain 0 rows? If yes, return “character”</p></li>
+<li><p>Are all values missing? If yes, return “logical”</p></li>
+<li><p>Tries to parse column to each of these formats and returns the first
+one it successfully parses:</p>
+<ul>
+<li><p>Logical</p></li>
+<li><p>Integer (though the default is to not look for these)</p></li>
+<li><p>Double</p></li>
+<li><p>Number (a special type which can remove characters from strings
+representing numbers and then convert them to doubles)</p></li>
+<li><p>Time</p></li>
+<li><p>Date</p></li>
+<li><p>Datetime</p></li>
+<li><p>Character</p></li>
+</ul></li>
+</ul>
+<p>The ordering above in the parsing bullet point goes from most to least
+strict in terms of the conditions which have to be met to successfully
+parse an input as that data type. For example, for a column to be of
+logical type, it can only contain <code>TRUE</code>, <code>FALSE</code>, or <code>NA</code> values, which
+is why this is the most strict type, but all of the other types could be
+read in as character data, which is the least strict and why this is
+last in the order.</p>
+</div>
+<div id="how-does-type-inference-work-in-arrow" class="section level2">
+<h2>How does type inference work in arrow?</h2>
+<p>In arrow, <code>read_csv_arrow()</code> handles CSV reading, and much of its
+interface has been designed to closely follow the excellent APIs of
+<code>readr::read_csv()</code> and <code>vroom::vroom()</code>. The intention here is that
+users can use parameter names they’re familiar with from the
+aforementioned readers when using arrow, and get the same results. The
+underlying code is pretty different though, and type inference is done
+on the whole column rather than an initial subset.</p>
+<p>In addition, Arrow has a different set of possible data types compared
+to R; see (link here to Danielle update to the docs) for more
+information about the mapping between R data types and Arrow types.</p>
+<p>In the Arrow docs
+(<a href="https://arrow.apache.org/docs/cpp/csv.html#data-types" class="uri">https://arrow.apache.org/docs/cpp/csv.html#data-types</a>), we can see
+that types are inferred in this order:</p>
+<ul>
+<li><p>Null</p></li>
+<li><p>Int64</p></li>
+<li><p>Boolean</p></li>
+<li><p>Date32</p></li>
+<li><p>Timestamp (with seconds unit)</p></li>
+<li><p>Float64</p></li>
+<li><p>Dictionary<String> (if ConvertOptions::auto_dict_encode is true)</p></li>
+<li><p>Dictionary<Binary> (if ConvertOptions::auto_dict_encode is true)</p></li>
+<li><p>String</p></li>
+<li><p>Binary</p></li>
+</ul>
+<p>Note that if you use <code>read_csv_arrow()</code> with parameter
+<code>as_data_frame = TRUE</code> (the default), the Arrow data types are then
+converted to R data types.</p>
+<pre class="r"><code>simple_data &lt;- data.frame(x = c(1, 2, 3), y = c(&quot;a&quot;, &quot;b&quot;, &quot;c&quot;), z = c(1.1, 2.2, 3.3))
+
+write.csv(simple_data, &quot;simple_data.csv&quot;, row.names = FALSE)
+
+# columns are arrow&#39;s int64, string, and double (aka float64) types
+arrow::read_csv_arrow(&quot;simple_data.csv&quot;, as_data_frame = FALSE)</code></pre>
+<pre><code>## Table
+## 3 rows x 3 columns
+## $x &lt;int64&gt;
+## $y &lt;string&gt;
+## $z &lt;double&gt;</code></pre>
+<pre class="r"><code># columns converted to R&#39;s integer, character, and double types
+arrow::read_csv_arrow(&quot;simple_data.csv&quot;, as_data_frame = TRUE)</code></pre>
+<pre><code>## # A tibble: 3 × 3
+##       x y         z
+##   &lt;int&gt; &lt;chr&gt; &lt;dbl&gt;
+## 1     1 a       1.1
+## 2     2 b       2.2
+## 3     3 c       3.3</code></pre>
+</div>
+<div id="what-are-the-main-differences-between-readr-and-arrow-type-inference" class="section level2">
+<h2>What are the main differences between readr and arrow type inference?</h2>
+<p>Although there appear to be quite a few differences between the order of type inference when comparing arrow and readr, in practice, this doesn’t have much effect. Type inference for logical/boolean and integer values are the opposite way round, but given that these types look very different to each other, they’re not going to be mixed up. The biggest differences come from custom behaviours which are specific to readr and arrow; I’ve outlined them below.</p>
+<div id="guessing-integers" class="section level3">
+<h3>Guessing integers</h3>
+<p>In the code for readr, the default setting is for numeric values to always be read in as doubles but never integers. If you want readr to guess that a column may be an integer, you need to read it in as character data, and then call type_convert(). In arrow, if data can be represented as integers but not doubles, then it will be.</p>
+<pre class="r"><code>int_or_dbl &lt;- data.frame(
+  x = c(1L, 2L, 3L)
+)
+
+write.csv(int_or_dbl, &quot;int_or_dbl.csv&quot;, row.names = FALSE)
+
+readLines(&quot;int_or_dbl.csv&quot;)</code></pre>
+<pre><code>## [1] &quot;\&quot;x\&quot;&quot; &quot;1&quot;     &quot;2&quot;     &quot;3&quot;</code></pre>
+<pre class="r"><code># double
+readr::read_csv(&quot;int_or_dbl.csv&quot;)</code></pre>
+<pre><code>## Rows: 3 Columns: 1
+## ── Column specification ────────────────────────────────────────────────────────
+## Delimiter: &quot;,&quot;
+## dbl (1): x
+## 
+## ℹ Use `spec()` to retrieve the full column specification for this data.
+## ℹ Specify the column types or set `show_col_types = FALSE` to quiet this message.</code></pre>
+<pre><code>## # A tibble: 3 × 1
+##       x
+##   &lt;dbl&gt;
+## 1     1
+## 2     2
+## 3     3</code></pre>
+<pre class="r"><code># integer
+readr::read_csv(&quot;int_or_dbl.csv&quot;, col_types = list(.default = col_character())) %&gt;%
+  type_convert(guess_integer = TRUE)</code></pre>
+<pre><code>## 
+## ── Column specification ────────────────────────────────────────────────────────
+## cols(
+##   x = col_integer()
+## )</code></pre>
+<pre><code>## # A tibble: 3 × 1
+##       x
+##   &lt;int&gt;
+## 1     1
+## 2     2
+## 3     3</code></pre>
+<pre class="r"><code># integer
+arrow::read_csv_arrow(&quot;int_or_dbl.csv&quot;)</code></pre>
+<pre><code>## # A tibble: 3 × 1
+##       x
+##   &lt;int&gt;
+## 1     1
+## 2     2
+## 3     3</code></pre>
+</div>
+<div id="bit-integers" class="section level3">
+<h3>32-bit integers</h3>
+<p>Another difference between readr and arrow is the difference between how integers larger than 32 bits are read in. Natively, R can only support 32-bit integers, though it can support 64-bit integers via the bit64 package. If we create a CSVe with one column containing the largest integer that R can natively support, and then another column containing that value plus 1, we get different behaviour when we import this data with readr and arrow. In readr, when we enable integer guessing, the smaller value is read in as an integer, and the larger value is read in as a double. In arrow, the use of the bit64 package means both values can be represented as integers.</p>
+<pre class="r"><code>sixty_four &lt;- data.frame(x = 2^31 - 1, y = 2^31)
+
+write.csv(sixty_four, &quot;sixty_four.csv&quot;, row.names = FALSE)
+
+# integer by default
+readr::read_csv(&quot;sixty_four.csv&quot;)</code></pre>
+<pre><code>## Rows: 1 Columns: 2
+## ── Column specification ────────────────────────────────────────────────────────
+## Delimiter: &quot;,&quot;
+## dbl (2): x, y
+## 
+## ℹ Use `spec()` to retrieve the full column specification for this data.
+## ℹ Specify the column types or set `show_col_types = FALSE` to quiet this message.</code></pre>
+<pre><code>## # A tibble: 1 × 2
+##            x          y
+##        &lt;dbl&gt;      &lt;dbl&gt;
+## 1 2147483647 2147483648</code></pre>
+<pre class="r"><code># 32 or 64 bit integer depending on value size
+arrow::read_csv_arrow(&quot;sixty_four.csv&quot;)</code></pre>
+<pre><code>## # A tibble: 1 × 2
+##            x          y
+##        &lt;int&gt;    &lt;int64&gt;
+## 1 2147483647 2147483648</code></pre>
+<pre class="r"><code># 32 bit integer or double depending on value size
+readr::read_csv(&quot;sixty_four.csv&quot;, col_types = list(.default = col_character())) %&gt;%
+  type_convert(guess_integer = TRUE)</code></pre>
+<pre><code>## 
+## ── Column specification ────────────────────────────────────────────────────────
+## cols(
+##   x = col_integer(),
+##   y = col_double()
+## )</code></pre>
+<pre><code>## # A tibble: 1 × 2
+##            x          y
+##        &lt;int&gt;      &lt;dbl&gt;
+## 1 2147483647 2147483648</code></pre>
+</div>
+<div id="the-number-type" class="section level3">
+<h3>The “number” type</h3>
+<p>One really cool feature in readr is the “number” type. This allows reading in of values which have been stored as character data with commas to separate the thousands as doubles. This is not supported in arrow.</p>
+<pre class="r"><code>number_type &lt;- data.frame(
+  x = c(&quot;1,000&quot;, &quot;1,250&quot;)
+)
+
+write.csv(number_type, &quot;number_type.csv&quot;, row.names = FALSE)
+
+# double type, but read in as number initially
+readr::read_csv(&quot;number_type.csv&quot;)</code></pre>
+<pre><code>## Rows: 2 Columns: 1
+## ── Column specification ────────────────────────────────────────────────────────
+## Delimiter: &quot;,&quot;
+## num (1): x
+## 
+## ℹ Use `spec()` to retrieve the full column specification for this data.
+## ℹ Specify the column types or set `show_col_types = FALSE` to quiet this message.</code></pre>
+<pre><code>## # A tibble: 2 × 1
+##       x
+##   &lt;dbl&gt;
+## 1  1000
+## 2  1250</code></pre>
+<pre class="r"><code># read in as character data in Arrow
+arrow::read_csv_arrow(&quot;number_type.csv&quot;)</code></pre>
+<pre><code>## # A tibble: 2 × 1
+##   x    
+##   &lt;chr&gt;
+## 1 1,000
+## 2 1,250</code></pre>
+</div>
+<div id="dictionariesfactors" class="section level3">
+<h3>Dictionaries/Factors</h3>
+<p>Anyone who’s been around long enough might remember that R’s native CSV reading function <code>read.csv()</code> had a default setting of importing character columns as factors (I definitely have <code>read.csv(..., stringAsFactors=FALSE)</code> carved into a groove in some dark corner of my memory). This default was changed in version 4.0.0, released in April 2020, reflecting the fact that in most cases users want their string data to be imported as characters unless otherwise specified. Still, some datasets contain character data which users do want to import as factors. In reader, this can be controlled by manually specifying the column as a factor</p>
+<p>In arrow, if you don’t want to individually specify column types, you can set up an option to import character columns as dictionaries (the equivalent of factors), which are converted into factors.</p>
+<pre class="r"><code>dict_type &lt;- data.frame(
+  x = c(&quot;yes&quot;, &quot;no&quot;, &quot;yes&quot;, &quot;no&quot;)
+)
+
+write.csv(dict_type, &quot;dict_type.csv&quot;, row.names = FALSE)
+
+# character data
+readr::read_csv(&quot;dict_type.csv&quot;)</code></pre>
+<pre><code>## Rows: 4 Columns: 1
+## ── Column specification ────────────────────────────────────────────────────────
+## Delimiter: &quot;,&quot;
+## chr (1): x
+## 
+## ℹ Use `spec()` to retrieve the full column specification for this data.
+## ℹ Specify the column types or set `show_col_types = FALSE` to quiet this message.</code></pre>
+<pre><code>## # A tibble: 4 × 1
+##   x    
+##   &lt;chr&gt;
+## 1 yes  
+## 2 no   
+## 3 yes  
+## 4 no</code></pre>
+<pre class="r"><code># factor data
+readr::read_csv(&quot;dict_type.csv&quot;, col_types = list(x = col_factor()))</code></pre>
+<pre><code>## # A tibble: 4 × 1
+##   x    
+##   &lt;fct&gt;
+## 1 yes  
+## 2 no   
+## 3 yes  
+## 4 no</code></pre>
+<pre class="r"><code># set up the option. there&#39;s an open ticket to make this code a bit nicer to read.
+auto_dict_option &lt;- arrow::CsvConvertOptions$create(auto_dict_encode = TRUE)
+arrow::read_csv_arrow(&quot;dict_type.csv&quot;, convert_options = auto_dict_option)</code></pre>
+<pre><code>## # A tibble: 4 × 1
+##   x    
+##   &lt;fct&gt;
+## 1 yes  
+## 2 no   
+## 3 yes  
+## 4 no</code></pre>
+</div>
+</div>
+<div id="using-schemas-for-manual-control-of-data-types" class="section level2">
+<h2>Using schemas for manual control of data types</h2>
+<p>Although relying on the reader itself to guess your column types can work well, what if you want more precise control?</p>
+<p>In readr, you can use the <code>col_types</code> parameter to specify column types. You can use the same parameter in arrow to use R type specifications.</p>
+<pre class="r"><code>given_types &lt;- data.frame(x = c(1, 2, 3), y = c(4, 5, 6))
+
+write.csv(given_types, &quot;given_types.csv&quot;, row.names = FALSE)
+
+readr::read_csv(&quot;given_types.csv&quot;, col_types = list(col_integer(), col_double()))</code></pre>
+<pre><code>## # A tibble: 3 × 2
+##       x     y
+##   &lt;int&gt; &lt;dbl&gt;
+## 1     1     4
+## 2     2     5
+## 3     3     6</code></pre>
+<p>You can also use this shortcode specification.</p>
+<pre class="r"><code>readr::read_csv(&quot;given_types.csv&quot;, col_types = &quot;id&quot;)</code></pre>
+<pre><code>## # A tibble: 3 × 2
+##       x     y
+##   &lt;int&gt; &lt;dbl&gt;
+## 1     1     4
+## 2     2     5
+## 3     3     6</code></pre>
+<p>In arrow you can use the shortcodes (though not the <code>col_*()</code> functions), but you must specify the column names.
+We skip the first row as using names and types in <code>readr::read_csv()</code> also assumes the header is data.</p>
+<pre class="r"><code>arrow::read_csv_arrow(&quot;given_types.csv&quot;, col_names = c(&quot;x&quot;, &quot;y&quot;), col_types = &quot;id&quot;, skip = 1)</code></pre>
+<pre><code>## # A tibble: 3 × 2
+##       x     y
+##   &lt;int&gt; &lt;dbl&gt;
+## 1     1     4
+## 2     2     5
+## 3     3     6</code></pre>
+<p>What if you want to use Arrow types though? In this case, you need to use a schema. I won’t go into detail here, but in short, schemas are lists of fields, all of which contain a field name and a data type. You can specify a schema like this:</p>
+<pre class="r"><code># this gives the same result as before - because our Arrow data has been converted to the relevant R type
+arrow::read_csv_arrow(&quot;given_types.csv&quot;, schema = schema(x = int8(), y = float32()), skip = 1)</code></pre>
+<pre><code>## # A tibble: 3 × 2
+##       x     y
+##   &lt;int&gt; &lt;dbl&gt;
+## 1     1     4
+## 2     2     5
+## 3     3     6</code></pre>
+<pre class="r"><code># BUT, if you don&#39;t read it in as a data frame you&#39;ll see the Arrow type
+arrow::read_csv_arrow(&quot;given_types.csv&quot;, schema = schema(x = int8(), y = float32()), skip = 1, as_data_frame = FALSE)</code></pre>
+<pre><code>## Table
+## 3 rows x 2 columns
+## $x &lt;int8&gt;
+## $y &lt;float&gt;</code></pre>
+</div>
+<div id="parquet" class="section level2">
+<h2>Parquet</h2>
+<p>An alternative approach though, where you can specify your schema along with your data instead of when reading the data in, is to use Parquet format. This means that if you’re sharing your data with others, you don’t need to worry about it being read in as the wrong data types. In a follow-up post I’ll explore the Parquet format and compare management of data types in CSVs and Parquet.</p>
+</div>
+<div id="further-reading" class="section level2">
+<h2>Further Reading</h2>
+<p>If you want a much more detailed discussion of Arrow data types, see <a href="https://blog.djnavarro.net/posts/2022-03-04_data-types-in-arrow-and-r/">this excellent blog post</a> by Danielle Navarro.</p>
+</div>
+
+</main>
+
+  <footer>
+  <script src="//yihui.org/js/math-code.js"></script>
+<script async src="//mathjax.rstudio.com/latest/MathJax.js?config=TeX-MML-AM_CHTML"></script>
+
+<script async src="//yihui.org/js/center-img.js"></script>
+
+<script type="application/javascript">
+var doNotTrack = false;
+if (!doNotTrack) {
+	(function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+	(i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+	m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+	})(window,document,'script','https://www.google-analytics.com/analytics.js','ga');
+	ga('create', 'UA-116704434-1', 'auto');
+	
+	ga('send', 'pageview');
+}
+</script>
+  
+  <hr/>
+  © Nic Crane 2016 &ndash; 2022
+  
+  </footer>
+  </body>
+</html>
+

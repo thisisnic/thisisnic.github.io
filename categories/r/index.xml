@@ -6,7 +6,16 @@
     <description>Recent content in R on Nic Crane</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>en-uk</language>
-    <lastBuildDate>Fri, 26 Aug 2022 00:00:00 +0000</lastBuildDate><atom:link href="/categories/r/index.xml" rel="self" type="application/rss+xml" />
+    <lastBuildDate>Mon, 21 Nov 2022 00:00:00 +0000</lastBuildDate><atom:link href="/categories/r/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>Type inference in readr and arrow</title>
+      <link>/2022/11/21/type-inference-in-readr-and-arrow/</link>
+      <pubDate>Mon, 21 Nov 2022 00:00:00 +0000</pubDate>
+      
+      <guid>/2022/11/21/type-inference-in-readr-and-arrow/</guid>
+      <description>The CSV format is widely used in data science, and at its best works well as a simple human-readable format that is widely known and understood. The simplicity of CSVs though, as a basic text format also has its drawbacks. One is that it contains no information about data types of its columns, and if you’re working with CSVs in an application more complex than a text editor, those data types must be inferred by whatever is reading the data.</description>
+    </item>
+    
     <item>
       <title>Arrow New Feature Showcase: `show_exec_plan()`</title>
       <link>/2022/08/26/arrow-new-feature-showcase-show-exec-plan/</link>
